@@ -26,22 +26,6 @@
 .panel h3{margin:0 0 10px}
 button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--lime);outline-offset:2px}
 
-/* Animation cible 3D */
-.dart-arena{display:flex;justify-content:center;align-items:center;padding:14px 0 18px;perspective:700px;overflow:hidden}
-.dartboard{position:relative;width:min(62vw,220px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 35% 27%,#5b5b5b 0,#222 48%,#090909 72%);border:9px solid #7b4a27;box-shadow:inset 0 0 0 4px #d6b17a,0 15px 22px #0009,0 5px 0 #422513;transform:rotateX(9deg) rotateY(-5deg);transform-style:preserve-3d}
-.dartboard:before{content:"";position:absolute;inset:7%;border-radius:50%;background:repeating-conic-gradient(#ddd 0deg 17deg,#222 17deg 18deg);box-shadow:inset 0 0 0 2px #aaa}
-.dartboard:after{content:"";position:absolute;inset:17%;border-radius:50%;background:repeating-conic-gradient(#b51f32 0deg 17deg,#e7e0ce 17deg 18deg);box-shadow:inset 0 0 0 3px #d9d0bc}
-.board-ring{position:absolute;inset:29%;z-index:1;border-radius:50%;background:repeating-conic-gradient(#e8e0ca 0deg 17deg,#202020 17deg 18deg);box-shadow:inset 0 0 0 3px #a7a092}
-.board-inner{position:absolute;inset:40%;z-index:2;border-radius:50%;background:radial-gradient(circle,#168d52 0 28%,#b31f35 30% 50%,#171717 53%);border:2px solid #d9d0bc;box-shadow:0 0 0 2px #222}
-.dart-stuck{position:absolute;z-index:5;left:50%;top:50%;width:7px;height:78px;transform-origin:50% 90%;filter:drop-shadow(3px 4px 2px #000b);pointer-events:none}
-.dart-stuck:before{content:"";position:absolute;left:2px;top:0;width:3px;height:67px;background:linear-gradient(90deg,#777,#f2f2f2,#555);border-radius:3px}
-.dart-stuck:after{content:"";position:absolute;left:-3px;top:0;width:13px;height:15px;background:linear-gradient(135deg,#ffcf57,#e44b73);clip-path:polygon(50% 0,100% 100%,50% 75%,0 100%)}
-.dart-stuck.fly{animation:dartHit .48s cubic-bezier(.2,.8,.25,1) both}
-@keyframes dartHit{0%{opacity:0;transform:translate(0,-145px) scale(1.45) rotate(var(--angle))}72%{opacity:1;transform:translate(0,3px) scale(1) rotate(var(--angle))}85%{transform:translate(0,-4px) scale(1) rotate(var(--angle))}100%{transform:translate(0,0) scale(1) rotate(var(--angle))}}
-.dartboard.hit{animation:boardHit .22s ease-out}
-@keyframes boardHit{0%{transform:rotateX(9deg) rotateY(-5deg) scale(1)}45%{transform:rotateX(9deg) rotateY(-5deg) scale(1.045)}100%{transform:rotateX(9deg) rotateY(-5deg) scale(1)}}
-.board-caption{font-size:10px;color:var(--muted);text-align:center;margin-top:-8px}
-@media(prefers-reduced-motion:reduce){.dart-stuck.fly,.dartboard.hit{animation:none}}
 </style></head>
 <body><main class="app">
 <header class="top"><div><div class="brand">DARTS <span>MANIA</span></div><div class="tag">ÇA VA PIQUER !</div></div><div class="avatar" aria-label="Mascotte">🤡</div></header>
@@ -74,7 +58,6 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
  <div id="scoreCards" class="matchtop"></div>
  <div class="section panel">
   <div class="scorelabel" id="turnLabel">À TOI DE JOUER</div><div class="score" id="currentScore">0</div>
-  <div class="dart-arena"><div class="dartboard" id="dartboard" aria-label="Cible de fléchettes animée"><div class="board-ring"></div><div class="board-inner"></div></div></div><div class="board-caption" id="boardCaption">LA CIBLE EST PRÊTE…</div>
   <div class="muted" style="text-align:center;font-size:11px;margin-bottom:10px">Saisis chaque fléchette avec le clavier ci-dessous ou dans les champs de saisie.</div>
   <div class="footnote" style="margin:8px 0">Choisis DIRECT, DOUBLE ou TRIPLE, puis le numéro. Le 25 et le 50 sont disponibles directement.</div>
 <div class="multiplier-row" id="dartMultipliers">
@@ -153,16 +136,14 @@ function renderSetupPlayers(){let n=Number($('playerCount').value);$('setupPlaye
 $('playerCount').addEventListener('change',renderSetupPlayers);
 function beginMatch(){const n=Number($('playerCount').value),names=Array.from({length:n},(_,i)=>data.players[i]||'Joueur '+(i+1));const game=$('gameType').value;const startScore=game==='Cricket'?0:Number($('startScore').value);match={game,names,remaining:names.map(()=>startScore),active:0,visits:[],finished:false,leg:1,legsToWin:Math.ceil(Number($('legs').value)/2),legsWon:names.map(()=>0),startScore:startScore,outRule:$('outRule').value,cricket:names.map(()=>({marks:{15:0,16:0,17:0,18:0,19:0,20:0,25:0},points:0}))};show('match');renderMatch();speak(pickFresh(['Allez, c’est parti ! Faites chauffer les poignets.','La partie commence. On garde son calme et on vise juste.','À vous de jouer ! Que la meilleure main gagne.','En place ! La cible n’attend plus que vous.','Bon match à tous. Et que les fléchettes soient avec vous.']))}
 function askAbandon(){if(confirm('Quitter ce match ? La partie en cours ne sera pas enregistrée.')){match=null;show('home')}}
-function clearDarts(){['d1','d2','d3'].forEach(x=>$(x).value='');$('currentScore').textContent='0';resetBoard()}
-function resetBoard(){const b=$('dartboard');if(b)b.querySelectorAll('.dart-stuck').forEach(x=>x.remove());if($('boardCaption'))$('boardCaption').textContent='LA CIBLE EST PRÊTE…'}
-function animateDart(raw){const b=$('dartboard');if(!b)return;const parsed=parseDart(raw);if(!parsed||!parsed.thrown)return;const darts=b.querySelectorAll('.dart-stuck');if(darts.length>=3)darts[darts.length-1].remove();const d=document.createElement('i');d.className='dart-stuck fly';const val=Number(String(raw).replace(/[^0-9]/g,''))||20;const angle=((val*18)%360)-90;const radius=val===25||val===50?0:Math.min(34,Math.max(10,Math.abs(20-val)*2+12));d.style.setProperty('--angle',angle+'deg');d.style.left=`calc(50% + ${Math.cos(angle*Math.PI/180)*radius}px)`;d.style.top=`calc(50% + ${Math.sin(angle*Math.PI/180)*radius}px)`;b.appendChild(d);b.classList.remove('hit');void b.offsetWidth;b.classList.add('hit');$('boardCaption').textContent=parsed.value+' POINTS — IMPACT !';setTimeout(()=>d.classList.remove('fly'),520)}
+function clearDarts(){['d1','d2','d3'].forEach(x=>$(x).value='');$('currentScore').textContent='0'}
 let dartMultiplier='S';
 function chooseMultiplier(mult){dartMultiplier=mult;document.querySelectorAll('#dartMultipliers button').forEach(b=>b.classList.toggle('active',b.dataset.mult===mult))}
 function fillNumber(n){let value;if(n===25)value='SB';else if(n===50)value='DB';else if(n===0)value='MISS';else value=(dartMultiplier==='S'?'':dartMultiplier)+String(n);quickFill(value);chooseMultiplier('S')}
 function parseDart(raw){let x=String(raw||'').trim().toUpperCase().replace(/\s/g,'');if(!x)return {value:0,kind:'empty',thrown:false};if(['MISS','M','X','0'].includes(x))return {value:0,kind:'miss',thrown:true};if(x==='SB'||x==='25')return {value:25,kind:'singleBull',thrown:true};if(x==='DB'||x==='BULL'||x==='50')return {value:50,kind:'doubleBull',thrown:true};let m=x.match(/^([SDT]?)(1[0-9]|20|[1-9])$/);if(!m)return null;let mult=m[1]==='D'?2:m[1]==='T'?3:1,n=Number(m[2]);return {value:n*mult,kind:mult===2?'double':mult===3?'triple':'single',thrown:true}}
-function quickFill(v){let fields=['d1','d2','d3'];let i=fields.findIndex(x=>$(x).value==='');if(i<0)i=2;$(fields[i]).value=v;animateDart(v);updateCurrent()}
+function quickFill(v){let fields=['d1','d2','d3'];let i=fields.findIndex(x=>$(x).value==='');if(i<0)i=2;$(fields[i]).value=v;updateCurrent()}
 function updateCurrent(){let a=['d1','d2','d3'].map(x=>parseDart($(x).value));$('currentScore').textContent=a.every(Boolean)?a.reduce((n,d)=>n+d.value,0):'—'}
-['d1','d2','d3'].forEach(id=>$(id).addEventListener('input',e=>{updateCurrent();if(e.target.value){animateDart(e.target.value);chooseMultiplier('S')}}));
+['d1','d2','d3'].forEach(id=>$(id).addEventListener('input',e=>{updateCurrent();if(e.target.value)chooseMultiplier('S')}));
 function validOut(total,darts,after){if(after!==0)return true;let last=[...darts].reverse().find(d=>d.thrown);if(!last)return false;if(match.outRule==='straight')return true;if(match.outRule==='double')return last.kind==='double'||last.kind==='doubleBull';return ['double','doubleBull','triple'].includes(last.kind)}
 function submitVisit(){if(!match||match.finished||match.game==='Cricket')return;let darts=['d1','d2','d3'].map(id=>parseDart($(id).value));if(darts.some(d=>d===null)){toast('Format invalide. Exemples : 20, T20, D16, SB, DB, MISS.');return}if(!darts.some(d=>d.thrown)){toast('Saisis au moins une fléchette.');return}let vals=darts.map(d=>d.value),total=vals.reduce((a,b)=>a+b,0),i=match.active,before=match.remaining[i],after=before-total;let bust=after<0||after===1||(after===0&&!validOut(total,darts,after));if(bust)after=before;else match.remaining[i]=after;
 let v={player:i,vals,darts,total,dartsThrown:darts.filter(d=>d.thrown).length,before,after,bust,time:Date.now(),game:match.game,legWon:after===0&&!bust};match.visits.push(v);
