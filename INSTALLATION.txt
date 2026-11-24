@@ -1,23 +1,24 @@
-DARTS MANIA — ÇA VA PIQUER !
-Version Pro V3 — application web installable (PWA)
+DARTS-MANIA — VERSION CORRIGÉE
 
-INSTALLATION ANDROID
-1. Décompressez l’archive sur un hébergement HTTPS.
-2. Ouvrez l’adresse du site dans Chrome sur Android.
-3. Menu ⋮ > Installer l’application (ou Ajouter à l’écran d’accueil).
-4. Après le premier chargement, l’application est disponible hors connexion.
+Contenu :
+- index.html : application, saisie des fléchettes, cible animée et commentaires vocaux enrichis.
+- manifest.webmanifest : installation de l'application.
+- sw.js : fonctionnement hors ligne / cache.
+- icon.svg : icône.
 
-FONCTIONS DISPONIBLES
-- Parties 501, 301 et 701, jusqu’à 8 joueurs.
-- Sortie simple, double ou master.
-- Saisie par fléchette (S20, T20, D16, SB, DB, MISS) et touches rapides.
-- Gestion des busts, manches, historique de volées et annulation.
-- Cricket, profils joueurs, entraînement, défis, voix française.
-- Statistiques, trophées, export et import des données.
-- Sauvegarde locale et fonctionnement hors ligne après installation.
+Installation / mise à jour GitHub Pages :
+1. Décompresser cette archive.
+2. Envoyer les 5 fichiers directement à la racine du dépôt GitHub (pas dans un sous-dossier).
+3. Remplacer les anciens fichiers lorsqu'il est proposé de le faire.
+4. Attendre la publication GitHub Pages, puis recharger le site.
+5. Sur Android, si l'ancienne version reste affichée, fermer l'application / l'onglet puis recharger le site. Le cache du navigateur peut retarder la mise à jour.
 
-LIMITES CONNUES
-- La reconnaissance automatique par caméra n’est pas incluse dans cette version.
-- Les données restent sur cet appareil/navigateur ; exporter une sauvegarde pour les transférer.
-- La voix dépend de la synthèse vocale du téléphone.
-- Contrôles statiques HTML/JavaScript effectués. Un test réel sur Android et la publication HTTPS restent nécessaires avant validation en production.
+Corrections intégrées dans cette version :
+- Banque de commentaires vocaux fortement enrichie et sélection anti-répétition.
+- Phrases dédiées aux 180, aux 26 points (« 26, LA DRÔME ! »), aux petites volées et aux grosses volées.
+- Multiplicateur remis sur DIRECT après une saisie de fléchette au clavier ou au pavé numérique.
+- Bouton RETOUR conservé : retire uniquement la dernière fléchette saisie.
+- Bouton VALIDER LA VOLÉE conservé dans une barre collante pour rester accessible.
+- Cible avec effet visuel de profondeur et animation d'impact.
+
+Note : la voix dépend de la synthèse vocale française disponible sur le téléphone et des réglages du navigateur.
