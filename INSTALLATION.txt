@@ -1,24 +1,21 @@
-DARTS-MANIA — VERSION CORRIGÉE
+DARTS-MANIA — VERSION MISE À JOUR
 
 Contenu :
-- index.html : application, saisie des fléchettes, cible animée et commentaires vocaux enrichis.
+- index.html : application et commentaires vocaux.
 - manifest.webmanifest : installation de l'application.
 - sw.js : fonctionnement hors ligne / cache.
 - icon.svg : icône.
 
-Installation / mise à jour GitHub Pages :
+Mise à jour GitHub Pages :
 1. Décompresser cette archive.
-2. Envoyer les 5 fichiers directement à la racine du dépôt GitHub (pas dans un sous-dossier).
-3. Remplacer les anciens fichiers lorsqu'il est proposé de le faire.
-4. Attendre la publication GitHub Pages, puis recharger le site.
-5. Sur Android, si l'ancienne version reste affichée, fermer l'application / l'onglet puis recharger le site. Le cache du navigateur peut retarder la mise à jour.
+2. Envoyer les 5 fichiers directement à la racine du dépôt GitHub.
+3. Remplacer les anciens fichiers.
+4. Attendre la publication GitHub Pages puis recharger le site.
+5. Si l'ancienne version reste affichée sur Android, fermer l'onglet ou l'application puis recharger.
 
-Corrections intégrées dans cette version :
-- Banque de commentaires vocaux fortement enrichie et sélection anti-répétition.
-- Phrases dédiées aux 180, aux 26 points (« 26, LA DRÔME ! »), aux petites volées et aux grosses volées.
-- Multiplicateur remis sur DIRECT après une saisie de fléchette au clavier ou au pavé numérique.
-- Bouton RETOUR conservé : retire uniquement la dernière fléchette saisie.
-- Bouton VALIDER LA VOLÉE conservé dans une barre collante pour rester accessible.
-- Cible avec effet visuel de profondeur et animation d'impact.
+Commentaires vocaux :
+- Phrases dédiées aux 180, 26 (« 26, LA DRÔME ! »), 13 (« 13, MARSEILLE BÉBÉ ! »), 42, 69, aux petites et grosses volées.
+- Répertoire enrichi de nouvelles punchlines, avec sélection anti-répétition et déclenchement selon le score pour garder le commentaire pertinent.
+- La phrase « Moi, on ne me parle pas d’âge, on me parle de niveau ! » est associée à une volée de 42 points.
 
-Note : la voix dépend de la synthèse vocale française disponible sur le téléphone et des réglages du navigateur.
+Les autres fonctions de la version précédente sont conservées. La voix dépend de la synthèse vocale française disponible sur le téléphone et des réglages du navigateur.
