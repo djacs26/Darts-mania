@@ -1,0 +1,23 @@
+DARTS MANIA — ÇA VA PIQUER !
+Version Pro V3 — application web installable (PWA)
+
+INSTALLATION ANDROID
+1. Décompressez l’archive sur un hébergement HTTPS.
+2. Ouvrez l’adresse du site dans Chrome sur Android.
+3. Menu ⋮ > Installer l’application (ou Ajouter à l’écran d’accueil).
+4. Après le premier chargement, l’application est disponible hors connexion.
+
+FONCTIONS DISPONIBLES
+- Parties 501, 301 et 701, jusqu’à 8 joueurs.
+- Sortie simple, double ou master.
+- Saisie par fléchette (S20, T20, D16, SB, DB, MISS) et touches rapides.
+- Gestion des busts, manches, historique de volées et annulation.
+- Cricket, profils joueurs, entraînement, défis, voix française.
+- Statistiques, trophées, export et import des données.
+- Sauvegarde locale et fonctionnement hors ligne après installation.
+
+LIMITES CONNUES
+- La reconnaissance automatique par caméra n’est pas incluse dans cette version.
+- Les données restent sur cet appareil/navigateur ; exporter une sauvegarde pour les transférer.
+- La voix dépend de la synthèse vocale du téléphone.
+- Contrôles statiques HTML/JavaScript effectués. Un test réel sur Android et la publication HTTPS restent nécessaires avant validation en production.
