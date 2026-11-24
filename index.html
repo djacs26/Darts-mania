@@ -19,6 +19,7 @@
 .dartgrid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin:10px 0}
 .dartgrid button{min-height:42px;font-size:13px}
 .dartgrid button:last-child{grid-column:span 2;background:#4b263b;color:#ffd6e4}
+.multiplier-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin:10px 0}.multiplier-row button{padding:12px 4px;background:var(--panel2);border:1px solid var(--line);color:white;border-radius:11px;font-weight:900;font-size:12px}.multiplier-row button.active{background:var(--lime);color:#171b0c;border-color:var(--lime)}#dartKeypad button{min-height:42px;font-size:14px}#dartKeypad button:last-child{grid-column:auto}
 .matchplayer .remaining{font-variant-numeric:tabular-nums}
 .panel h3{margin:0 0 10px}
 button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--lime);outline-offset:2px}
@@ -55,9 +56,13 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
  <div class="section panel">
   <div class="scorelabel" id="turnLabel">À TOI DE JOUER</div><div class="score" id="currentScore">0</div>
   <div class="muted" style="text-align:center;font-size:11px;margin-bottom:10px">Saisis chaque fléchette : 20, T20, D16, SB, DB ou MISS.</div>
-  <div class="footnote" style="margin:8px 0">Saisie : 20, T20, D16, SB (bull simple), DB (bull double), MISS. Utilise aussi les touches rapides.</div>
-<div class="dartgrid" id="dartKeypad">
-<button type="button" onclick="quickFill('T20')">T20</button><button type="button" onclick="quickFill('T19')">T19</button><button type="button" onclick="quickFill('T18')">T18</button><button type="button" onclick="quickFill('D20')">D20</button><button type="button" onclick="quickFill('D16')">D16</button><button type="button" onclick="quickFill('20')">S20</button><button type="button" onclick="quickFill('SB')">SB</button><button type="button" onclick="quickFill('DB')">DB</button><button type="button" onclick="quickFill('MISS')">MISS</button><button type="button" onclick="clearDarts()">EFFACER</button></div>
+  <div class="footnote" style="margin:8px 0">Choisis DIRECT, DOUBLE ou TRIPLE, puis le numéro. Le 25 et le 50 sont disponibles directement.</div>
+<div class="multiplier-row" id="dartMultipliers">
+<button type="button" class="active" data-mult="S" onclick="chooseMultiplier('S')">DIRECT</button>
+<button type="button" data-mult="D" onclick="chooseMultiplier('D')">DOUBLE</button>
+<button type="button" data-mult="T" onclick="chooseMultiplier('T')">TRIPLE</button>
+</div>
+<div class="dartgrid" id="dartKeypad"><button type="button" onclick="fillNumber(0)">0</button><button type="button" onclick="fillNumber(1)">1</button><button type="button" onclick="fillNumber(2)">2</button><button type="button" onclick="fillNumber(3)">3</button><button type="button" onclick="fillNumber(4)">4</button><button type="button" onclick="fillNumber(5)">5</button><button type="button" onclick="fillNumber(6)">6</button><button type="button" onclick="fillNumber(7)">7</button><button type="button" onclick="fillNumber(8)">8</button><button type="button" onclick="fillNumber(9)">9</button><button type="button" onclick="fillNumber(10)">10</button><button type="button" onclick="fillNumber(11)">11</button><button type="button" onclick="fillNumber(12)">12</button><button type="button" onclick="fillNumber(13)">13</button><button type="button" onclick="fillNumber(14)">14</button><button type="button" onclick="fillNumber(15)">15</button><button type="button" onclick="fillNumber(16)">16</button><button type="button" onclick="fillNumber(17)">17</button><button type="button" onclick="fillNumber(18)">18</button><button type="button" onclick="fillNumber(19)">19</button><button type="button" onclick="fillNumber(20)">20</button><button type="button" onclick="fillNumber(25)">25</button><button type="button" onclick="fillNumber(50)">50</button></div>
 <div class="entry"><input class="field" id="d1" type="text" inputmode="text" maxlength="4" placeholder="Ex. T20"><input class="field" id="d2" type="text" inputmode="text" maxlength="4" placeholder="Ex. D16"><input class="field" id="d3" type="text" inputmode="text" maxlength="4" placeholder="Ex. 20"></div>
 
   <div class="quick">
@@ -133,6 +138,9 @@ $('playerCount').addEventListener('change',renderSetupPlayers);
 function beginMatch(){const n=Number($('playerCount').value),names=Array.from({length:n},(_,i)=>data.players[i]||'Joueur '+(i+1));const game=$('gameType').value;const startScore=game==='Cricket'?0:Number($('startScore').value);match={game,names,remaining:names.map(()=>startScore),active:0,visits:[],finished:false,leg:1,legsToWin:Math.ceil(Number($('legs').value)/2),legsWon:names.map(()=>0),startScore:startScore,outRule:$('outRule').value,cricket:names.map(()=>({marks:{15:0,16:0,17:0,18:0,19:0,20:0,25:0},points:0}))};show('match');renderMatch();speak('Que le meilleur gagne. Les autres, prenez des notes.')}
 function askAbandon(){if(confirm('Quitter ce match ? La partie en cours ne sera pas enregistrée.')){match=null;show('home')}}
 function clearDarts(){['d1','d2','d3'].forEach(x=>$(x).value='');$('currentScore').textContent='0'}
+let dartMultiplier='S';
+function chooseMultiplier(mult){dartMultiplier=mult;document.querySelectorAll('#dartMultipliers button').forEach(b=>b.classList.toggle('active',b.dataset.mult===mult))}
+function fillNumber(n){if(n===25){quickFill('SB');return}if(n===50){quickFill('DB');return}if(n===0){quickFill('MISS');return}quickFill((dartMultiplier==='S'?'':dartMultiplier)+String(n))}
 function parseDart(raw){let x=String(raw||'').trim().toUpperCase().replace(/\s/g,'');if(!x)return {value:0,kind:'empty',thrown:false};if(['MISS','M','X','0'].includes(x))return {value:0,kind:'miss',thrown:true};if(x==='SB'||x==='25')return {value:25,kind:'singleBull',thrown:true};if(x==='DB'||x==='BULL'||x==='50')return {value:50,kind:'doubleBull',thrown:true};let m=x.match(/^([SDT]?)(1[0-9]|20|[1-9])$/);if(!m)return null;let mult=m[1]==='D'?2:m[1]==='T'?3:1,n=Number(m[2]);return {value:n*mult,kind:mult===2?'double':mult===3?'triple':'single',thrown:true}}
 function quickFill(v){let fields=['d1','d2','d3'];let i=fields.findIndex(x=>$(x).value==='');if(i<0)i=2;$(fields[i]).value=v;updateCurrent()}
 function updateCurrent(){let a=['d1','d2','d3'].map(x=>parseDart($(x).value));$('currentScore').textContent=a.every(Boolean)?a.reduce((n,d)=>n+d.value,0):'—'}
