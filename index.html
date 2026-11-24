@@ -55,7 +55,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
  <div id="scoreCards" class="matchtop"></div>
  <div class="section panel">
   <div class="scorelabel" id="turnLabel">À TOI DE JOUER</div><div class="score" id="currentScore">0</div>
-  <div class="muted" style="text-align:center;font-size:11px;margin-bottom:10px">Saisis chaque fléchette : 20, T20, D16, SB, DB ou MISS.</div>
+  <div class="muted" style="text-align:center;font-size:11px;margin-bottom:10px">Saisis chaque fléchette avec le clavier ci-dessous ou dans les champs de saisie.</div>
   <div class="footnote" style="margin:8px 0">Choisis DIRECT, DOUBLE ou TRIPLE, puis le numéro. Le 25 et le 50 sont disponibles directement.</div>
 <div class="multiplier-row" id="dartMultipliers">
 <button type="button" class="active" data-mult="S" onclick="chooseMultiplier('S')">DIRECT</button>
@@ -64,10 +64,6 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 </div>
 <div class="dartgrid" id="dartKeypad"><button type="button" onclick="fillNumber(0)">0</button><button type="button" onclick="fillNumber(1)">1</button><button type="button" onclick="fillNumber(2)">2</button><button type="button" onclick="fillNumber(3)">3</button><button type="button" onclick="fillNumber(4)">4</button><button type="button" onclick="fillNumber(5)">5</button><button type="button" onclick="fillNumber(6)">6</button><button type="button" onclick="fillNumber(7)">7</button><button type="button" onclick="fillNumber(8)">8</button><button type="button" onclick="fillNumber(9)">9</button><button type="button" onclick="fillNumber(10)">10</button><button type="button" onclick="fillNumber(11)">11</button><button type="button" onclick="fillNumber(12)">12</button><button type="button" onclick="fillNumber(13)">13</button><button type="button" onclick="fillNumber(14)">14</button><button type="button" onclick="fillNumber(15)">15</button><button type="button" onclick="fillNumber(16)">16</button><button type="button" onclick="fillNumber(17)">17</button><button type="button" onclick="fillNumber(18)">18</button><button type="button" onclick="fillNumber(19)">19</button><button type="button" onclick="fillNumber(20)">20</button><button type="button" onclick="fillNumber(25)">25</button><button type="button" onclick="fillNumber(50)">50</button></div>
 <div class="entry"><input class="field" id="d1" type="text" inputmode="text" maxlength="4" placeholder="Ex. T20"><input class="field" id="d2" type="text" inputmode="text" maxlength="4" placeholder="Ex. D16"><input class="field" id="d3" type="text" inputmode="text" maxlength="4" placeholder="Ex. 20"></div>
-
-  <div class="quick">
-   <button onclick="quickFill('T20')">T20</button><button onclick="quickFill('D20')">D20</button><button onclick="quickFill('DB')">DB</button><button onclick="quickFill('MISS')">MISS</button>
-  </div>
   <div class="row section"><button class="btn" style="flex:1" onclick="submitVisit()">VALIDER LA VOLÉE</button><button class="btn secondary" onclick="clearDarts()">Effacer</button></div>
   <div id="matchNotice" class="notice hidden"></div>
  </div>
