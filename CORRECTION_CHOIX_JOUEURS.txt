@@ -1,0 +1,7 @@
+CORRECTION DU CHOIX DES JOUEURS
+
+Dans Préparer la partie, tous les profils enregistrés sont maintenant affichés avec une case à cocher.
+Coche uniquement les participants souhaités, jusqu'à 8 joueurs. L'ordre de passage apparaît ensuite dans une liste séparée et peut être modifié avec les flèches haut/bas.
+Le match démarre avec exactement les joueurs sélectionnés, et non plus automatiquement avec les premiers profils de la liste.
+Le mode solo reste possible en sélectionnant un seul joueur. Le mode équipes conserve l'affectation manuelle des joueurs aux équipes.
+Le cache de l'application a été renouvelé.
