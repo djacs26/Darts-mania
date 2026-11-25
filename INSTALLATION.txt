@@ -1,4 +1,4 @@
-DARTS-MANIA — VERSION 2.1
+DARTS-MANIA — VERSION MISE À JOUR
 
 Contenu :
 - index.html : application et commentaires vocaux.
@@ -12,12 +12,6 @@ Mise à jour GitHub Pages :
 3. Remplacer les anciens fichiers.
 4. Attendre la publication GitHub Pages puis recharger le site.
 5. Si l'ancienne version reste affichée sur Android, fermer l'onglet ou l'application puis recharger.
-
-Nouveautés 2.1 :
-- Validation automatique dès que les trois fléchettes sont saisies (501/301).
-- Possibilité de jouer en solo (un seul joueur).
-- Annonce vocale du nom du joueur lors de la validation et au changement de tour.
-- Les profils de copains restent ajoutables et supprimables depuis l’onglet Joueurs.
 
 Commentaires vocaux :
 - Phrases dédiées aux 180, 26 (« 26, LA DRÔME ! »), 13 (« 13, MARSEILLE BÉBÉ ! »), 42, 69, aux petites et grosses volées.
