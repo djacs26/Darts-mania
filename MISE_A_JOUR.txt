@@ -1,18 +1,9 @@
-DARTS MANIA — MISE À JOUR
+DARTS MANIA – MISE À JOUR CRICKET
 
-- Victoire d’une manche : annonce vocale et message visible avec le nom du joueur ou de l’équipe.
-- Victoire du match : annonce vocale et message visible, y compris en Cricket.
-- La victoire est annoncée à la place de toute annonce BUST lorsqu’un checkout valide termine la manche ou le match.
-- Le mot BUST reste écrit ainsi dans l’application ; la synthèse vocale utilise une voix anglaise si le téléphone en propose une.
-- Conservation des autres fonctions et du design de la version source.
-
-Validation technique effectuée : contrôle syntaxique JavaScript et intégrité de l’archive. Le fonctionnement réel de la voix dépend des voix installées sur le téléphone Android.
-
-
-MISE À JOUR CRICKET — 25/11/2026
-- Saisie Cricket fléchette par fléchette : simple, double, triple et raté.
-- Mise à jour immédiate des marques et des points après chaque lancer. Validation automatique après la troisième fléchette.
-- Annulation de la dernière fléchette ou de la volée.
-- Variantes : Standard, Cut-Throat, No Score, Drop 10, Mark Up et No Bull.
-- Prise en charge des marques individuelles et du partage des scores en équipes.
-- Conservation du mode de saisie rapide et de la saisie vocale.
+- Tableau Cricket compact et plus lisible sur téléphone.
+- Marques affichées avec symboles et compteur 0/3 à 3/3.
+- Colonne PTS pour les points.
+- Boutons SIMPLE, DOUBLE et TRIPLE plus visibles et différenciés.
+- SIMPLE est sélectionné par défaut et revient automatiquement après chaque fléchette, y compris un raté, ainsi qu’après annulation d’une fléchette ou d’une volée.
+- La troisième fléchette valide automatiquement la volée.
+- Les autres fonctions et modes existants sont conservés.
