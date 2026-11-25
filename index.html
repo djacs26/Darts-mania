@@ -69,7 +69,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 <div class="dartgrid" id="dartKeypad"><button type="button" onclick="fillNumber(0)">0</button><button type="button" onclick="fillNumber(1)">1</button><button type="button" onclick="fillNumber(2)">2</button><button type="button" onclick="fillNumber(3)">3</button><button type="button" onclick="fillNumber(4)">4</button><button type="button" onclick="fillNumber(5)">5</button><button type="button" onclick="fillNumber(6)">6</button><button type="button" onclick="fillNumber(7)">7</button><button type="button" onclick="fillNumber(8)">8</button><button type="button" onclick="fillNumber(9)">9</button><button type="button" onclick="fillNumber(10)">10</button><button type="button" onclick="fillNumber(11)">11</button><button type="button" onclick="fillNumber(12)">12</button><button type="button" onclick="fillNumber(13)">13</button><button type="button" onclick="fillNumber(14)">14</button><button type="button" onclick="fillNumber(15)">15</button><button type="button" onclick="fillNumber(16)">16</button><button type="button" onclick="fillNumber(17)">17</button><button type="button" onclick="fillNumber(18)">18</button><button type="button" onclick="fillNumber(19)">19</button><button type="button" onclick="fillNumber(20)">20</button><button type="button" onclick="fillNumber(25)">25</button><button type="button" onclick="fillNumber(50)">50</button></div>
 <div class="entry"><input class="field" id="d1" type="text" inputmode="text" maxlength="4" placeholder="Ex. T20"><input class="field" id="d2" type="text" inputmode="text" maxlength="4" placeholder="Ex. D16"><input class="field" id="d3" type="text" inputmode="text" maxlength="4" placeholder="Ex. 20"></div>
   <div class="row" id="scoreVoiceRow" style="display:none;margin-top:10px"><button class="btn gold" type="button" id="scoreVoiceButton" onclick="startScoreVoice()">🎙️ Dicter les 3 fléchettes</button><span class="footnote" id="scoreVoiceStatus">Option vocale activée</span></div>
-  <div class="visit-actions"><button class="btn" type="button" onclick="submitVisit()" id="manualValidate" style="display:none" aria-hidden="true">VALIDER LA VOLÉE</button><button class="btn secondary" type="button" onclick="undoDart()">↶ RETOUR</button></div>
+  <div class="visit-actions"><button class="btn secondary" type="button" onclick="undoDart()">↶ RETOUR</button></div>
   <div id="matchNotice" class="notice hidden"></div>
  </div>
  <div id="cricketPanel" class="section panel hidden"><div class="sectionhead"><h3>🦗 Tableau Cricket</h3><small class="muted">15 à 20 + Bull</small></div><div id="cricketBoard" class="cricketboard"></div><p class="footnote">Saisie Cricket : utilise le bouton « Saisir Cricket » pour enregistrer les marques de chaque volée.</p><button class="btn secondary" onclick="cricketEntry()">Saisir Cricket</button></div>
@@ -89,7 +89,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 <section id="party" class="view">
  <div class="sectionhead"><h2>🎉 Mode soirée</h2><span class="pill">CHAMBRAGE AUTORISÉ</span></div>
  <div class="panel"><div class="bigemoji">🎡</div><h3>La roue de la folie</h3><p class="muted">Un défi surprise à réussir : chaque réussite rapporte 1 point. Un défi raté rapporte 0 point.</p><button class="btn pink" onclick="spinChallenge()">FAIS TOURNER LA ROUE</button><div id="challenge" class="notice hidden"></div></div>
- <div class="section panel" id="partyScorePanel"><div class="sectionhead"><h3>🎯 Classement des défis</h3><span class="pill">1 défi réussi = 1 point</span></div><label>Score à atteindre pour gagner</label><select class="field" id="partyTarget"><option value="5">5 points</option><option value="10" selected>10 points</option><option value="20">20 points</option></select><label>Joueur</label><select class="field" id="partyPlayer"></select><label>Saisis les 3 fléchettes</label><div class="multiplier-row" id="partyMultipliers"><button type="button" class="active" data-mult="S" onclick="choosePartyMultiplier('S')">DIRECT</button><button type="button" data-mult="D" onclick="choosePartyMultiplier('D')">DOUBLE</button><button type="button" data-mult="T" onclick="choosePartyMultiplier('T')">TRIPLE</button></div><div class="dartgrid" id="partyKeypad"><button type="button" onclick="partyFillNumber(0)">0</button><button type="button" onclick="partyFillNumber(1)">1</button><button type="button" onclick="partyFillNumber(2)">2</button><button type="button" onclick="partyFillNumber(3)">3</button><button type="button" onclick="partyFillNumber(4)">4</button><button type="button" onclick="partyFillNumber(5)">5</button><button type="button" onclick="partyFillNumber(6)">6</button><button type="button" onclick="partyFillNumber(7)">7</button><button type="button" onclick="partyFillNumber(8)">8</button><button type="button" onclick="partyFillNumber(9)">9</button><button type="button" onclick="partyFillNumber(10)">10</button><button type="button" onclick="partyFillNumber(11)">11</button><button type="button" onclick="partyFillNumber(12)">12</button><button type="button" onclick="partyFillNumber(13)">13</button><button type="button" onclick="partyFillNumber(14)">14</button><button type="button" onclick="partyFillNumber(15)">15</button><button type="button" onclick="partyFillNumber(16)">16</button><button type="button" onclick="partyFillNumber(17)">17</button><button type="button" onclick="partyFillNumber(18)">18</button><button type="button" onclick="partyFillNumber(19)">19</button><button type="button" onclick="partyFillNumber(20)">20</button><button type="button" onclick="partyFillNumber(25)">25</button><button type="button" onclick="partyFillNumber(50)">50</button></div><div class="entry"><input class="field" id="pd1" type="text" inputmode="text" maxlength="4" placeholder="Ex. T20"><input class="field" id="pd2" type="text" inputmode="text" maxlength="4" placeholder="Ex. D16"><input class="field" id="pd3" type="text" inputmode="text" maxlength="4" placeholder="Ex. 20"></div><div class="row" id="partyVoiceRow" style="display:none;margin-top:10px"><button class="btn gold" type="button" id="partyVoiceButton" onclick="startScoreVoice('party')">🎙️ Dicter les 3 fléchettes</button><span class="footnote" id="partyVoiceStatus">Option vocale activée</span></div><div class="row"><strong id="partyCurrentScore">0 points</strong><button class="btn" id="manualPartyValidate" style="display:none" aria-hidden="true" onclick="addPartyScore()">Ajouter la volée</button><button class="btn secondary" onclick="clearPartyDarts()">Effacer</button></div><div id="partyScoreNotice" class="notice hidden"></div><div id="partyScoreBoard" class="history section">Aucun score enregistré pour le moment.</div><div class="row"><button class="btn secondary" onclick="resetPartyScores()">Remettre les compteurs à zéro</button></div></div>
+ <div class="section panel" id="partyScorePanel"><div class="sectionhead"><h3>🎯 Classement des défis</h3><span class="pill">1 défi réussi = 1 point</span></div><label>Score à atteindre pour gagner</label><select class="field" id="partyTarget"><option value="5">5 points</option><option value="10" selected>10 points</option><option value="20">20 points</option></select><label>Joueur</label><select class="field" id="partyPlayer"></select><label>Saisis les 3 fléchettes</label><div class="multiplier-row" id="partyMultipliers"><button type="button" class="active" data-mult="S" onclick="choosePartyMultiplier('S')">DIRECT</button><button type="button" data-mult="D" onclick="choosePartyMultiplier('D')">DOUBLE</button><button type="button" data-mult="T" onclick="choosePartyMultiplier('T')">TRIPLE</button></div><div class="dartgrid" id="partyKeypad"><button type="button" onclick="partyFillNumber(0)">0</button><button type="button" onclick="partyFillNumber(1)">1</button><button type="button" onclick="partyFillNumber(2)">2</button><button type="button" onclick="partyFillNumber(3)">3</button><button type="button" onclick="partyFillNumber(4)">4</button><button type="button" onclick="partyFillNumber(5)">5</button><button type="button" onclick="partyFillNumber(6)">6</button><button type="button" onclick="partyFillNumber(7)">7</button><button type="button" onclick="partyFillNumber(8)">8</button><button type="button" onclick="partyFillNumber(9)">9</button><button type="button" onclick="partyFillNumber(10)">10</button><button type="button" onclick="partyFillNumber(11)">11</button><button type="button" onclick="partyFillNumber(12)">12</button><button type="button" onclick="partyFillNumber(13)">13</button><button type="button" onclick="partyFillNumber(14)">14</button><button type="button" onclick="partyFillNumber(15)">15</button><button type="button" onclick="partyFillNumber(16)">16</button><button type="button" onclick="partyFillNumber(17)">17</button><button type="button" onclick="partyFillNumber(18)">18</button><button type="button" onclick="partyFillNumber(19)">19</button><button type="button" onclick="partyFillNumber(20)">20</button><button type="button" onclick="partyFillNumber(25)">25</button><button type="button" onclick="partyFillNumber(50)">50</button></div><div class="entry"><input class="field" id="pd1" type="text" inputmode="text" maxlength="4" placeholder="Ex. T20"><input class="field" id="pd2" type="text" inputmode="text" maxlength="4" placeholder="Ex. D16"><input class="field" id="pd3" type="text" inputmode="text" maxlength="4" placeholder="Ex. 20"></div><div class="row" id="partyVoiceRow" style="display:none;margin-top:10px"><button class="btn gold" type="button" id="partyVoiceButton" onclick="startScoreVoice('party')">🎙️ Dicter les 3 fléchettes</button><span class="footnote" id="partyVoiceStatus">Option vocale activée</span></div><div class="row"><strong id="partyCurrentScore">0 points</strong><button class="btn secondary" onclick="clearPartyDarts()">Effacer</button></div><div id="partyScoreNotice" class="notice hidden"></div><div id="partyScoreBoard" class="history section">Aucun score enregistré pour le moment.</div><div class="row"><button class="btn secondary" onclick="resetPartyScores()">Remettre les compteurs à zéro</button></div></div>
  <div class="section panel"><h3>🏅 Les trophées de la honte et de la gloire</h3><div id="trophies" class="tiles"></div></div>
  <div class="section panel"><h3>⚔️ Petit tournoi</h3><p class="muted">Lance un match multi-joueurs depuis Préparer la partie, jusqu'à 8 participants.</p><button class="btn secondary" onclick="setupMatch('501')">Organiser un tournoi / match</button></div>
 </section>
@@ -139,7 +139,7 @@ function show(v){document.querySelectorAll('.view').forEach(x=>x.classList.toggl
 function toast(t){$('toast').textContent=t;$('toast').classList.remove('hidden');clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>$('toast').classList.add('hidden'),2600)}
 function availableFrenchVoices(){if(!('speechSynthesis'in window))return [];return window.speechSynthesis.getVoices().filter(v=>v.lang&&v.lang.toLowerCase().startsWith('fr'))}
 function renderVoiceChoices(){const select=$('voiceChoice');if(!select)return;const previous=data.settings.voiceURI||'';const voices=availableFrenchVoices();select.innerHTML='<option value="">Voix française automatique</option>'+voices.map(v=>`<option value="${esc(v.voiceURI)}">${esc(v.name)} (${esc(v.lang)})</option>`).join('');select.value=voices.some(v=>v.voiceURI===previous)?previous:''}
-function speak(t){if(data.settings.voice==='off'||!('speechSynthesis'in window)||!t)return;const synth=window.speechSynthesis;synth.cancel();const spoken=String(t).replace(/\+1\s*POINT/gi,'un point').replace(/\b1\s+POINT\b/gi,'un point').replace(/\b0\s+POINT\b/gi,'zéro point');const u=new SpeechSynthesisUtterance(spoken);u.lang='fr-FR';const style=data.settings.speaker||'sarcastic';u.rate=Number(data.settings.rate||1.04);u.pitch=style==='sarcastic'?1.12:style==='stadium'?0.94:style==='marseille'?1.08:style==='funny'?1.2:style==='coach'?1.02:1.0;if(style==='stadium')u.rate*=0.96;if(style==='funny')u.rate*=1.06;const voices=availableFrenchVoices();const selected=voices.find(x=>x.voiceURI===data.settings.voiceURI);const v=selected||voices.find(x=>x.lang.toLowerCase()==='fr-fr')||voices[0];if(v)u.voice=v;synth.speak(u)}
+function speak(t){if(data.settings.voice==='off'||!('speechSynthesis'in window)||!t)return;const synth=window.speechSynthesis;synth.cancel();const spoken=String(t);const u=new SpeechSynthesisUtterance(spoken);u.lang='fr-FR';const style=data.settings.speaker||'sarcastic';u.rate=Number(data.settings.rate||1.04);u.pitch=style==='sarcastic'?1.12:style==='stadium'?0.94:style==='marseille'?1.08:style==='funny'?1.2:style==='coach'?1.02:1.0;if(style==='stadium')u.rate*=0.96;if(style==='funny')u.rate*=1.06;const voices=availableFrenchVoices();const selected=voices.find(x=>x.voiceURI===data.settings.voiceURI);const v=selected||voices.find(x=>x.lang.toLowerCase()==='fr-fr')||voices[0];if(v)u.voice=v;synth.speak(u)}
 function setupMatch(type){setupType=type||'501';$('gameType').value=setupType;$('startScore').value=setupType==='301'?'301':'501';$('playerCount').value=String(Math.min(8,Math.max(2,data.players.length)));setupOrder=data.players.slice(0,Number($('playerCount').value));while(setupOrder.length<Number($('playerCount').value))setupOrder.push('Joueur '+(setupOrder.length+1));toggleGameOptions();renderSetupPlayers();show('setup')}
 function toggleGameOptions(){$('x01Options').classList.toggle('hidden',$('gameType').value==='Cricket')}
 function renderSetupPlayers(){let n=Number($('playerCount').value);let available=data.players.slice();while(setupOrder.length<n)setupOrder.push(available.find(x=>!setupOrder.includes(x))||'Joueur '+(setupOrder.length+1));setupOrder=setupOrder.slice(0,n);$('setupPlayers').innerHTML=setupOrder.map((name,i)=>`<div class="player"><span class="face">${['😎','🤡','🦊','🐼','🥷','🤠','👽','🦁'][i%8]}</span><span class="name">${esc(name)}</span><span class="pill">#${i+1}</span><button class="btn secondary orderbtn" type="button" onclick="moveSetupPlayer(${i},-1)" ${i===0?'disabled':''}>↑</button><button class="btn secondary orderbtn" type="button" onclick="moveSetupPlayer(${i},1)" ${i===n-1?'disabled':''}>↓</button></div>`).join('')}
@@ -157,23 +157,26 @@ function fillNumber(n){let value;if(n===25)value='SB';else if(n===50)value='DB';
 function parseDart(raw){let x=String(raw||'').trim().toUpperCase().replace(/\s/g,'');if(!x)return {value:0,kind:'empty',thrown:false};if(['MISS','M','X','0'].includes(x))return {value:0,kind:'miss',thrown:true};if(x==='SB'||x==='25')return {value:25,kind:'singleBull',thrown:true};if(x==='DB'||x==='BULL'||x==='50')return {value:50,kind:'doubleBull',thrown:true};let m=x.match(/^([SDT]?)(1[0-9]|20|[1-9])$/);if(!m)return null;let mult=m[1]==='D'?2:m[1]==='T'?3:1,n=Number(m[2]);return {value:n*mult,kind:mult===2?'double':mult===3?'triple':'single',thrown:true}}
 function quickFill(v){let fields=['d1','d2','d3'];let i=fields.findIndex(x=>$(x).value==='');if(i<0)i=2;const field=$(fields[i]);field.value=v;field.dispatchEvent(new Event('input',{bubbles:true}));updateCurrent()}
 function updateCurrent(){let a=['d1','d2','d3'].map(x=>parseDart($(x).value));$('currentScore').textContent=a.every(Boolean)?a.reduce((n,d)=>n+d.value,0):'—'}
-let autoVisitTimer=null;
+let autoVisitTimer=null,visitSubmissionLock=false;
+function scheduleVisitAutoValidation(){
+ clearTimeout(autoVisitTimer);
+ autoVisitTimer=setTimeout(()=>{
+  if(!match||match.finished||match.game==='Cricket'||visitSubmissionLock)return;
+  const entered=['d1','d2','d3'].map(k=>parseDart($(k).value));
+  if(entered.length===3&&entered.every(d=>d&&d.thrown))submitVisit(true);
+ },250);
+}
 ['d1','d2','d3'].forEach((id,i)=>$(id).addEventListener('input',e=>{
  updateCurrent();if(e.target.value)chooseMultiplier('S');
  if(match){match.pendingDarts=match.pendingDarts||['','',''];match.pendingDarts[i]=e.target.value;saveActiveMatch()}
- clearTimeout(autoVisitTimer);
- autoVisitTimer=setTimeout(()=>{
-  if(!match||match.finished||match.game==='Cricket')return;
-  const entered=['d1','d2','d3'].map(k=>parseDart($(k).value));
-  if(entered.every(d=>d&&d.thrown))submitVisit();
- },220);
+ scheduleVisitAutoValidation();
 }));
 function validOut(total,darts,after){if(after!==0)return true;let last=[...darts].reverse().find(d=>d.thrown);if(!last)return false;if(match.outRule==='straight')return true;if(match.outRule==='double')return last.kind==='double'||last.kind==='doubleBull';return ['double','doubleBull','triple'].includes(last.kind)}
-function submitVisit(){if(!match||match.finished||match.game==='Cricket')return;let darts=['d1','d2','d3'].map(id=>parseDart($(id).value));if(darts.some(d=>d===null)){toast('Format invalide. Exemples : 20, T20, D16, SB, DB, MISS.');return}if(!darts.some(d=>d.thrown)){toast('Saisis au moins une fléchette.');return}let vals=darts.map(d=>d.value),total=vals.reduce((a,b)=>a+b,0),i=match.active,before=match.remaining[i],after=before-total;let bust=after<0||after===1||(after===0&&!validOut(total,darts,after));if(bust)after=before;else match.remaining[i]=after;
+function submitVisit(auto=false){if(!match||match.finished||match.game==='Cricket'||visitSubmissionLock)return;let darts=['d1','d2','d3'].map(id=>parseDart($(id).value));if(darts.some(d=>d===null)){toast('Format invalide. Exemples : 20, T20, D16, SB, DB, MISS.');return}if(!darts.some(d=>d.thrown)){toast('Saisis au moins une fléchette.');return}if(auto&&darts.some(d=>!d.thrown))return;visitSubmissionLock=true;let vals=darts.map(d=>d.value),total=vals.reduce((a,b)=>a+b,0),i=match.active,before=match.remaining[i],after=before-total;let bust=after<0||after===1||(after===0&&!validOut(total,darts,after));if(bust)after=before;else match.remaining[i]=after;
 let v={player:i,vals,darts,total,dartsThrown:darts.filter(d=>d.thrown).length,before,after,bust,time:Date.now(),game:match.game,legWon:after===0&&!bust};match.visits.push(v);
-if(after===0&&!bust){match.legsWon[i]++;let done=match.legsWon[i]>=match.legsToWin;let phrase='FINISH ! '+match.names[i]+' remporte la manche !';toast(phrase);speak(phrase);if(done){match.finished=true;data.matches.push({game:match.game,names:match.names.slice(),winner:match.names[i],visits:match.visits.slice(),date:new Date().toISOString(),legsWon:match.legsWon.slice()});persist();showWinner(match.names[i]);return}else{match.leg++;match.remaining=match.names.map(()=>match.startScore);match.active=(i+1)%match.names.length}}
+if(after===0&&!bust){match.legsWon[i]++;let done=match.legsWon[i]>=match.legsToWin;let phrase='FINISH ! '+match.names[i]+' remporte la manche !';toast(phrase);speak(phrase);if(done){match.finished=true;data.matches.push({game:match.game,names:match.names.slice(),winner:match.names[i],visits:match.visits.slice(),date:new Date().toISOString(),legsWon:match.legsWon.slice()});persist();showWinner(match.names[i]);visitSubmissionLock=false;return}else{match.leg++;match.remaining=match.names.map(()=>match.startScore);match.active=(i+1)%match.names.length}}
 else{let rawPhrase=bust?bustCommentary(before,vals):commentary(total,after,vals);if(!bust&&total>=140&&Math.random()<0.28)rawPhrase+=' La grosse beuteu !';const historical=!bust?personalizedScoreComment(match.names[i],total):'';if(historical)rawPhrase+=' '+historical;const cleanPhrase=String(rawPhrase).replace(new RegExp('^\\s*'+total+'(?:\\s+points?)?\\s*[!,.:…—-]*\\s*','i'),'');const phrase=(bust?'BUST ! ':'')+total+' points ! '+cleanPhrase;toast(phrase);speak(phrase);match.active=(i+1)%match.names.length}
-clearDarts();saveActiveMatch();renderMatch();renderAll()}
+clearDarts();saveActiveMatch();renderMatch();renderAll();visitSubmissionLock=false}
 function showWinner(w){$('matchNotice').classList.remove('hidden');$('matchNotice').innerHTML='🏆 <b>'+esc(w)+'</b> remporte le match !';renderMatch();renderAll()}
 const phraseHistory=[];
 function pickFresh(list){let choices=list.filter(x=>!phraseHistory.slice(-9).includes(x));if(!choices.length)choices=list;let p=choices[Math.floor(Math.random()*choices.length)];phraseHistory.push(p);if(phraseHistory.length>20)phraseHistory.shift();return p}
@@ -337,7 +340,7 @@ function startScoreVoice(target='match'){
  if(data.settings.scoreVoice!=='on')return toast('Active d’abord la saisie vocale dans les paramètres.');
  const Recognition=window.SpeechRecognition||window.webkitSpeechRecognition;
  if(!Recognition)return toast('La reconnaissance vocale n’est pas disponible dans ce navigateur. Essaie Chrome sur Android.');
- if(!match||match.finished)return toast('Aucune partie en cours.');
+ if(target==='match'&&(!match||match.finished))return toast('Aucune partie en cours.');
  if(scoreRecognition){try{scoreRecognition.stop()}catch(e){}}
  const rec=new Recognition();scoreRecognition=rec;rec.lang='fr-FR';rec.continuous=false;rec.interimResults=false;rec.maxAlternatives=1;
  const buttonId=target==='party'?'partyVoiceButton':'scoreVoiceButton';
@@ -348,6 +351,7 @@ function startScoreVoice(target='match'){
    const ids=['pd1','pd2','pd3'];
    const vals=darts.map(d=>d.number===25?(d.count===2?'DB':'SB'):(d.count===3?'T':d.count===2?'D':'')+d.number);
    ids.forEach((id,i)=>{$(id).value=vals[i];$(id).dispatchEvent(new Event('input',{bubbles:true}));});
+   updatePartyCurrent();schedulePartyAutoValidation();
    $(statusId).textContent='Reconnu : '+vals.join(' · ');
   }else if(match.game==='Cricket'){
    const grouped={};for(const d of darts){const key=d.number===25?'Bull':String(d.number);grouped[key]=(grouped[key]||0)+d.count;}
@@ -355,12 +359,13 @@ function startScoreVoice(target='match'){
   }else{
    const vals=darts.map(d=>d.number===25?(d.count===2?'DB':'SB'):(d.count===3?'T':d.count===2?'D':'')+d.number);
    ['d1','d2','d3'].forEach((id,i)=>{$(id).value=vals[i];$(id).dispatchEvent(new Event('input',{bubbles:true}));});
+   updateCurrent();scheduleVisitAutoValidation();
    $(statusId).textContent='Reconnu : '+vals.join(' · ');
   }
  };
  rec.onerror=e=>{$(statusId).textContent=e.error==='not-allowed'?'Micro refusé : autorise le micro dans le navigateur.':'Erreur micro : '+e.error;};
  rec.onend=()=>{$(buttonId).disabled=false;if($(statusId).textContent==='Écoute… dicte les trois fléchettes')$(statusId).textContent='Appuie sur le micro pour recommencer.';scoreRecognition=null;};
- try{rec.start();}catch(e){$('scoreVoiceButton').disabled=false;$('scoreVoiceStatus').textContent='Impossible de démarrer le micro.';toast('Impossible de démarrer la reconnaissance vocale.');}
+ try{rec.start();}catch(e){$(buttonId).disabled=false;$(statusId).textContent='Impossible de démarrer le micro.';toast('Impossible de démarrer la reconnaissance vocale.');}
 }
 
 function addPlayer(){let n=$('newPlayer').value.trim();if(!n)return toast('Il faut un nom, champion.');if(data.players.length>=8)return toast('Maximum 8 joueurs.');if(data.players.some(x=>x.toLowerCase()===n.toLowerCase()))return toast('Ce joueur existe déjà.');data.players.push(n);$('newPlayer').value='';persist();toast(n+' rejoint l’arène !')}
@@ -477,32 +482,47 @@ function updatePartyTarget(){data.partyTarget=Number($('partyTarget').value)||10
 if($('partyTarget'))$('partyTarget').addEventListener('change',updatePartyTarget);
 let partyMultiplier='S';
 function choosePartyMultiplier(mult){partyMultiplier=mult;document.querySelectorAll('#partyMultipliers button').forEach(b=>b.classList.toggle('active',b.dataset.mult===mult))}
-function partyQuickFill(v){const ids=['pd1','pd2','pd3'];let i=ids.findIndex(id=>!$(id).value);if(i<0)i=2;const field=$(ids[i]);field.value=v;field.dispatchEvent(new Event('input',{bubbles:true}));updatePartyCurrent();}
+function partyQuickFill(v){const ids=['pd1','pd2','pd3'];let i=ids.findIndex(id=>!$(id).value);if(i<0)return toast('Les trois fléchettes sont déjà saisies.');const field=$(ids[i]);field.value=v;field.dispatchEvent(new Event('input',{bubbles:true}));updatePartyCurrent();}
 function partyFillNumber(n){let v=n===25?'SB':n===50?'DB':n===0?'MISS':(partyMultiplier==='S'?'':partyMultiplier)+n;partyQuickFill(v);choosePartyMultiplier('S')}
 function updatePartyCurrent(){const vals=['pd1','pd2','pd3'].map(id=>parseDart($(id).value));$('partyCurrentScore').textContent=vals.every(Boolean)?vals.reduce((a,x)=>a+x.value,0)+' points':'Saisie invalide';}
-function clearPartyDarts(){['pd1','pd2','pd3'].forEach(id=>$(id).value='');choosePartyMultiplier('S');$('partyCurrentScore').textContent='0 points'}
-let autoPartyTimer=null;
-['pd1','pd2','pd3'].forEach(id=>$(id).addEventListener('input',()=>{
- updatePartyCurrent();clearTimeout(autoPartyTimer);
+function clearPartyDarts(){clearTimeout(autoPartyTimer);['pd1','pd2','pd3'].forEach(id=>$(id).value='');choosePartyMultiplier('S');$('partyCurrentScore').textContent='0 points';partySubmissionLock=false}
+let autoPartyTimer=null,partySubmissionLock=false;
+function schedulePartyAutoValidation(){
+ clearTimeout(autoPartyTimer);
  autoPartyTimer=setTimeout(()=>{
-  const entered=['pd1','pd2','pd3'].map(k=>parseDart($(''+k).value));
-  if(entered.every(d=>d&&d.thrown))addPartyScore();
- },220);
+  if(partySubmissionLock)return;
+  const entered=['pd1','pd2','pd3'].map(id=>parseDart($(id).value));
+  if(entered.length===3&&entered.every(d=>d&&d.thrown))addPartyScore();
+ },300);
+}
+['pd1','pd2','pd3'].forEach(id=>$(id).addEventListener('input',()=>{
+ updatePartyCurrent();
+ schedulePartyAutoValidation();
 }));
 function addPartyScore(){
+ if(partySubmissionLock)return;
  const name=$('partyPlayer').value,raw=['pd1','pd2','pd3'].map(id=>$(id).value.trim()),darts=raw.map(parseDart);
  if(darts.some(x=>x===null))return toast('Saisie invalide. Vérifie les trois fléchettes.');
  if(darts.length!==3||darts.some(x=>!x.thrown))return toast('Saisis les trois fléchettes avant de valider le défi.');
  if(!activePartyChallenge)return toast('Fais d’abord tourner la roue pour obtenir un défi.');
+ partySubmissionLock=true;
  const total=darts.reduce((a,x)=>a+x.value,0),result=evaluatePartyChallenge(darts,total);
  data.partyChallengePoints=data.partyChallengePoints||{};data.partyChallengePoints[name]=Number(data.partyChallengePoints[name])||0;
  if(result.success)data.partyChallengePoints[name]+=1;
  const target=Number(data.partyTarget)||10,points=data.partyChallengePoints[name];
- const status=result.success?'DÉFI RÉUSSI : +1 POINT.':'DÉFI PERDU : 0 POINT. AUCUN POINT AJOUTÉ.';
+ const status=result.success?name+' valide son défi et marque un point !':name+' rate son défi, aucun point marqué !';
  const winner=points>=target?' '+name+' atteint '+target+' points : il remporte la partie !':'';
- const full=name+' — '+status+' '+result.message+' Score du défi : '+points+'/'+target+'.'+winner;
- clearPartyDarts();persist();$('partyScoreNotice').textContent=full;$('partyScoreNotice').classList.remove('hidden');speak(full);
- if(winner){activePartyChallenge=null;partyChallengeDeck=[];}
+ const full=status+' '+result.message+' Score du défi : '+points+'/'+target+'.'+winner;
+ activePartyChallenge=null;
+ clearTimeout(autoPartyTimer);
+ ['pd1','pd2','pd3'].forEach(id=>$(id).value='');
+ choosePartyMultiplier('S');$('partyCurrentScore').textContent='0 points';
+ const select=$('partyPlayer'),options=[...select.options],idx=options.findIndex(o=>o.value===name);
+ if(!winner&&options.length>1)select.selectedIndex=(idx+1)%options.length;
+ persist();$('partyScoreNotice').textContent=winner?'🏆 '+name+' REMPORTE LA PARTIE ! '+full:full;$('partyScoreNotice').classList.remove('hidden');speak(full);
+ partySubmissionLock=false;
+ if(winner){partyChallengeDeck=[];$('challenge').textContent='🏆 '+name+' remporte la partie !';$('challenge').classList.remove('hidden');return;}
+ window.setTimeout(()=>{if(!activePartyChallenge){spinChallenge();}},1800);
 }
 function resetPartyScores(){if(!confirm('Remettre à zéro tous les scores du mode entre copains ?'))return;data.partyScores={};data.partyChallengePoints={};activePartyChallenge=null;partyChallengeDeck=[];persist();toast('Compteurs remis à zéro.');}
 function renderAll(){renderPlayers();renderStats();showTrophies();renderResumePanel();renderPartyScores();$('scoreVoiceRow').style.display=data.settings.scoreVoice==='on'?'flex':'none';$('partyVoiceRow').style.display=data.settings.scoreVoice==='on'?'flex':'none';$('scoreVoiceSetting').value=data.settings.scoreVoice||'off';$('voiceSetting').value=data.settings.voice;$('speakerSetting').value=data.settings.speaker;$('voiceRate').value=data.settings.rate;renderVoiceChoices()}

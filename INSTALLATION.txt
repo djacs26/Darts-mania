@@ -1,23 +1,36 @@
-DARTS-MANIA — VERSION MISE À JOUR
+DARTS-MANIA — VERSION 21
 
-Contenu :
+Contenu de l’archive (5 fichiers à la racine) :
 - index.html : application et commentaires vocaux.
-- manifest.webmanifest : installation de l'application.
+- manifest.webmanifest : installation de l’application.
 - sw.js : fonctionnement hors ligne / cache.
 - icon.svg : icône.
+- INSTALLATION.txt : ces instructions.
 
 Mise à jour GitHub Pages :
 1. Décompresser cette archive.
 2. Envoyer les 5 fichiers directement à la racine du dépôt GitHub.
 3. Remplacer les anciens fichiers.
 4. Attendre la publication GitHub Pages puis recharger le site.
-5. Si l'ancienne version reste affichée sur Android, fermer l'onglet ou l'application puis recharger.
+5. Si l’ancienne version reste affichée sur Android, fermer l’onglet ou l’application, puis la rouvrir.
 
-Commentaires vocaux :
-- Phrases dédiées aux 180, 26 (« 26, LA DRÔME ! »), 13 (« 13, MARSEILLE BÉBÉ ! »), 42, 69, aux petites et grosses volées.
-- Répertoire enrichi de nouvelles punchlines, avec sélection anti-répétition et déclenchement selon le score pour garder le commentaire pertinent.
-- La phrase « Moi, on ne me parle pas d’âge, on me parle de niveau ! » est associée à une volée de 42 points.
+Modifications V21 :
+- 501, 301 et 701 : validation automatique dès que les trois fléchettes sont saisies, depuis le clavier numérique, les champs ou la dictée vocale.
+- Mode Entre copains : évaluation automatique à la troisième fléchette, attribution de 1 point si le défi est réussi et de 0 sinon, passage au joueur suivant et tirage du défi suivant.
+- Annonce vocale du nom du joueur et du résultat : « [joueur] valide son défi et marque un point ! » ou « [joueur] rate son défi, aucun point marqué ! ».
+- Le gagnant du mode Entre copains est affiché clairement et annoncé vocalement.
+- Les annonces conservent le mot « point » ; aucune substitution par « unité ».
+- Les commentaires humoristiques existants sont conservés.
+- Le bouton de validation manuelle des volées a été retiré dans les modes X01 et Entre copains.
+- Le cache hors connexion est renouvelé en V21.
 
-Les autres fonctions de la version précédente sont conservées. La voix dépend de la synthèse vocale française disponible sur le téléphone et des réglages du navigateur.
+Reconnaissance vocale :
+- Elle reste activable ou désactivable dans les paramètres.
+- Pour la saisie vocale, utiliser de préférence Chrome sur Android, avec une connexion HTTPS et l’autorisation du microphone accordée.
+- La disponibilité dépend du navigateur et du service de reconnaissance vocale du téléphone.
 
-Correction validation automatique : le clavier numérique déclenche maintenant le même événement que la saisie manuelle. La validation démarre après la troisième fléchette dans les jeux à volées et dans les défis. Le cache passe en v18 pour forcer le chargement de cette correction.
+Note Cricket et entraînement :
+- Le Cricket conserve sa saisie dédiée des marques (15 à 20 et Bull) ; ce mode ne repose pas sur les trois champs de volée X01.
+- L’entraînement conserve son enregistrement de score et ses statistiques.
+
+Le design et les autres fonctionnalités de la V20 sont conservés.
