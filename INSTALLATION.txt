@@ -1,21 +1,24 @@
-DARTS-MANIA — VERSION MISE À JOUR
+DARTS MANIA — MISE À JOUR AUTOMATIQUE DES VOLÉES
 
-Contenu :
-- index.html : application et commentaires vocaux.
+Contenu de l'archive :
+- index.html : application, règles de jeu et annonces vocales.
+- sw.js : fonctionnement hors ligne et renouvellement du cache.
 - manifest.webmanifest : installation de l'application.
-- sw.js : fonctionnement hors ligne / cache.
 - icon.svg : icône.
 
-Mise à jour GitHub Pages :
-1. Décompresser cette archive.
-2. Envoyer les 5 fichiers directement à la racine du dépôt GitHub.
-3. Remplacer les anciens fichiers.
-4. Attendre la publication GitHub Pages puis recharger le site.
-5. Si l'ancienne version reste affichée sur Android, fermer l'onglet ou l'application puis recharger.
+MODIFICATIONS
+- 501 / 301 : la volée est enregistrée automatiquement dès la troisième fléchette saisie. Le score est calculé et le joueur suivant prend la main.
+- Cricket : les trois fléchettes sont saisies de la même façon ; les marques, les points et le passage au joueur suivant sont enregistrés automatiquement après la troisième.
+- Mode soirée : le défi est commun à tous les joueurs. Chacun joue ses trois fléchettes ; le résultat est comptabilisé une seule fois par joueur. Le défi suivant est disponible quand tout le monde a joué.
+- La saisie par clavier et la saisie directe restent compatibles.
+- Le mode solo est disponible avec un seul joueur. Les profils permettent toujours d'ajouter et de retirer des copains, dans la limite prévue par l'application.
+- Les fonctions existantes, les statistiques, l'historique, les sauvegardes et les annonces vocales sont conservés.
 
-Commentaires vocaux :
-- Phrases dédiées aux 180, 26 (« 26, LA DRÔME ! »), 13 (« 13, MARSEILLE BÉBÉ ! »), 42, 69, aux petites et grosses volées.
-- Répertoire enrichi de nouvelles punchlines, avec sélection anti-répétition et déclenchement selon le score pour garder le commentaire pertinent.
-- La phrase « Moi, on ne me parle pas d’âge, on me parle de niveau ! » est associée à une volée de 42 points.
+MISE À JOUR SUR GITHUB PAGES
+1. Décompresser l'archive.
+2. Remplacer les fichiers de l'application à la racine du dépôt GitHub par ceux de cette archive.
+3. Valider (Commit changes) et attendre la publication GitHub Pages.
+4. Sur Android, fermer complètement l'application ou l'onglet, puis rouvrir le site. Le cache du service worker a été renouvelé pour charger cette version.
 
-Les autres fonctions de la version précédente sont conservées. La voix dépend de la synthèse vocale française disponible sur le téléphone et des réglages du navigateur.
+ANNONCES VOCALES
+La voix utilise la synthèse vocale française disponible sur le téléphone et les réglages choisis dans l'application. Vérifier que les annonces vocales sont activées et qu'une voix française est installée sur l'appareil.
