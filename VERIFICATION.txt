@@ -1,13 +1,9 @@
-DARTS MANIA — vérification approfondie
+VERIFICATIONS EFFECTUEES
+- JavaScript embarque : compilation syntaxique Node.js reussie.
+- ZIP : integrite verifiee avec unzip -t.
+- Revue du code : snapshots complets utilises pour annuler les points Cut-Throat attribues aux adversaires.
+- Le rendu du tableau utilise un seul onglet joueur a la fois et une seule zone de points associee.
 
-Correctif appliqué après audit du ZIP précédent :
-- Correction du retour arrière après une manche gagnée : restauration de l'état exact avant la volée, sans décrémenter une deuxième fois les manches gagnées.
-- Ajout d'un identifiant unique de partie dans les enregistrements pour que l'annulation d'une partie terminée supprime le bon match de l'historique, même si plusieurs parties ont les mêmes joueurs et le même jeu.
-- Version du cache du service worker incrémentée pour forcer le rechargement.
-
-Contrôles réalisés :
-- Syntaxe JavaScript : node --check réussi.
-- Identifiants HTML dupliqués : aucun.
-- Archive ZIP : contrôle d'intégrité effectué après création.
-
-Limite : ces contrôles statiques ne remplacent pas un test interactif sur un téléphone réel.
+NON VERIFIE
+- Test manuel sur telephone Android non effectue dans ce conteneur.
+- Publication GitHub non effectuee.

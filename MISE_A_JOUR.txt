@@ -1,9 +1,26 @@
-DARTS MANIA – MISE À JOUR CRICKET
+MISE A JOUR DARTS MANIA – CRICKET UNIQUEMENT
 
-- Tableau Cricket compact et plus lisible sur téléphone.
-- Marques affichées avec symboles et compteur 0/3 à 3/3.
-- Colonne PTS pour les points.
-- Boutons SIMPLE, DOUBLE et TRIPLE plus visibles et différenciés.
-- SIMPLE est sélectionné par défaut et revient automatiquement après chaque fléchette, y compris un raté, ainsi qu’après annulation d’une fléchette ou d’une volée.
+AFFICHAGE
+- Un onglet par joueur/équipe : un seul tableau de marques est affiché à la fois.
+- La zone de points affiche uniquement le score du joueur/équipe sélectionné dans les onglets.
+- Les cases du tableau affichent uniquement les marques, jamais le score en points.
+- Les règles et le détail des trois fléchettes sont rangés dans deux sous-menus repliables.
+- Les commandes Simple / Double / Triple / Raté restent visibles et sont compactées pour mobile.
+
+SAISIE
+- Simple est sélectionné par défaut et redevient sélectionné après chaque fléchette, y compris un raté.
 - La troisième fléchette valide automatiquement la volée.
-- Les autres fonctions et modes existants sont conservés.
+
+CORRECTIONS DE RETOUR EN ARRIERE
+- L'annulation d'une fléchette restaure l'état complet du Cricket, y compris les points éventuellement attribués aux adversaires en Cut-Throat.
+- L'annulation d'une volée en cours restaure toutes les marques et tous les scores antérieurs.
+- L'annulation d'une volée déjà validée restaure également les points distribués aux adversaires.
+
+REGLES
+- Cricket classique : les points excédentaires vont au lanceur si au moins un adversaire n'a pas fermé la cible.
+- Cut-Throat : les points excédentaires vont à chaque adversaire qui n'a pas fermé la cible.
+- No Score : aucune attribution de points.
+- Les variantes existantes Drop 10, Mark Up et No Bull sont conservées.
+
+PERIMETRE
+- Seul l'écran et la logique Cricket ont été modifiés. Les autres modes et fonctions sont conservés.
