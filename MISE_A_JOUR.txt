@@ -1,12 +1,9 @@
-DARTS MANIA — Mise à jour complète
+DARTS MANIA — MISE À JOUR
 
-- Conservation des modes solo, équipes, 301, 501, Cricket et soirée.
-- Écran de partie compact pour afficher les éléments essentiels sans défilement vertical autant que possible.
-- Score restant actualisé après chaque fléchette.
-- Bouton BUST uniquement en 301/501, et traitement des trois MISS.
-- Retour arrière sur la dernière volée validée, avec restauration des scores et du tour.
-- Fin immédiate si la sortie est réalisée avec la première ou la deuxième fléchette.
-- Chambrage « Oh là là, grosse beuteu ! ».
-- Cache de l'application renouvelé pour forcer le chargement de cette version.
+- Victoire d’une manche : annonce vocale et message visible avec le nom du joueur ou de l’équipe.
+- Victoire du match : annonce vocale et message visible, y compris en Cricket.
+- La victoire est annoncée à la place de toute annonce BUST lorsqu’un checkout valide termine la manche ou le match.
+- Le mot BUST reste écrit ainsi dans l’application ; la synthèse vocale utilise une voix anglaise si le téléphone en propose une.
+- Conservation des autres fonctions et du design de la version source.
 
-Installation : remplacer les fichiers de l'ancienne version par ceux de ce dossier, puis recharger l'application. Si elle reste sur l'ancienne version, fermer complètement le navigateur puis rouvrir l'application.
+Validation technique effectuée : contrôle syntaxique JavaScript et intégrité de l’archive. Le fonctionnement réel de la voix dépend des voix installées sur le téléphone Android.
