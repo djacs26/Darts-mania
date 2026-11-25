@@ -155,7 +155,7 @@ let dartMultiplier='S';
 function chooseMultiplier(mult){dartMultiplier=mult;document.querySelectorAll('#dartMultipliers button').forEach(b=>b.classList.toggle('active',b.dataset.mult===mult))}
 function fillNumber(n){let value;if(n===25)value='SB';else if(n===50)value='DB';else if(n===0)value='MISS';else value=(dartMultiplier==='S'?'':dartMultiplier)+String(n);quickFill(value);chooseMultiplier('S')}
 function parseDart(raw){let x=String(raw||'').trim().toUpperCase().replace(/\s/g,'');if(!x)return {value:0,kind:'empty',thrown:false};if(['MISS','M','X','0'].includes(x))return {value:0,kind:'miss',thrown:true};if(x==='SB'||x==='25')return {value:25,kind:'singleBull',thrown:true};if(x==='DB'||x==='BULL'||x==='50')return {value:50,kind:'doubleBull',thrown:true};let m=x.match(/^([SDT]?)(1[0-9]|20|[1-9])$/);if(!m)return null;let mult=m[1]==='D'?2:m[1]==='T'?3:1,n=Number(m[2]);return {value:n*mult,kind:mult===2?'double':mult===3?'triple':'single',thrown:true}}
-function quickFill(v){let fields=['d1','d2','d3'];let i=fields.findIndex(x=>$(x).value==='');if(i<0)i=2;$(fields[i]).value=v;updateCurrent()}
+function quickFill(v){let fields=['d1','d2','d3'];let i=fields.findIndex(x=>$(x).value==='');if(i<0)i=2;const field=$(fields[i]);field.value=v;field.dispatchEvent(new Event('input',{bubbles:true}));updateCurrent()}
 function updateCurrent(){let a=['d1','d2','d3'].map(x=>parseDart($(x).value));$('currentScore').textContent=a.every(Boolean)?a.reduce((n,d)=>n+d.value,0):'—'}
 let autoVisitTimer=null;
 ['d1','d2','d3'].forEach((id,i)=>$(id).addEventListener('input',e=>{
@@ -477,7 +477,7 @@ function updatePartyTarget(){data.partyTarget=Number($('partyTarget').value)||10
 if($('partyTarget'))$('partyTarget').addEventListener('change',updatePartyTarget);
 let partyMultiplier='S';
 function choosePartyMultiplier(mult){partyMultiplier=mult;document.querySelectorAll('#partyMultipliers button').forEach(b=>b.classList.toggle('active',b.dataset.mult===mult))}
-function partyQuickFill(v){const ids=['pd1','pd2','pd3'];let i=ids.findIndex(id=>!$(id).value);if(i<0)i=2;$(ids[i]).value=v;updatePartyCurrent();}
+function partyQuickFill(v){const ids=['pd1','pd2','pd3'];let i=ids.findIndex(id=>!$(id).value);if(i<0)i=2;const field=$(ids[i]);field.value=v;field.dispatchEvent(new Event('input',{bubbles:true}));updatePartyCurrent();}
 function partyFillNumber(n){let v=n===25?'SB':n===50?'DB':n===0?'MISS':(partyMultiplier==='S'?'':partyMultiplier)+n;partyQuickFill(v);choosePartyMultiplier('S')}
 function updatePartyCurrent(){const vals=['pd1','pd2','pd3'].map(id=>parseDart($(id).value));$('partyCurrentScore').textContent=vals.every(Boolean)?vals.reduce((a,x)=>a+x.value,0)+' points':'Saisie invalide';}
 function clearPartyDarts(){['pd1','pd2','pd3'].forEach(id=>$(id).value='');choosePartyMultiplier('S');$('partyCurrentScore').textContent='0 points'}

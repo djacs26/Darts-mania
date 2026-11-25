@@ -19,3 +19,5 @@ Commentaires vocaux :
 - La phrase « Moi, on ne me parle pas d’âge, on me parle de niveau ! » est associée à une volée de 42 points.
 
 Les autres fonctions de la version précédente sont conservées. La voix dépend de la synthèse vocale française disponible sur le téléphone et des réglages du navigateur.
+
+Correction validation automatique : le clavier numérique déclenche maintenant le même événement que la saisie manuelle. La validation démarre après la troisième fléchette dans les jeux à volées et dans les défis. Le cache passe en v18 pour forcer le chargement de cette correction.
