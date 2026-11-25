@@ -318,21 +318,75 @@ function addTraining(){let n=Number($('trainScore').value),exercise=$('exercise'
 function trainingPrompt(){let a=['Vise le double 16 pendant 10 volées.','Trois fléchettes dans le 20 : on y croit.','Travaille les triples 19 et 20 pendant 5 minutes.','Enchaîne les doubles 20, 16 et 10.','Fais une sortie en trois fléchettes.'];let t=a[Math.floor(Math.random()*a.length)];$('trainingNotice').textContent='🎯 DÉFI : '+t;$('trainingNotice').classList.remove('hidden');speak(t)}
 let activePartyChallenge=null;
 const PARTY_CHALLENGES=[
+ {id:'sequence207',label:'🎯 Défi : touche le 20, puis le 14, puis le 7 dans cet ordre.',success:'20, 14, 7 : parcours parfait ! Défi réussi.',near:'Tu as commencé la combinaison, mais la suite n’y est pas. Défi raté.',fail:'Combinaison 20-14-7 manquée. La roue se vengera !'},
+ {id:'triple7',label:'🔥 Défi : touche le triple 7 au moins une fois.',success:'Triple 7 ! C’est validé, joli tir.',near:'Tu as trouvé le 7, mais pas son triple. Ça ne suffit pas !',fail:'Pas de triple 7 : défi raté.'},
+ {id:'tripleAny',label:'Défi : place au moins un triple dans cette volée.',success:'Un triple dans la volée : défi réussi !',near:'Pas de triple cette fois. Il faudra forcer un peu.',fail:'Aucun triple : défi raté.'},
+ {id:'doubleAny',label:'Défi : touche au moins un double.',success:'Double trouvé : défi réussi !',near:'Tu as touché le secteur, mais pas le double.',fail:'Aucun double : défi raté.'},
  {id:'three20',label:'Défi : touche le 20 avec tes trois fléchettes.',success:'Trois fois le 20 : défi réussi, propre et net !',near:'Tu as touché le 20, mais pas trois fois. Il en manque !',fail:'Défi raté : le 20 était pourtant juste là.'},
- {id:'double16',label:'Défi : touche le double 16 au moins une fois.',success:'Double 16 touché : défi réussi !',near:'Pas de double 16 cette fois. Le simple ne compte pas !',fail:'Aucun double 16 : défi raté.'},
+ {id:'double16',label:'Défi : touche le double 16 au moins une fois.',success:'Double 16 touché : défi réussi !',near:'Le simple 16 ne suffit pas : il fallait le double.',fail:'Aucun double 16 : défi raté.'},
  {id:'score60',label:'Défi : marque au moins 60 points sur cette volée.',success:'60 points ou plus : défi réussi !',near:'Tu n’es pas loin des 60, mais le défi n’est pas validé.',fail:'Moins de 60 points : défi raté.'},
- {id:'no1',label:'Défi : ne touche aucun 1 sur cette volée.',success:'Aucun 1 : défi réussi, belle précision !',near:'Tu as évité le 1 sur presque toute la volée.',fail:'Le 1 s’est invité : défi raté.'},
- {id:'score100',label:'Défi : marque au moins 100 points sur cette volée.',success:'100 points ou plus : défi réussi, belle volée !',near:'Tu passes sous les 100 : défi non validé.',fail:'Là, on est loin des 100. Défi raté.'}
+ {id:'no1',label:'Défi : ne touche aucun 1 sur cette volée.',success:'Aucun 1 : défi réussi, belle précision !',near:'Le 1 s’est invité : défi raté, même une seule fois suffit.',fail:'Le 1 s’est invité : défi raté.'},
+ {id:'score100',label:'Défi : marque au moins 100 points sur cette volée.',success:'100 points ou plus : défi réussi, belle volée !',near:'Tu passes sous les 100 : défi non validé.',fail:'Là, on est loin des 100. Défi raté.'},
+ {id:'sequence191817',label:'Défi : touche le 19, puis le 18, puis le 17.',success:'19-18-17 dans l’ordre : magnifique !',near:'La combinaison est incomplète : défi raté.',fail:'19-18-17 manqué. On remet ça ?'},
+ {id:'threeDifferent',label:'Défi : touche trois numéros différents.',success:'Trois secteurs différents : défi réussi !',near:'Il manque de la variété dans cette volée.',fail:'Tu as répété un numéro : défi raté.'},
+ {id:'sameNumber',label:'Défi : touche deux fois le même numéro (hors bull).',success:'Deux fois le même numéro : défi réussi !',near:'Pas de doublon de numéro : défi raté.',fail:'Aucun numéro répété : défi raté.'},
+ {id:'twoTriples',label:'Défi : réalise au moins deux triples dans la volée.',success:'Deux triples : ça pique ! Défi réussi.',near:'Un seul triple : il en fallait deux.',fail:'Aucun duo de triples : défi raté.'},
+ {id:'twoDoubles',label:'Défi : réalise au moins deux doubles dans la volée.',success:'Deux doubles dans la même volée : défi réussi !',near:'Un seul double : il en fallait deux.',fail:'Pas deux doubles : défi raté.'},
+ {id:'bull',label:'Défi : touche le bull (25 ou 50).',success:'Bull touché : défi réussi !',near:'Tu as frôlé le centre… mais pas de bull.',fail:'Pas de bull cette fois : défi raté.'},
+ {id:'doubleBull',label:'Défi : touche le bull extérieur (25).',success:'Bull extérieur : défi réussi !',near:'Le centre n’a pas été trouvé.',fail:'Pas de bull extérieur : défi raté.'},
+ {id:'score41',label:'Défi : marque exactement 41 points.',success:'41 pile : défi réussi au point près !',near:'Tu étais tout près de 41.',fail:'Pas 41 points : défi raté.'},
+ {id:'score26',label:'Défi : fais exactement 26 points.',success:'26, la Drôme ! Objectif atteint !',near:'Tu n’es pas tombé sur 26 : défi raté.',fail:'Pas de 26 cette fois : défi raté.'},
+ {id:'score80',label:'Défi : marque au moins 80 points.',success:'80 points ou plus : défi réussi !',near:'Tu approches des 80, mais ce n’est pas suffisant.',fail:'Moins de 80 : défi raté.'},
+ {id:'score120',label:'Défi : marque au moins 120 points.',success:'120 ou plus : grosse volée, défi réussi !',near:'Il manque quelques points pour les 120.',fail:'120 non atteints : défi raté.'},
+ {id:'noMiss',label:'Défi : aucune fléchette dans le vide (MISS).',success:'Trois fléchettes en cible : défi réussi !',near:'Une fléchette perdue : défi raté.',fail:'Une fléchette a manqué la cible : défi raté.'},
+ {id:'allEven',label:'Défi : touche uniquement des numéros pairs (bull autorisé).',success:'Que des numéros pairs : défi réussi !',near:'Un numéro impair s’est glissé dans la volée.',fail:'Il y a un numéro impair : défi raté.'},
+ {id:'allOdd',label:'Défi : touche uniquement des numéros impairs (bull interdit).',success:'Que des numéros impairs : défi réussi !',near:'Un numéro pair s’est glissé dans la volée.',fail:'Il y a un numéro pair : défi raté.'},
+ {id:'sector20or19',label:'Défi : touche au moins deux fois le 20 ou le 19.',success:'Deux touches dans les gros secteurs : défi réussi !',near:'Une seule touche dans le 20 ou le 19.',fail:'Pas assez de 19 ou de 20 : défi raté.'},
+ {id:'triple20or19',label:'Défi : touche le triple 20 ou le triple 19.',success:'Triple 20 ou triple 19 : défi réussi !',near:'Le secteur est là, mais pas le triple.',fail:'Pas de triple 20 ni 19 : défi raté.'},
+ {id:'double20',label:'Défi : touche le double 20.',success:'Double 20 : défi réussi !',near:'Simple 20 seulement : le double était demandé.',fail:'Pas de double 20 : défi raté.'},
+ {id:'double10',label:'Défi : touche le double 10.',success:'Double 10 trouvé : défi réussi !',near:'Le 10 simple ne compte pas ici.',fail:'Pas de double 10 : défi raté.'},
+ {id:'threeMultipliers',label:'Défi : réalise trois multiplicateurs (doubles ou triples).',success:'Trois fléchettes multipliées : défi réussi !',near:'Deux multiplicateurs seulement : presque.',fail:'Pas assez de doubles ou triples : défi raté.'},
+ {id:'scoreUnder40',label:'Défi : reste sous les 40 points sans faire de MISS.',success:'Moins de 40 et tout en cible : défi réussi !',near:'Tu dépasses les 40 points ou tu as manqué la cible.',fail:'Défi raté : il fallait rester sous les 40.'},
+ {id:'scoreExactly60',label:'Défi : fais exactement 60 points.',success:'60 tout rond : défi réussi !',near:'Tu étais proche des 60.',fail:'Pas 60 points : défi raté.'},
+ {id:'scoreExactly100',label:'Défi : fais exactement 100 points.',success:'100 pile : défi réussi !',near:'Tu frôles les 100, mais pas de score exact.',fail:'Pas 100 points : défi raté.'},
+ {id:'threeSingles',label:'Défi : fais trois simples (aucun double ni triple).',success:'Trois simples : défi réussi !',near:'Un double ou triple s’est glissé dans la volée.',fail:'Il fallait trois simples : défi raté.'},
+ {id:'oneTripleOnly',label:'Défi : fais exactement un triple.',success:'Un seul triple, pas un de plus : défi réussi !',near:'Tu as fait un autre nombre de triples.',fail:'Pas exactement un triple : défi raté.'},
+ {id:'oneDoubleOnly',label:'Défi : fais exactement un double.',success:'Un seul double : défi réussi !',near:'Tu as fait un autre nombre de doubles.',fail:'Pas exactement un double : défi raté.'},
+ {id:'noBull',label:'Défi : ne touche aucun bull (25 ou 50).',success:'Aucun bull : défi réussi !',near:'Le bull s’est invité : défi raté.',fail:'Bull touché : défi raté.'}
 ];
-function spinChallenge(){activePartyChallenge=PARTY_CHALLENGES[Math.floor(Math.random()*PARTY_CHALLENGES.length)];$('challenge').textContent=activePartyChallenge.label;$('challenge').classList.remove('hidden');speak(activePartyChallenge.label)}
+let partyChallengeDeck=[];
+function spinChallenge(){if(!partyChallengeDeck.length){partyChallengeDeck=PARTY_CHALLENGES.slice();for(let i=partyChallengeDeck.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[partyChallengeDeck[i],partyChallengeDeck[j]]=[partyChallengeDeck[j],partyChallengeDeck[i]]}}activePartyChallenge=partyChallengeDeck.pop();$('challenge').textContent=activePartyChallenge.label+' (3 fléchettes)';$('challenge').classList.remove('hidden');speak(activePartyChallenge.label)}
 function evaluatePartyChallenge(darts,total){
  if(!activePartyChallenge)return '';
- const c=activePartyChallenge;let ok=false,near=false;
- if(c.id==='three20'){const count=darts.filter(d=>d.thrown&&d.kind!=='miss'&&[20,40,60].includes(d.value)).length;ok=count===3;near=count>0;}
- if(c.id==='double16'){ok=darts.some(d=>d.kind==='double'&&d.value===32);near=darts.some(d=>d.value===16);}
- if(c.id==='score60'){ok=total>=60;near=total>=45;}
- if(c.id==='no1'){const hitOne=darts.some(d=>d.thrown&&d.kind!=='miss'&&Number(String(d.raw||'').replace(/[SDT]/g,''))===1);ok=!hitOne;near=!ok&&darts.filter(d=>d.thrown&&d.kind!=='miss'&&Number(String(d.raw||'').replace(/[SDT]/g,''))===1).length===1;}
- if(c.id==='score100'){ok=total>=100;near=total>=80;}
+ const c=activePartyChallenge,thrown=darts.filter(d=>d.thrown),nums=thrown.map(d=>{const m=String(d.raw||'').toUpperCase().match(/[SDT]?(\d+)/);return m?Number(m[1]):(d.kind==='singleBull'||d.kind==='doubleBull'?25:0)}),triples=thrown.filter(d=>d.kind==='triple'),doubles=thrown.filter(d=>d.kind==='double'),bulls=thrown.filter(d=>d.kind==='singleBull'||d.kind==='doubleBull');
+ let ok=false,near=false;
+ const seq=(a)=>a.every((n,i)=>nums[i]===n);
+ switch(c.id){
+ case 'sequence207':ok=seq([20,14,7]);near=nums.some((n,i)=>n===[20,14,7][i]);break;
+ case 'sequence191817':ok=seq([19,18,17]);near=nums.some((n,i)=>n===[19,18,17][i]);break;
+ case 'triple7':ok=triples.some(d=>d.value===21);near=thrown.some(d=>nums[thrown.indexOf(d)]===7);break;
+ case 'tripleAny':ok=triples.length>0;break;
+ case 'doubleAny':ok=doubles.length>0;near=thrown.some(d=>d.kind==='single'&&[10,16,20].includes(nums[thrown.indexOf(d)]));break;
+ case 'three20':ok=nums.length===3&&nums.every(n=>n===20);near=nums.filter(n=>n===20).length>0;break;
+ case 'double16':ok=doubles.some(d=>d.value===32);near=thrown.some(d=>nums[thrown.indexOf(d)]===16);break;
+ case 'score60':ok=total>=60;near=total>=45;break;case 'no1':ok=!nums.includes(1);near=false;break;case 'score100':ok=total>=100;near=total>=80;break;
+ case 'threeDifferent':ok=new Set(nums).size===3&&nums.length===3;near=new Set(nums).size===2;break;
+ case 'sameNumber':ok=nums.length===3&&new Set(nums).size<3;near=nums.length===3&&new Set(nums).size===2;break;
+ case 'twoTriples':ok=triples.length>=2;near=triples.length===1;break;case 'twoDoubles':ok=doubles.length>=2;near=doubles.length===1;break;
+ case 'bull':ok=bulls.length>0;break;case 'doubleBull':ok=thrown.some(d=>d.kind==='singleBull');break;
+ case 'score41':ok=total===41;near=Math.abs(total-41)<=5;break;case 'score26':ok=total===26;near=Math.abs(total-26)<=3;break;case 'score80':ok=total>=80;near=total>=65;break;case 'score120':ok=total>=120;near=total>=100;break;
+ case 'noMiss':ok=thrown.length===3&&thrown.every(d=>d.kind!=='miss');break;
+ case 'allEven':ok=thrown.length===3&&thrown.every((d,i)=>(d.kind==='singleBull'||d.kind==='doubleBull')||(nums[i]>0&&nums[i]%2===0));break;case 'allOdd':ok=nums.length===3&&nums.every(n=>n>0&&n%2===1);break;
+ case 'sector20or19':ok=nums.filter(n=>n===19||n===20).length>=2;near=nums.some(n=>n===19||n===20);break;
+ case 'triple20or19':ok=triples.some(d=>d.value===57||d.value===60);near=thrown.some(d=>[19,20].includes(nums[thrown.indexOf(d)]));break;
+ case 'double20':ok=doubles.some(d=>d.value===40);near=nums.includes(20);break;case 'double10':ok=doubles.some(d=>d.value===20);near=nums.includes(10);break;
+ case 'threeMultipliers':ok=triples.length+doubles.length===3;near=triples.length+doubles.length===2;break;
+ case 'scoreUnder40':ok=total<40&&thrown.length===3&&thrown.every(d=>d.kind!=='miss');near=total<50;break;
+ case 'scoreExactly60':ok=total===60;near=Math.abs(total-60)<=5;break;case 'scoreExactly100':ok=total===100;near=Math.abs(total-100)<=5;break;
+ case 'threeSingles':ok=thrown.length===3&&thrown.every(d=>d.kind==='single');break;
+ case 'oneTripleOnly':ok=triples.length===1;near=triples.length===0||triples.length===2;break;case 'oneDoubleOnly':ok=doubles.length===1;near=doubles.length===0||doubles.length===2;break;
+ case 'noBull':ok=bulls.length===0;break;
+ }
  const msg=ok?c.success:near?c.near:c.fail;activePartyChallenge=null;return msg;
 }
 function testVoice(){speak('Bienvenue dans Darts Mania. Prépare ton bras, champion.')}
