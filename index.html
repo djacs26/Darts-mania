@@ -522,15 +522,16 @@ function addPartyScore(){
  partyChallengeCompleted.push(name);
  const target=Number(data.partyTarget)||10,points=data.partyChallengePoints[name];
  let comment=result.success?pickFresh(['Bien joué !','Belle précision !','Propre, celle-là !','Ça, c’est fait !','Joli coup !']):pickFresh(['Dommage, on fera mieux !','Pas cette fois, on remet ça.','La cible a résisté !','Raté, mais on ne lâche rien !']);if(result.success&&activePartyChallenge.id==='three20'&&darts.every(d=>d.kind==='single'&&d.value===20)&&Math.random()<0.22)comment+=' Twenty Boy !';
- const status=result.success?'Tu marques un point.':'Défi raté, zéro point.';
+ const status=result.success?'Défi réussi, un point.':'Défi raté, zéro point.';
  const participants=getPartyParticipants(),remaining=participants.filter(n=>!partyChallengeCompleted.includes(n));
  const winnerName=!remaining.length?participants.find(n=>(Number(data.partyChallengePoints[n])||0)>=target):null;
- const winner=winnerName?' '+winnerName+' remporte la partie avec '+data.partyChallengePoints[winnerName]+' points !':'';
- const full=name+' : '+status+' '+comment+' Total : '+points+' points.'+winner;
+ const winner=winnerName?' '+winnerName+' remporte la partie !':'';
+ // En mode soirée, ne jamais annoncer le total des fléchettes ni le cumul des points à voix haute.
+ const full=name+' : '+status+' '+comment+winner;
  clearTimeout(autoPartyTimer);['pd1','pd2','pd3'].forEach(id=>$(id).value='');choosePartyMultiplier('S');$('partyCurrentScore').textContent='0 points';
- const select=$('partyPlayer'),options=[...select.options],idx=options.findIndex(o=>o.value===name);
+ const select=$('partyPlayer');
  if(!winner&&remaining.length){const next=remaining[0];select.value=next;}
- const nextName=remaining.length?remaining[0]:null;const nextCall=nextName?' Au tour de '+nextName+' !':'';persist();$('partyScoreNotice').textContent=full+(winner?'':nextCall);$('partyScoreNotice').classList.remove('hidden');speak(full+nextCall,name+' : '+(result.success?'1 point':'0 point')+'. Total : '+points+' points.'+nextCall);
+ const nextName=remaining.length?remaining[0]:null;const nextCall=nextName?' Au tour de '+nextName+' !':'';persist();$('partyScoreNotice').textContent=full+(winner?'':nextCall);$('partyScoreNotice').classList.remove('hidden');speak(full+nextCall,full+nextCall);
  partySubmissionLock=false;
  if(winner){activePartyChallenge=null;partyChallengeCompleted=[];partyChallengeDeck=[];renderPartyScores();return;}
  if(!remaining.length){activePartyChallenge=null;partyChallengeCompleted=[];window.setTimeout(()=>spinChallenge(),1800);}
