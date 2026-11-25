@@ -1,0 +1,8 @@
+DARTS MANIA – MISE À JOUR CRICKET V7
+
+- Après la troisième fléchette, la volée est clôturée une seule fois et le tour passe au joueur suivant.
+- L'onglet du tableau suit automatiquement le joueur actif.
+- La partie active est sauvegardée à chaque fléchette, à la sortie de page et lorsque l'application passe en arrière-plan.
+- Après un rechargement accidentel, l'application rouvre directement la partie en cours depuis la sauvegarde locale.
+- Limitation du geste Android de rechargement par balayage depuis le haut, tout en conservant le défilement normal.
+- Les autres modes et la présentation Cricket sont conservés.
