@@ -1,0 +1,12 @@
+DARTS MANIA — Mise à jour complète
+
+- Conservation des modes solo, équipes, 301, 501, Cricket et soirée.
+- Écran de partie compact pour afficher les éléments essentiels sans défilement vertical autant que possible.
+- Score restant actualisé après chaque fléchette.
+- Bouton BUST uniquement en 301/501, et traitement des trois MISS.
+- Retour arrière sur la dernière volée validée, avec restauration des scores et du tour.
+- Fin immédiate si la sortie est réalisée avec la première ou la deuxième fléchette.
+- Chambrage « Oh là là, grosse beuteu ! ».
+- Cache de l'application renouvelé pour forcer le chargement de cette version.
+
+Installation : remplacer les fichiers de l'ancienne version par ceux de ce dossier, puis recharger l'application. Si elle reste sur l'ancienne version, fermer complètement le navigateur puis rouvrir l'application.
