@@ -9,7 +9,6 @@ Modifications de cette version :
 - Les cartes de score générales sont masquées pendant le Cricket pour éviter les doublons.
 - Tableau, cases et boutons de cible agrandis.
 - Détail des trois fléchettes visible sans sous-menu.
-- Correction de la validation automatique : la troisième fléchette (y compris Raté) termine la volée et passe au joueur suivant.
 - Annulation de la dernière fléchette ou de la volée conservée.
 - Le bouton Raté est séparé des multiplicateurs.
 
