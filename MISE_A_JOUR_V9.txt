@@ -1,0 +1,10 @@
+DARTS MANIA — MISE À JOUR CRICKET V9
+
+- L’onglet du joueur dont c’est le tour reste surligné en jaune et porte la mention À TOI.
+- Les onglets des joueurs sont cliquables : toucher un autre joueur affiche ses marques et ses points sans modifier le joueur actif.
+- Le joueur consulté est repéré par un contour bleu lorsque ce n’est pas le joueur actif.
+- Au changement de tour, l’affichage revient automatiquement sur le nouveau joueur actif.
+- La zone de saisie des fléchettes reste liée au joueur actif, jamais au joueur consulté.
+- Incrément du cache service worker pour charger cette version.
+
+Contrôles locaux : syntaxe JavaScript et intégrité de l’archive. Test réel sur téléphone non effectué.

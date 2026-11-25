@@ -1,0 +1,8 @@
+DARTS MANIA – V10 – Onglets Cricket manuels corrigés
+
+- Clic sur un onglet géré par délégation d'événement sur le conteneur permanent : le clic continue de fonctionner même quand les boutons sont recréés lors du rendu.
+- Le joueur consulté est mémorisé dans la partie sauvegardée.
+- Consulter un autre joueur ne change pas le joueur actif.
+- Au changement de tour, l'affichage revient automatiquement sur le nouveau joueur actif.
+- Le joueur actif reste surligné en jaune ; le joueur consulté manuellement est repéré en bleu.
+- Le tableau, les marques et les points suivent le joueur consulté.

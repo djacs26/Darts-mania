@@ -1,0 +1,8 @@
+Contrôles V10 :
+- Syntaxe JavaScript vérifiée avec node --check.
+- Clic des onglets : gestion par événement délégué sur #cricketPlayerTabs.
+- Sélection manuelle stockée dans match.cricketViewPlayer.
+- Le clic manuel ne modifie pas match.active.
+- Le changement automatique de tour met à jour la sélection affichée.
+- Cache service worker renouvelé en V10.
+- Test réel sur téléphone non effectué.
