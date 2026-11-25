@@ -1,0 +1,10 @@
+VERIFICATION V8 – CRICKET
+
+Contrôles réalisés :
+- Syntaxe JavaScript : OK (node --check).
+- Test de rendu : le joueur affiché (onglet, marques et score) suit match.active, y compris si la partie est rechargée avec un joueur actif différent du premier.
+- Test de volée : après trois fléchettes, la volée est enregistrée, le tampon des fléchettes est vidé, le joueur actif avance d'un rang et l'annonce nomme le joueur suivant.
+- Test de sauvegarde/rendu : la fonction de fin de volée appelle la sauvegarde et le rendu.
+- Le ZIP a été contrôlé avec unzip -t.
+
+Limite : pas de test dans un vrai navigateur Android ni de test matériel sur le téléphone dans cette session.

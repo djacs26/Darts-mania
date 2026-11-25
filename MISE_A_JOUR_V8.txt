@@ -1,0 +1,7 @@
+DARTS MANIA – V8 Cricket
+
+- Synchronisation du joueur actif avec l’onglet, le tableau de marques et le score affiché.
+- Après rechargement, le tableau reprend le joueur réellement actif de la partie sauvegardée.
+- Les onglets sont désormais des indicateurs de joueur actif, pas des commandes de sélection manuelle.
+- Le score en haut est lu depuis le même état Cricket que le tableau, y compris en mode équipes.
+- Les règles de calcul et le design du tableau n’ont pas été volontairement modifiés dans cette correction.
