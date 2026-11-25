@@ -1,7 +1,9 @@
 Vérifications effectuées :
 - Syntaxe JavaScript contrôlée avec node --check.
 - Archive ZIP contrôlée avec unzip -t.
-- Vérification statique : bloc de règles et bouton Simple absents de l'écran Cricket.
-- Vérification statique : seules les commandes Double et Triple sont proposées ; le multiplicateur est remis à 1 après une fléchette ou un raté.
+- Correction de l'erreur d'affichage : le rendu ne dépend plus d'un élément HTML absent.
+- Validation automatique déclenchée dès que trois fléchettes sont enregistrées, y compris les ratés.
+- Retour au multiplicateur simple après chaque fléchette.
+- Cache du service worker versionné pour forcer le chargement de la mise à jour.
 
-Non effectué : test réel sur téléphone Android, test manuel complet des variantes, publication GitHub.
+Non effectué : test réel sur téléphone Android, test manuel complet de toutes les variantes, publication GitHub.
