@@ -1,26 +1,15 @@
-MISE A JOUR DARTS MANIA – CRICKET UNIQUEMENT
+DARTS MANIA — MISE À JOUR CRICKET
 
-AFFICHAGE
-- Un onglet par joueur/équipe : un seul tableau de marques est affiché à la fois.
-- La zone de points affiche uniquement le score du joueur/équipe sélectionné dans les onglets.
-- Les cases du tableau affichent uniquement les marques, jamais le score en points.
-- Les règles et le détail des trois fléchettes sont rangés dans deux sous-menus repliables.
-- Les commandes Simple / Double / Triple / Raté restent visibles et sont compactées pour mobile.
+Modifications de cette version :
+- Suppression complète du bloc de règles dans l'écran de jeu.
+- Suppression du bouton Simple : le simple est le comportement par défaut.
+- Deux boutons seulement pour choisir Double x2 ou Triple x3.
+- Après chaque fléchette validée ou ratée, retour automatique au simple.
+- Un onglet par joueur ; le tableau et le score affichés correspondent au joueur choisi.
+- Les cartes de score générales sont masquées pendant le Cricket pour éviter les doublons.
+- Tableau, cases et boutons de cible agrandis.
+- Détail des trois fléchettes visible sans sous-menu.
+- Annulation de la dernière fléchette ou de la volée conservée.
+- Le bouton Raté est séparé des multiplicateurs.
 
-SAISIE
-- Simple est sélectionné par défaut et redevient sélectionné après chaque fléchette, y compris un raté.
-- La troisième fléchette valide automatiquement la volée.
-
-CORRECTIONS DE RETOUR EN ARRIERE
-- L'annulation d'une fléchette restaure l'état complet du Cricket, y compris les points éventuellement attribués aux adversaires en Cut-Throat.
-- L'annulation d'une volée en cours restaure toutes les marques et tous les scores antérieurs.
-- L'annulation d'une volée déjà validée restaure également les points distribués aux adversaires.
-
-REGLES
-- Cricket classique : les points excédentaires vont au lanceur si au moins un adversaire n'a pas fermé la cible.
-- Cut-Throat : les points excédentaires vont à chaque adversaire qui n'a pas fermé la cible.
-- No Score : aucune attribution de points.
-- Les variantes existantes Drop 10, Mark Up et No Bull sont conservées.
-
-PERIMETRE
-- Seul l'écran et la logique Cricket ont été modifiés. Les autres modes et fonctions sont conservés.
+Les autres modes et leurs fonctions ne sont pas volontairement modifiés.

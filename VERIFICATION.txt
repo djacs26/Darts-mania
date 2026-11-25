@@ -1,9 +1,7 @@
-VERIFICATIONS EFFECTUEES
-- JavaScript embarque : compilation syntaxique Node.js reussie.
-- ZIP : integrite verifiee avec unzip -t.
-- Revue du code : snapshots complets utilises pour annuler les points Cut-Throat attribues aux adversaires.
-- Le rendu du tableau utilise un seul onglet joueur a la fois et une seule zone de points associee.
+Vérifications effectuées :
+- Syntaxe JavaScript contrôlée avec node --check.
+- Archive ZIP contrôlée avec unzip -t.
+- Vérification statique : bloc de règles et bouton Simple absents de l'écran Cricket.
+- Vérification statique : seules les commandes Double et Triple sont proposées ; le multiplicateur est remis à 1 après une fléchette ou un raté.
 
-NON VERIFIE
-- Test manuel sur telephone Android non effectue dans ce conteneur.
-- Publication GitHub non effectuee.
+Non effectué : test réel sur téléphone Android, test manuel complet des variantes, publication GitHub.
