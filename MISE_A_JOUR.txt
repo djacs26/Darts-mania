@@ -7,3 +7,12 @@ DARTS MANIA — MISE À JOUR
 - Conservation des autres fonctions et du design de la version source.
 
 Validation technique effectuée : contrôle syntaxique JavaScript et intégrité de l’archive. Le fonctionnement réel de la voix dépend des voix installées sur le téléphone Android.
+
+
+MISE À JOUR CRICKET — 25/11/2026
+- Saisie Cricket fléchette par fléchette : simple, double, triple et raté.
+- Mise à jour immédiate des marques et des points après chaque lancer. Validation automatique après la troisième fléchette.
+- Annulation de la dernière fléchette ou de la volée.
+- Variantes : Standard, Cut-Throat, No Score, Drop 10, Mark Up et No Bull.
+- Prise en charge des marques individuelles et du partage des scores en équipes.
+- Conservation du mode de saisie rapide et de la saisie vocale.
