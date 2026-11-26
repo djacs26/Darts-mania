@@ -1,0 +1,8 @@
+DARTS MANIA – V12 – TABLEAU CRICKET PAR COLONNES
+- Remplacement des cartes V11 par un véritable tableau comparatif.
+- Une colonne par joueur (ou par équipe en mode équipe), nom affiché en haut.
+- Lignes : points, 20, 19, 18, 17, 16, 15 et Bull.
+- Les marques et les points se mettent à jour dans la colonne du joueur concerné.
+- Le joueur actif est surligné en jaune et identifié « À TOI ».
+- Sur téléphone, le tableau défile horizontalement pour conserver des colonnes lisibles.
+- Les commandes de lancer et la logique de jeu ne sont pas modifiées.

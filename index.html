@@ -49,6 +49,19 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 body.matching .top,body.matching .nav{display:none!important}body.matching .app{padding:5px 8px 8px;max-width:760px}body.matching #match.active{min-height:calc(100dvh - 12px);display:flex;flex-direction:column;gap:5px}body.matching #match .sectionhead{margin:0 0 3px}body.matching #match .sectionhead h2{font-size:16px}body.matching #match .sectionhead .btn{padding:7px 10px}body.matching #scoreCards{gap:5px}body.matching .matchplayer{padding:5px 4px;border-radius:10px}body.matching .matchplayer .remaining{font-size:clamp(23px,6vw,31px)}body.matching .matchplayer small{font-size:9px}body.matching #match>.section.panel{padding:7px;margin:0;flex:1;display:flex;flex-direction:column;gap:4px;min-height:0}body.matching #turnLabel{font-size:10px}body.matching .remaining-now{margin:0 auto;padding:5px 9px;font-size:17px}body.matching .score{font-size:clamp(34px,9vw,52px);margin:0;line-height:1}body.matching .multiplier-row{margin:2px 0;gap:5px}body.matching .multiplier-row button{padding:7px 3px;font-size:11px}body.matching .dartgrid{grid-template-columns:repeat(6,minmax(0,1fr));gap:4px;margin:2px 0}body.matching .dartgrid button{min-height:32px;padding:4px 2px;font-size:12px}body.matching .entry{gap:5px}body.matching .entry input{padding:6px 3px;font-size:16px}body.matching .visit-actions{position:static;margin:2px 0 0;padding:4px 0 0;gap:5px;box-shadow:none;background:none}body.matching .visit-actions .btn{min-height:39px;padding:7px 8px;font-size:12px}body.matching .visit-actions .btn:first-child{flex:1}body.matching .visit-actions .btn:last-child{min-width:0}body.matching #matchNotice,body.matching .visits-menu{display:none!important}body.matching #cricketPanel:not(.hidden){display:block!important}body.matching #scoreVoiceRow{margin:0!important}
 @media(max-height:740px){body.matching .matchplayer{padding:3px}body.matching .matchplayer .remaining{font-size:22px}body.matching .dartgrid button{min-height:28px}body.matching .score{font-size:34px}body.matching .visit-actions .btn{min-height:34px}}
 html,body{overscroll-behavior-y:contain;}
+
+/* V12 : véritable tableau horizontal, une colonne fixe par joueur */
+.cricket-board-scroll{width:100%;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;border-radius:12px;margin:6px 0}
+.cricketboard{display:grid;gap:4px;text-align:center;align-items:stretch;width:max-content;min-width:100%;grid-auto-rows:minmax(48px,auto)}
+.cricket-table-cell{background:#302747;border:1px solid #493b5e;border-radius:8px;padding:7px 5px;display:flex;align-items:center;justify-content:center;flex-direction:column;min-width:0;font-weight:900;font-size:14px}
+.cricket-table-label{position:sticky;left:0;z-index:2;background:#211a31;color:#d9cfea;min-width:54px;font-size:11px}
+.cricket-table-head{background:#203e35;color:var(--lime);min-height:58px;font-size:13px;overflow-wrap:anywhere}
+.cricket-table-head.active,.cricket-table-cell.active{border:2px solid #ffd43b;background:#3a3526;color:#ffe17a;box-shadow:inset 0 0 0 1px #ffd43b55}
+.cricket-table-points{font-size:19px;color:var(--lime)}
+.cricket-table-cell small{font-size:10px;color:#d2c9df;margin-top:3px}
+.cricket-table-cell.closed{background:#34452a;border-color:#b8f34a}
+.cricket-table-empty{background:#211a31;border:1px solid #493b5e;border-radius:8px}
+
 </style></head>
 <body><main class="app">
 <header class="top"><div><div class="brand">DARTS <span>MANIA</span></div><div class="tag">ÇA VA PIQUER !</div></div><div class="avatar" aria-label="Mascotte">🤡</div></header>
@@ -94,7 +107,7 @@ html,body{overscroll-behavior-y:contain;}
   <div class="visit-actions"><button class="btn pink" type="button" onclick="submitBust()" id="bustButton">BUST</button><button class="btn secondary" type="button" onclick="undoDart()">↶ Fléchette</button><button class="btn secondary" type="button" onclick="undoVisit()">↶ Annuler volée</button></div>
   <div id="matchNotice" class="notice hidden"></div>
  </div>
- <div id="cricketPanel" class="section panel hidden"><div class="sectionhead"><h3>🦗 Cricket</h3><small class="muted" id="cricketVariantLabel">Classique</small></div><div id="cricketSummary" class="cricket-summary"></div><div id="cricketPlayerTabs" class="cricket-tabs" aria-label="Choisir le joueur"></div><div id="cricketBoard" class="cricketboard"></div><div class="cricket-entry"><div class="cricket-darts" id="cricketDartSlots"><div class="cricket-dart">Flèche 1<br>—</div><div class="cricket-dart">Flèche 2<br>—</div><div class="cricket-dart">Flèche 3<br>—</div></div><div class="cricket-mode-label">SIMPLE ×1 PAR DÉFAUT · choisir seulement si besoin :</div><div class="cricket-mults" aria-label="Choisir double ou triple"><button class="btn secondary" type="button" data-cmult="2" onclick="setCricketMultiplier(2)">DOUBLE ×2</button><button class="btn secondary" type="button" data-cmult="3" onclick="setCricketMultiplier(3)">TRIPLE ×3</button></div><div class="cricket-targets" id="cricketTargets"></div><div class="cricket-bottom-actions"><button class="btn secondary" type="button" onclick="undoCricketDart()">↶ Annuler fléchette</button><button class="btn secondary" type="button" onclick="undoCricketVisit()">↶ Annuler volée</button><button class="btn pink" type="button" onclick="cricketMiss()">RATÉ</button></div></div></div>
+ <div id="cricketPanel" class="section panel hidden"><div class="sectionhead"><h3>🦗 Cricket</h3><small class="muted" id="cricketVariantLabel">Classique</small></div><div id="cricketSummary" class="cricket-summary"></div><div id="cricketPlayerTabs" class="cricket-tabs" aria-label="Choisir le joueur"></div><div class="cricket-board-scroll"><div id="cricketBoard" class="cricketboard"></div></div><div class="cricket-entry"><div class="cricket-darts" id="cricketDartSlots"><div class="cricket-dart">Flèche 1<br>—</div><div class="cricket-dart">Flèche 2<br>—</div><div class="cricket-dart">Flèche 3<br>—</div></div><div class="cricket-mode-label">SIMPLE ×1 PAR DÉFAUT · choisir seulement si besoin :</div><div class="cricket-mults" aria-label="Choisir double ou triple"><button class="btn secondary" type="button" data-cmult="2" onclick="setCricketMultiplier(2)">DOUBLE ×2</button><button class="btn secondary" type="button" data-cmult="3" onclick="setCricketMultiplier(3)">TRIPLE ×3</button></div><div class="cricket-targets" id="cricketTargets"></div><div class="cricket-bottom-actions"><button class="btn secondary" type="button" onclick="undoCricketDart()">↶ Annuler fléchette</button><button class="btn secondary" type="button" onclick="undoCricketVisit()">↶ Annuler volée</button><button class="btn pink" type="button" onclick="cricketMiss()">RATÉ</button></div></div></div>
  <details class="section panel visits-menu"><summary>📜 Historique des dernières volées <span class="pill" id="visitCount">0</span></summary><div class="sectionhead" style="margin-top:12px"><span class="muted">Historique du match</span><button class="btn secondary" onclick="undoVisit()">Annuler dernière</button></div><div id="visits" class="history muted">Les volées apparaîtront ici.</div></details>
 </section>
 
@@ -419,13 +432,19 @@ function renderCricket(){
  const variant=match.cricketVariant||'standard';
  const activeIndex=match.teamMode?Math.max(0,match.teams.findIndex(t=>t.members.includes(match.active))):Math.max(0,Math.min(Number(match.active)||0,columns.length-1));
  $('cricketVariantLabel').textContent=({standard:'CLASSIQUE · points pour soi',cutthroat:'CUT-THROAT · points aux adversaires',nopoints:'NO SCORE · sans points',drop10:'DROP 10 · points pour soi','mark up':'MARK UP · dans l’ordre',nobull:'SANS BULL · points pour soi'})[variant]||'Standard';
- // Chaque joueur reste visible dans sa propre carte. La carte du joueur actif est surlignée en jaune.
  $('cricketPlayerTabs').innerHTML='';$('cricketSummary').innerHTML='';
- $('cricketBoard').style.gridTemplateColumns='repeat(2,minmax(0,1fr))';
- $('cricketBoard').innerHTML=columns.map((player,i)=>{
-   const score=player.score||{marks:{},points:0};
-   const marks=keys.map(k=>{const n=Math.min(3,score.marks?.[k]||0);const symbol=n===0?'—':n===1?'／':n===2?'╳':'⊗';return `<div class="cricket-player-mark ${n>=3?'closed':''}"><b>${k===25?'BULL':k}</b><span>${symbol}</span><small>${n}/3</small></div>`}).join('');
-   return `<section class="cricket-player-card ${i===activeIndex?'active-turn':''}"><div class="cricket-player-card-head"><div class="cricket-player-card-name">${esc(player.name)}${i===activeIndex?' · À TOI':''}</div><div class="cricket-player-card-score">${variant==='nopoints'?'—':Number(score.points||0)}<small>POINTS</small></div></div><div class="cricket-player-marks">${marks}</div></section>`;
+ const rows=[{label:'JOUEUR',head:true},{label:'POINTS',points:true},...keys.map(k=>({label:k===25?'BULL':String(k),target:k}))];
+ $('cricketBoard').style.gridTemplateColumns=`58px repeat(${Math.max(1,columns.length)},minmax(104px,1fr))`;
+ $('cricketBoard').innerHTML=rows.map((row,ri)=>{
+   const label=`<div class="cricket-table-cell cricket-table-label ${row.head?'cricket-table-head':''}">${row.label}</div>`;
+   const cells=columns.map((player,i)=>{
+     const score=player.score||{marks:{},points:0};const active=i===activeIndex;
+     if(row.head)return `<div class="cricket-table-cell cricket-table-head ${active?'active':''}">${esc(player.name)}${active?'<small>À TOI</small>':''}</div>`;
+     if(row.points)return `<div class="cricket-table-cell cricket-table-points ${active?'active':''}">${variant==='nopoints'?'—':Number(score.points||0)}<small>POINTS</small></div>`;
+     const n=Math.min(3,score.marks?.[row.target]||0);const symbol=n===0?'—':n===1?'／':n===2?'╳':'⊗';
+     return `<div class="cricket-table-cell ${active?'active':''} ${n>=3?'closed':''}">${symbol}<small>${n}/3</small></div>`;
+   }).join('');
+   return label+cells;
  }).join('');
  $('cricketTargets').innerHTML=keys.map(k=>`<button class="btn secondary" type="button" onclick="cricketHit(${k},match.cricketMultiplier||1)">${k===25?'BULL':k}</button>`).join('');
  renderMatchCricketSlots();
