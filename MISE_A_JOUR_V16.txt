@@ -1,0 +1,9 @@
+DARTS MANIA V16
+
+Correction ciblée Cricket :
+- tableau horizontal avec une colonne par joueur et le nom en haut ;
+- points et marques dans la colonne correspondante ;
+- suppression des anciens styles de cartes/onglets contradictoires ;
+- masquage du bandeau « À TOI DE JOUER » et du compteur individuel « POINTS » pendant le Cricket ;
+- conservation des couleurs, commandes et règles existantes ;
+- cache service worker renouvelé.

@@ -1,0 +1,11 @@
+DARTS MANIA — V17
+
+Correction du tableau Cricket :
+- une colonne fixe par joueur, avec son nom en haut ;
+- ligne des points et lignes des marques alignées sous chaque joueur ;
+- défilement horizontal si tous les joueurs ne tiennent pas à l’écran ;
+- joueur actif uniquement repéré par un contour jaune ;
+- aucun onglet joueur ni bandeau « À toi de jouer » en Cricket ;
+- commandes et règles de jeu conservées.
+
+Installation : remplacer les fichiers du dépôt par ceux de cette archive, puis attendre le renouvellement du cache du navigateur.
