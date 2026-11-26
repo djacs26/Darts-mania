@@ -1,0 +1,8 @@
+DARTS MANIA – V13 – TABLEAU CRICKET SANS « À TOI »
+- Une colonne distincte par joueur (ou équipe) avec son nom en tête.
+- Les lignes affichent les points puis les marques 20, 19, 18, 17, 16, 15 et Bull.
+- Les valeurs évoluent dans la colonne du joueur concerné.
+- Suppression de l'étiquette « À TOI » sous le nom du joueur actif.
+- Suppression de l'annonce « NOM — À TOI DE JOUER » dans l'en-tête du mode Cricket.
+- Le joueur actif reste simplement repéré par un contour jaune, sans texte ajouté.
+- Les autres modes et commandes sont conservés.
