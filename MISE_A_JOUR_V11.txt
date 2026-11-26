@@ -1,0 +1,8 @@
+DARTS MANIA – V11 – AFFICHAGE CRICKET PAR JOUEUR
+- Suppression de la navigation par onglets et de l'affichage d'un seul joueur.
+- Tous les joueurs sont affichés simultanément dans leurs propres cartes/colonnes.
+- Chaque carte présente le nom, le total de points et les marques des cibles 20 à 15 et Bull.
+- Le joueur dont c'est le tour est automatiquement encadré en jaune et marqué « À TOI ».
+- Mise en page en deux colonnes sur téléphone pour éviter le défilement horizontal, avec marques plus grandes.
+- Les commandes de lancer et les règles de jeu ne sont pas modifiées.
+- Cache du service worker renouvelé.
