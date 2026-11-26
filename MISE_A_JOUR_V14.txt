@@ -1,0 +1,6 @@
+DARTS MANIA – V14 – CORRECTION DE PUBLICATION CRICKET
+
+- Conservation du tableau Cricket en colonnes : une colonne par joueur/équipe, nom en haut, points et marques dessous.
+- Masquage du bandeau de tour « NOM — À TOI DE JOUER » uniquement pendant le Cricket.
+- Correction du service worker : fichier JavaScript valide et nouveau nom de cache V14 pour forcer la mise à jour sur le site.
+- Aucun changement volontaire aux couleurs, règles, boutons ou autres modes.
