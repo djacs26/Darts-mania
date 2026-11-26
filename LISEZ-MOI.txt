@@ -1,6 +1,7 @@
-DARTS MANIA – Correction annonce vocale
+DARTS MANIA – Correction du mode solo
 
-Modification : pour une volée de 100 points exactement, le speaker annonce désormais : « Oh là là, la grosse beuteu ! »
-Les annonces BUST restent inchangées. Les annonces des scores de 120 points et plus restent « La grosse beuteu ! ».
+Le choix du nombre de joueurs propose maintenant 1 à 8 joueurs.
+À l'ouverture d'une nouvelle partie, le mode 1 joueur est sélectionné par défaut.
+Les corrections vocales précédentes (BUST et annonce spéciale à 100 points) sont conservées.
 
-Sur GitHub, remplacez l'ancien index.html par celui-ci et validez le commit sur main.
+Installation : remplacez le fichier index.html de votre dépôt GitHub par celui de cette archive, puis validez le commit.
