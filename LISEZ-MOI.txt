@@ -1,0 +1,8 @@
+DARTS MANIA – version avec annonces vocales personnalisées
+
+Installation :
+1. Décompressez ce ZIP.
+2. Ouvrez index.html dans Chrome pour tester l’application.
+3. Pour remplacer la version publiée sur GitHub Pages, remplacez le fichier index.html du dépôt par celui-ci, puis validez (Commit changes).
+
+Les autres fichiers du dépôt (manifest, service worker, icônes, etc.) doivent être conservés s’ils existent.

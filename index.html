@@ -172,7 +172,23 @@ function validOut(total,darts,after){if(after!==0)return true;let last=[...darts
 function submitVisit(auto=false){if(!match||match.finished||match.game==='Cricket'||visitSubmissionLock)return;let darts=['d1','d2','d3'].map(id=>parseDart($(id).value));if(darts.some(d=>d===null)){toast('Format invalide. Exemples : 20, T20, D16, SB, DB, MISS.');return}if(!darts.some(d=>d.thrown)){toast('Saisis au moins une fléchette.');return}if(auto&&darts.some(d=>!d.thrown))return;visitSubmissionLock=true;let vals=darts.map(d=>d.value),total=vals.reduce((a,b)=>a+b,0),i=match.active,before=match.remaining[i],after=before-total;let bust=after<0||after===1||(after===0&&!validOut(total,darts,after));if(bust)after=before;else match.remaining[i]=after;
 let v={player:i,vals,darts,total,dartsThrown:darts.filter(d=>d.thrown).length,before,after,bust,time:Date.now(),game:match.game,legWon:after===0&&!bust};match.visits.push(v);
 if(after===0&&!bust){v.bust=false;v.legWon=true;match.legsWon[i]++;let done=match.legsWon[i]>=match.legsToWin;let phrase='FINISH ! '+match.names[i]+' remporte la manche !';toast(phrase);speak(phrase);if(done){match.finished=true;match.winner=match.names[i];match.endReason='leg';clearDarts();data.matches.push({game:match.game,names:match.names.slice(),winner:match.names[i],visits:match.visits.slice(),date:new Date().toISOString(),legsWon:match.legsWon.slice()});persist();showWinner(match.winner);saveActiveMatch();visitSubmissionLock=false;return}else{match.leg++;match.remaining=match.names.map(()=>match.startScore);match.active=(i+1)%match.names.length}}
-else{let rawPhrase=bust?bustCommentary(before,vals):commentary(total,after,vals);if(!bust&&total>=140&&Math.random()<0.28)rawPhrase+=' La grosse beuteu !';const historical=!bust?personalizedScoreComment(match.names[i],total):'';if(historical)rawPhrase+=' '+historical;const cleanPhrase=String(rawPhrase).replace(new RegExp('^\\s*'+total+'(?:\\s+points?)?\\s*[!,.:…—-]*\\s*','i'),'');let phrase=(bust?'BUST ! ':'')+match.names[i]+', '+total+'. '+cleanPhrase;
+else{
+ let rawPhrase;
+ if(bust){
+  rawPhrase=bustCommentary(before,vals);
+ }else{
+  const hitBull=darts.some(d=>d.kind==='singleBull'||d.kind==='doubleBull');
+  if(total===60)rawPhrase='Twenty Boy !';
+  else if(total===180)rawPhrase=commentary(total,after,vals);
+  else if(total===100||total>=120)rawPhrase='La grosse beuteu !';
+  else if(hitBull)rawPhrase='Bull !';
+  else rawPhrase=commentary(total,after,vals);
+ }
+ const special=!bust&&(total===60||total===100||total>=120||darts.some(d=>d.kind==='singleBull'||d.kind==='doubleBull'));
+ const historical=!bust&&!special?personalizedScoreComment(match.names[i],total):'';
+ if(historical)rawPhrase+=' '+historical;
+ const cleanPhrase=String(rawPhrase).replace(new RegExp('^\\s*'+total+'(?:\\s+points?)?\\s*[!,.:…—-]*\\s*','i'),'');
+ let phrase=(bust?'BUST ! ':'')+match.names[i]+', '+total+'. '+cleanPhrase;
 if(!bust&&total===180){const recap=match.names.map((n,j)=>n+' : '+match.remaining[j]).join(', ');phrase+=' Récapitulatif : '+recap+'.';}
 toast(phrase);speak(phrase);match.active=(i+1)%match.names.length}
 clearDarts();saveActiveMatch();renderMatch();renderAll();visitSubmissionLock=false}
