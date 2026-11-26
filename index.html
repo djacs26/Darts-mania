@@ -188,6 +188,8 @@ else{
  const special=!bust&&(total===60||total===100||total>=120||darts.some(d=>d.kind==='singleBull'||d.kind==='doubleBull'));
  const historical=!bust&&!special?personalizedScoreComment(match.names[i],total):'';
  if(historical)rawPhrase+=' '+historical;
+ // Sécurité : « grosse beuteu » est strictement réservée aux scores de 100 ou 120+.
+ if(!bust && total<100) rawPhrase=String(rawPhrase).replace(/la grosse beuteu\s*!?/ig,'Belle volée');
  const cleanPhrase=String(rawPhrase).replace(new RegExp('^\\s*'+total+'(?:\\s+points?)?\\s*[!,.:…—-]*\\s*','i'),'');
  let phrase=(bust?'BUST ! ':'')+match.names[i]+', '+total+'. '+cleanPhrase;
 if(!bust&&total===180){const recap=match.names.map((n,j)=>n+' : '+match.remaining[j]).join(', ');phrase+=' Récapitulatif : '+recap+'.';}

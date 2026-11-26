@@ -1,7 +1,3 @@
-DARTS MANIA – Correction du mode solo
-
-Le choix du nombre de joueurs propose maintenant 1 à 8 joueurs.
-À l'ouverture d'une nouvelle partie, le mode 1 joueur est sélectionné par défaut.
-Les corrections vocales précédentes (BUST et annonce spéciale à 100 points) sont conservées.
-
-Installation : remplacez le fichier index.html de votre dépôt GitHub par celui de cette archive, puis validez le commit.
+DARTS MANIA – CORRECTION ANNONCE 21 POINTS
+Remplacez le fichier index.html du dépôt GitHub par celui-ci, puis validez avec Commit changes.
+La phrase « grosse beuteu » est désormais bloquée pour tout score inférieur à 100 points.
