@@ -1,3 +1,3 @@
-DARTS MANIA – CORRECTION ANNONCE 21 POINTS
-Remplacez le fichier index.html du dépôt GitHub par celui-ci, puis validez avec Commit changes.
-La phrase « grosse beuteu » est désormais bloquée pour tout score inférieur à 100 points.
+DARTS MANIA – correction des annonces vocales
+Remplacez le fichier index.html de votre dépôt GitHub par celui de cette archive, puis validez avec Commit changes.
+Sous 100 points, le texte final est filtré pour empêcher toute annonce « grosse beuteu », y compris si elle est ajoutée dans un commentaire humoristique.

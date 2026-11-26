@@ -189,9 +189,11 @@ else{
  const historical=!bust&&!special?personalizedScoreComment(match.names[i],total):'';
  if(historical)rawPhrase+=' '+historical;
  // Sécurité : « grosse beuteu » est strictement réservée aux scores de 100 ou 120+.
- if(!bust && total<100) rawPhrase=String(rawPhrase).replace(/la grosse beuteu\s*!?/ig,'Belle volée');
+ if(total<100) rawPhrase=String(rawPhrase).replace(/(?:la\s+)?grosse\s+beuteu\s*!?/ig,'Belle volée');
  const cleanPhrase=String(rawPhrase).replace(new RegExp('^\\s*'+total+'(?:\\s+points?)?\\s*[!,.:…—-]*\\s*','i'),'');
  let phrase=(bust?'BUST ! ':'')+match.names[i]+', '+total+'. '+cleanPhrase;
+// Dernier verrou : aucun commentaire ne peut annoncer « grosse beuteu » sous 100 points.
+if(total<100) phrase=phrase.replace(/(?:la\s+)?grosse\s+beuteu\s*!?/ig,'Belle volée');
 if(!bust&&total===180){const recap=match.names.map((n,j)=>n+' : '+match.remaining[j]).join(', ');phrase+=' Récapitulatif : '+recap+'.';}
 toast(phrase);speak(phrase);match.active=(i+1)%match.names.length}
 clearDarts();saveActiveMatch();renderMatch();renderAll();visitSubmissionLock=false}
