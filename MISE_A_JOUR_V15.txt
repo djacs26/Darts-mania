@@ -1,0 +1,5 @@
+DARTS MANIA — V15
+
+Cricket : tableau horizontal avec une colonne par joueur/equipe. Le nom est en haut de chaque colonne, puis les points et les marques 20, 19, 18, 17, 16, 15 et Bull. Le joueur actif est repere dans sa colonne. Les anciens onglets de selection et le bandeau de tour Cricket sont retires.
+
+Le reste de l’application est conserve depuis l’archive source V14. Cache du service worker renouvele en V15.
