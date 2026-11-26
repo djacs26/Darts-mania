@@ -1,8 +1,6 @@
-DARTS MANIA – version avec annonces vocales personnalisées
+DARTS MANIA – Correction annonce vocale
 
-Installation :
-1. Décompressez ce ZIP.
-2. Ouvrez index.html dans Chrome pour tester l’application.
-3. Pour remplacer la version publiée sur GitHub Pages, remplacez le fichier index.html du dépôt par celui-ci, puis validez (Commit changes).
+Modification : pour une volée de 100 points exactement, le speaker annonce désormais : « Oh là là, la grosse beuteu ! »
+Les annonces BUST restent inchangées. Les annonces des scores de 120 points et plus restent « La grosse beuteu ! ».
 
-Les autres fichiers du dépôt (manifest, service worker, icônes, etc.) doivent être conservés s’ils existent.
+Sur GitHub, remplacez l'ancien index.html par celui-ci et validez le commit sur main.
