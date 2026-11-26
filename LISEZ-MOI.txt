@@ -1,3 +1,9 @@
-DARTS MANIA – correction des annonces vocales
-Remplacez le fichier index.html de votre dépôt GitHub par celui de cette archive, puis validez avec Commit changes.
-Sous 100 points, le texte final est filtré pour empêcher toute annonce « grosse beuteu », y compris si elle est ajoutée dans un commentaire humoristique.
+DARTS MANIA - dossier à transmettre à Claude pour audit
+
+Contenu :
+- index.html : version la plus récente retrouvée dans les fichiers du projet (26/11/2026, 21:09)
+- manifest.webmanifest : manifeste de l'application
+- sw.js : service worker provenant du dernier paquet complet antérieur retrouvé (25/11/2026)
+- icon.svg : icône de l'application
+
+Important : le index.html est plus récent que le sw.js, le manifest et l'icône réunis ici. Vérifier la compatibilité de ces fichiers avant toute publication. Ne pas écraser le dépôt en production sans audit et sauvegarde.
