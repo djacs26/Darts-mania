@@ -202,7 +202,46 @@ function playerRecentVisits(){
  if(!match||!Array.isArray(match.visits))return [];
  return match.visits.slice(0,-1).filter(v=>v.player===match.active&&!v.bust&&!v.cricket).slice(-8);
 }
+function checkoutPossible(score,dartsLeft=3){
+ if(!Number.isInteger(score)||score<2||score>170||dartsLeft<1)return false;
+ const scoring=[...new Set([...Array.from({length:20},(_,i)=>i+1),...Array.from({length:20},(_,i)=>(i+1)*2),...Array.from({length:20},(_,i)=>(i+1)*3),25,50])];
+ const finish=match.outRule==='straight'?scoring:match.outRule==='double'?[...Array.from({length:20},(_,i)=>(i+1)*2),50]:[...Array.from({length:20},(_,i)=>(i+1)*2),...Array.from({length:20},(_,i)=>(i+1)*3),50];
+ function search(left,n){
+  if(n===1)return finish.includes(left);
+  for(const v of scoring){if(v<left&&search(left-v,n-1))return true;}
+  return false;
+ }
+ for(let n=1;n<=Math.min(3,dartsLeft);n++)if(search(score,n))return true;
+ return false;
+}
+function isBogeyFinish(score){return score>170||[169,168,166,165,163,162,159].includes(score);}
+function opponentRemaining(){
+ if(!match)return [];
+ if(match.teamMode&&match.teams){const own=match.teams.find(t=>t.members.includes(match.active));return match.teams.filter(t=>t!==own).map(t=>t.remaining).filter(Number.isFinite);}
+ return match.remaining.filter((v,i)=>i!==match.active&&Number.isFinite(v));
+}
 function commentary(t,remaining,vals){
+ const before=match&&match.teamMode?match.teams.find(x=>x.members.includes(match.active))?.remaining+t:match?.remaining?.[match.active]+t;
+ const opponents=opponentRemaining();
+ const bestOpponent=opponents.length?Math.min(...opponents):null;
+ const fresh=a=>pickFresh(a);
+ if(remaining>0&&remaining<=170&&checkoutPossible(remaining)){
+  if(bestOpponent!==null&&bestOpponent<=170&&bestOpponent<remaining)return fresh([
+   'Le finish est là, mais l’adversaire est encore mieux placé. Là, il faut sortir le grand jeu !',
+   'Tu as une sortie possible, mais l’autre est en embuscade. Pas le moment de trembler !'
+  ]);
+  if(t<=35)return fresh(['Petit score, gros travail tactique : tu viens de te laisser une vraie sortie. Bien joué, malin !','Ça ne fait pas beaucoup de points, mais le restant est parfait pour finir. Le cerveau a marqué des points !','On ne regarde pas que la volée : tu as préparé le finish. C’est du jeu intelligent !']);
+  if(t>=80)return fresh(['Belle volée : tu te laisses une sortie jouable. Maintenant, termine le travail !','Ça marque et ça prépare le finish. Voilà une volée qui a du sens !','Tu as fait le ménage et laissé une vraie porte de sortie. À toi de la prendre !']);
+ }
+ if(remaining>0&&remaining<=170&&isBogeyFinish(remaining))return fresh([
+  'Aïe, gros score mais tu as laissé un numéro sans sortie en trois flèches. Le tableau ne fait pas de cadeau !',
+  'Ça a claqué, mais le restant est un mauvais numéro : pas de finish possible en trois flèches. On réfléchit au coup d’après !',
+  'Belle puissance, mauvais atterrissage : tu as laissé un bogey. La prochaine volée devra réparer ça !'
+ ]);
+ if(bestOpponent!==null&&bestOpponent<=170&&remaining>bestOpponent&&remaining>0&&remaining<=170)return fresh([
+  'L’adversaire est déjà mieux placé pour finir. Il va falloir lui mettre la pression, pas lui offrir le match !',
+  'Attention, l’autre a une meilleure fenêtre de sortie. Chaque flèche compte maintenant !'
+ ]);
  const history=playerRecentVisits();
  const recent=history.slice(-4);
  const avg=recent.length?recent.reduce((a,v)=>a+(Number(v.total)||0),0)/recent.length:0;
@@ -380,7 +419,21 @@ function finishCricketVisit(){
  match.active=nextIndex;
  // Synchronise l'onglet du tableau avec le joueur (ou l'équipe) qui vient de prendre la main.
  cricketViewPlayer=match.teamMode?Math.max(0,match.teams.findIndex(t=>t.members.includes(nextIndex))):nextIndex;
- const scoreLine=match.cricketVariant==='nopoints'?'Volée enregistrée.':(match.cricketVariant==='cutthroat'?'Points distribués aux adversaires.':total+' points.');
+ const afterState=team?match.teamCricket[teamIndex]:match.cricket[player];
+ const closedBefore=cricketKeys().filter(k=>(before?.marks?.[k]||0)>=3).length;
+ const closedAfter=cricketKeys().filter(k=>(afterState?.marks?.[k]||0)>=3).length;
+ const newlyClosed=cricketKeys().filter(k=>(before?.marks?.[k]||0)<3&&(afterState?.marks?.[k]||0)>=3);
+ const addedMarks=cricketKeys().reduce((n,k)=>n+Math.max(0,(afterState?.marks?.[k]||0)-(before?.marks?.[k]||0)),0);
+ const rivals=team?match.teamCricket.filter((x,i)=>i!==teamIndex):match.cricket.filter((x,i)=>i!==player);
+ const rivalsStillOpen=rivals.some(x=>newlyClosed.some(k=>(x.marks[k]||0)<3));
+ let scoreLine;
+ if(match.cricketVariant==='mark up')scoreLine=addedMarks>=2?'Belle rafale de marques ! Tu avances vite, garde le rythme.':'Une marque de plus, proprement joué. Prochaine cible !';
+ else if(match.cricketVariant==='nopoints')scoreLine=closedAfter>closedBefore?'Tu fermes une cible ! Chaque marque compte, continue comme ça.':'Tu avances tes marques. Pas de points à distribuer : vise la fermeture !';
+ else if(match.cricketVariant==='cutthroat')scoreLine=total>0?(rivalsStillOpen?'Bien joué, tu envoies '+total+' points chez les adversaires encore ouverts. Ça va piquer !':'Tu marques, mais les autres ont fermé cette cible : choisis mieux ta prochaine attaque.'):'Pas de points distribués cette fois. Il faut ouvrir la marque !';
+ else if(newlyClosed.length&&rivalsStillOpen)scoreLine='Bien joué, tu fermes '+(newlyClosed.length===1?(newlyClosed[0]===25?'le Bull':'le '+newlyClosed[0]):newlyClosed.length+' cibles')+' avant les autres. Voilà une vraie prise d’avantage !';
+ else if(total>0)scoreLine='Tu prends '+total+' points. '+(closedAfter>closedBefore?'Et tu avances aussi tes fermetures : double bénéfice !':'Regarde les marques adverses avant de choisir la prochaine cible !');
+ else if(addedMarks>0)scoreLine='Tu poses '+addedMarks+' marque(s). C’est du travail utile, même sans points !';
+ else scoreLine='Trois flèches, pas de progression : la cible a gagné cette volée. On se reprend !';
  saveActiveMatch();renderMatch();renderAll();
  const announcement=scoreLine+nextTurnAnnouncement(nextIndex);speak(announcement,announcement);
 }
