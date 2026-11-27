@@ -1,36 +1,25 @@
-DARTS-MANIA — VERSION 21
+DARTS MANIA — MISE À JOUR ÉQUIPES ET MODE SÉRIEUX
 
-Contenu de l’archive (5 fichiers à la racine) :
-- index.html : application et commentaires vocaux.
+Contenu :
+- index.html : application et nouvelles fonctions.
+- sw.js : renouvellement du cache hors ligne.
 - manifest.webmanifest : installation de l’application.
-- sw.js : fonctionnement hors ligne / cache.
 - icon.svg : icône.
-- INSTALLATION.txt : ces instructions.
 
-Mise à jour GitHub Pages :
+MODIFICATIONS AJOUTÉES
+- Mode équipes : création de 2 à 4 équipes de deux joueurs (4, 6 ou 8 joueurs). Les noms des équipes sont personnalisables. Les coéquipiers partagent le score et les tours passent d’un joueur au suivant. Disponible en 301, 501 et Cricket.
+- Mode soirée : choix des participants. Tous les joueurs sélectionnés jouent le même défi avant que la roue passe au défi suivant. Le point est attribué uniquement en cas de réussite. La partie ne s’arrête qu’une fois que tous les participants ont terminé le défi en cours.
+- Annonces du mode soirée simplifiées : réussite avec point ou défi raté, puis une petite phrase courte.
+- Paramètres vocaux : « Mode sérieux : scores uniquement » annonce le score sans les commentaires. Le mode habituel avec commentaires et le mode sans voix restent disponibles.
+- « Twenty Boy » peut être prononcé de temps en temps uniquement sur trois 20 simples, jamais pour un triple 20.
+- Récapitulatif des scores lors du passage sous 180 points et sur un 180.
+- Le mode de victoire des défis est réglable à 10 ou 20 points.
+
+FONCTIONS CONSERVÉES
+Les modes classiques, statistiques, historique, profils, saisie automatique après la troisième fléchette, saisie vocale, sauvegarde et installation PWA sont conservés.
+
+MISE À JOUR SUR GITHUB PAGES
 1. Décompresser cette archive.
-2. Envoyer les 5 fichiers directement à la racine du dépôt GitHub.
-3. Remplacer les anciens fichiers.
-4. Attendre la publication GitHub Pages puis recharger le site.
-5. Si l’ancienne version reste affichée sur Android, fermer l’onglet ou l’application, puis la rouvrir.
-
-Modifications V21 :
-- 501, 301 et 701 : validation automatique dès que les trois fléchettes sont saisies, depuis le clavier numérique, les champs ou la dictée vocale.
-- Mode Entre copains : évaluation automatique à la troisième fléchette, attribution de 1 point si le défi est réussi et de 0 sinon, passage au joueur suivant et tirage du défi suivant.
-- Annonce vocale du nom du joueur et du résultat : « [joueur] valide son défi et marque un point ! » ou « [joueur] rate son défi, aucun point marqué ! ».
-- Le gagnant du mode Entre copains est affiché clairement et annoncé vocalement.
-- Les annonces conservent le mot « point » ; aucune substitution par « unité ».
-- Les commentaires humoristiques existants sont conservés.
-- Le bouton de validation manuelle des volées a été retiré dans les modes X01 et Entre copains.
-- Le cache hors connexion est renouvelé en V21.
-
-Reconnaissance vocale :
-- Elle reste activable ou désactivable dans les paramètres.
-- Pour la saisie vocale, utiliser de préférence Chrome sur Android, avec une connexion HTTPS et l’autorisation du microphone accordée.
-- La disponibilité dépend du navigateur et du service de reconnaissance vocale du téléphone.
-
-Note Cricket et entraînement :
-- Le Cricket conserve sa saisie dédiée des marques (15 à 20 et Bull) ; ce mode ne repose pas sur les trois champs de volée X01.
-- L’entraînement conserve son enregistrement de score et ses statistiques.
-
-Le design et les autres fonctionnalités de la V20 sont conservés.
+2. Remplacer les fichiers à la racine du dépôt GitHub par les fichiers du dossier Darts-mania-main.
+3. Valider les modifications (Commit changes) et attendre la publication GitHub Pages.
+4. Sur Android, fermer complètement l’application ou l’onglet puis la rouvrir. Le cache a été renouvelé en version v18.
