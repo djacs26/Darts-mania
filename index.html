@@ -707,7 +707,15 @@ async function checkForUpdates(){
  try{
   if('serviceWorker'in navigator){
    const registration=await navigator.serviceWorker.getRegistration('./');
-   if(registration)await registration.update();
+   if(registration){
+    await registration.update();
+    const worker=registration.installing;
+    if(worker)await new Promise(resolve=>{
+     if(worker.state==='activated'||worker.state==='redundant')return resolve();
+     worker.addEventListener('statechange',()=>{if(worker.state==='activated'||worker.state==='redundant')resolve()});
+     setTimeout(resolve,8000);
+    });
+   }
   }
   toast('Vérification terminée. Rechargement de DARTS MANIA…');
   setTimeout(()=>location.reload(),700);
