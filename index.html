@@ -248,7 +248,6 @@ function commentary(t,remaining,vals){
  const last=history.length?Number(history[history.length-1].total)||0:0;
  const prev2=history.slice(-2);
  const prevAvg=prev2.length?prev2.reduce((a,v)=>a+(Number(v.total)||0),0)/prev2.length:0;
- const fresh=a=>pickFresh(a);
  // Les réactions prioritaires tiennent compte de la forme propre à ce joueur.
  if(history.length>=2 && t<=35 && avg>=85) return fresh([
   'Oh ! Grosse panne pour quelqu’un qui envoyait des missiles juste avant !',
