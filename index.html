@@ -215,22 +215,37 @@ function parseDart(raw){let x=String(raw||'').trim().toUpperCase().replace(/\s/g
 function quickFill(v){let fields=['d1','d2','d3'];let i=fields.findIndex(x=>$(x).value==='');if(i<0)i=2;const field=$(fields[i]);field.value=v;field.dispatchEvent(new Event('input',{bubbles:true}));updateCurrent()}
 function updateCurrent(){let a=['d1','d2','d3'].map(x=>parseDart($(x).value));const thrown=a.filter(d=>d&&d.thrown),total=thrown.reduce((n,d)=>n+d.value,0);$('currentScore').textContent=total;if(match&&match.game!=='Cricket'){const team=match.teamMode&&match.teams?match.teams.find(t=>t.members.includes(match.active)):null;const before=team?team.remaining:match.remaining[match.active];const left=before-total;$('remainingNow').textContent=left<0||left===1?'BUST !':'RESTE : '+(left===0?'0':left);const cards=$('scoreCards');if(cards){const visible=(left>=0&&left!==1)?left:before;const teamMembers=team?team.members:[match.active];teamMembers.forEach(memberIndex=>{const card=cards.children[memberIndex];if(card){const value=card.querySelector('.remaining');if(value)value.textContent=visible;}});}}}
 let autoVisitTimer=null,visitSubmissionLock=false;
-['d1','d2','d3'].forEach((id,i)=>$(id).addEventListener('input',e=>{
- updateCurrent();if(e.target.value)chooseMultiplier('S');
- if(match){match.pendingDarts=match.pendingDarts||['','',''];match.pendingDarts[i]=e.target.value;saveActiveMatch()}
+function scheduleAutoVisit(){
  clearTimeout(autoVisitTimer);
+ const scheduledMatch=match,scheduledMatchId=match?.id,scheduledPlayer=match?.active;
  autoVisitTimer=setTimeout(()=>{
-  if(!match||match.finished||match.game==='Cricket'||visitSubmissionLock)return;
+  autoVisitTimer=null;
+  if(!match||match!==scheduledMatch||match.id!==scheduledMatchId||match.active!==scheduledPlayer||match.finished||match.game==='Cricket'||visitSubmissionLock)return;
   const entered=['d1','d2','d3'].map(k=>parseDart($(k).value));
-  const used=entered.filter(d=>d&&d.thrown);if(!used.length)return;
-  const team=match.teamMode&&match.teams?match.teams.find(t=>t.members.includes(match.active)):null;const before=team?team.remaining:match.remaining[match.active];const total=used.reduce((n,d)=>n+d.value,0),after=before-total;
+  if(entered.some(d=>d===null))return;
+  const used=entered.filter(d=>d&&d.thrown);
+  if(!used.length)return;
+  const team=match.teamMode&&match.teams?match.teams.find(t=>t.members.includes(match.active)):null;
+  const before=team?team.remaining:match.remaining[match.active];
+  const total=used.reduce((n,d)=>n+d.value,0),after=before-total;
   const bust=after<0||after===1||(after===0&&!validOut(total,used,after));
   const finish=after===0&&!bust;
-  if(bust||finish||(used.length===3&&entered.every(d=>d&&d.thrown)))submitVisit(true);
- },300);
-}));
+  if(bust||finish||used.length===3)submitVisit(true);
+ },500);
+}
+['d1','d2','d3'].forEach((id,i)=>{
+ const field=$(id);
+ field.addEventListener('input',e=>{
+  updateCurrent();
+  if(e.target.value)chooseMultiplier('S');
+  if(match){match.pendingDarts=match.pendingDarts||['','',''];match.pendingDarts[i]=e.target.value;saveActiveMatch()}
+  scheduleAutoVisit();
+ });
+ field.addEventListener('change',scheduleAutoVisit);
+ field.addEventListener('blur',scheduleAutoVisit);
+});
 function validOut(total,darts,after){if(after!==0)return true;let last=[...darts].reverse().find(d=>d.thrown);if(!last)return false;if(match.outRule==='straight')return true;if(match.outRule==='double')return last.kind==='double'||last.kind==='doubleBull';return ['double','doubleBull','triple'].includes(last.kind)}
-function submitVisit(auto=false){if(!match||match.finished||match.game==='Cricket'||visitSubmissionLock)return;let darts=['d1','d2','d3'].map(id=>parseDart($(id).value));if(darts.some(d=>d===null)){toast('Format invalide. Exemples : 20, T20, D16, SB, DB, MISS.');return}if(!darts.some(d=>d.thrown)){toast('Saisis au moins une fléchette.');return}if(auto&&darts.some(d=>!d.thrown)){const used=darts.filter(d=>d.thrown);const teamNow=match.teamMode?match.teams.find(t=>t.members.includes(match.active)):null;const beforeNow=teamNow?teamNow.remaining:match.remaining[match.active];const partial=used.reduce((a,d)=>a+d.value,0),left=beforeNow-partial;const isBust=left<0||left===1||(left===0&&!validOut(partial,used,left));if(!(isBust||left===0))return;}visitSubmissionLock=true;let vals=darts.map(d=>d.value),total=vals.reduce((a,b)=>a+b,0),i=match.active,team=match.teamMode?match.teams.find(t=>t.members.includes(i)):null,before=team?team.remaining:match.remaining[i],after=before-total;const stateBeforeRemaining=match.remaining.slice(),stateBeforeTeams=JSON.parse(JSON.stringify(match.teams||[])),stateBeforeLeg=match.leg,stateBeforeLegsWon=match.legsWon.slice(),stateBeforeFinished=match.finished;let allMiss=darts.filter(d=>d.thrown).length===3&&darts.every(d=>d.kind==='miss');let bust=allMiss||after<0||after===1||(after===0&&!validOut(total,darts,after));if(bust)after=before;else if(team){team.remaining=after;team.members.forEach(member=>match.remaining[member]=after)}else match.remaining[i]=after;
+function submitVisit(auto=false){if(!match||match.finished||match.game==='Cricket'||visitSubmissionLock)return;clearTimeout(autoVisitTimer);autoVisitTimer=null;let darts=['d1','d2','d3'].map(id=>parseDart($(id).value));if(darts.some(d=>d===null)){toast('Format invalide. Exemples : 20, T20, D16, SB, DB, MISS.');return}if(!darts.some(d=>d.thrown)){toast('Saisis au moins une fléchette.');return}if(auto&&darts.some(d=>!d.thrown)){const used=darts.filter(d=>d.thrown);const teamNow=match.teamMode?match.teams.find(t=>t.members.includes(match.active)):null;const beforeNow=teamNow?teamNow.remaining:match.remaining[match.active];const partial=used.reduce((a,d)=>a+d.value,0),left=beforeNow-partial;const isBust=left<0||left===1||(left===0&&!validOut(partial,used,left));if(!(isBust||left===0))return;}visitSubmissionLock=true;let vals=darts.map(d=>d.value),total=vals.reduce((a,b)=>a+b,0),i=match.active,team=match.teamMode?match.teams.find(t=>t.members.includes(i)):null,before=team?team.remaining:match.remaining[i],after=before-total;const stateBeforeRemaining=match.remaining.slice(),stateBeforeTeams=JSON.parse(JSON.stringify(match.teams||[])),stateBeforeLeg=match.leg,stateBeforeLegsWon=match.legsWon.slice(),stateBeforeFinished=match.finished;let allMiss=darts.filter(d=>d.thrown).length===3&&darts.every(d=>d.kind==='miss');let bust=allMiss||after<0||after===1||(after===0&&!validOut(total,darts,after));if(bust)after=before;else if(team){team.remaining=after;team.members.forEach(member=>match.remaining[member]=after)}else match.remaining[i]=after;
 let v={player:i,vals,darts,total,dartsThrown:darts.filter(d=>d.thrown).length,before,after,bust,time:Date.now(),game:match.game,legWon:after===0&&!bust,teamIndex:team?match.teams.indexOf(team):null,beforeRemaining:stateBeforeRemaining,beforeTeams:stateBeforeTeams,beforeLeg:stateBeforeLeg,beforeLegsWon:stateBeforeLegsWon,beforeFinished:stateBeforeFinished};match.visits.push(v);match.lastAnnouncement='';
 if(after===0&&!bust){if(team){team.legsWon++;team.members.forEach(member=>match.legsWon[member]=team.legsWon)}else match.legsWon[i]++;let wins=team?team.legsWon:match.legsWon[i],done=wins>=match.legsToWin;let winner=team?team.name:match.names[i];let phrase=done?winner+' a gagné le match.':winner+' a gagné une manche.';match.lastAnnouncement='🏆 '+phrase;toast(phrase);if(done){match.finished=true;data.matches.push({matchId:match.id,game:match.game,names:match.names.slice(),teamMode:!!match.teamMode,teams:match.teams?JSON.parse(JSON.stringify(match.teams)):[],winner,visits:match.visits.slice(),date:new Date().toISOString(),legsWon:match.legsWon.slice()});persist();saveActiveMatch();speak(phrase,phrase);showWinner(winner);visitSubmissionLock=false;return}else{match.leg++;match.remaining=match.names.map(()=>match.startScore);if(match.teamMode)match.teams.forEach(t=>{t.remaining=match.startScore});match.active=(i+1)%match.names.length;const nextCall=nextTurnAnnouncement(match.active);speak(phrase+nextCall,phrase+nextCall)}}
 else{let rawPhrase=bust?bustCommentary(before,vals):commentary(total,after,vals);if(!bust&&darts.every(d=>d.kind==='single'&&d.value===20)&&Math.random()<0.22)rawPhrase+=' Twenty Boy !';const historical=!bust?personalizedScoreComment(match.names[i],total):'';if(historical)rawPhrase+=' '+historical;const cleanPhrase=String(rawPhrase).replace(new RegExp('^\\s*'+total+'(?:\\s+points?)?\\s*[!,.:…—-]*\\s*','i'),'');let phrase=bust?'Score annulé : '+match.names[i]+' garde son score.':total+' points. '+cleanPhrase;const enteredCheckout=after<=180&&before>180;const isBig=total===180;if(!bust&&(enteredCheckout||isBig)){const recap=match.teamMode?match.teams.map(t=>t.name+' : '+t.remaining).join(', '):match.names.map((n,j)=>n+' : '+match.remaining[j]).join(', ');phrase+=' Récapitulatif : '+recap+'.'}toast(phrase);let scoreOnlyText=bust?'BEUSTE !':total+' points.';if(!bust&&(enteredCheckout||isBig)){const scoreRecap=match.teamMode?match.teams.map(t=>t.name+' : '+t.remaining).join(', '):match.names.map((n,j)=>n+' : '+match.remaining[j]).join(', ');scoreOnlyText+=' Récapitulatif : '+scoreRecap+'.'}const nextIndex=(i+1)%match.names.length;phrase+=nextTurnAnnouncement(nextIndex);scoreOnlyText+=nextTurnAnnouncement(nextIndex);speak(bust?'BEUSTE !'+nextTurnAnnouncement(nextIndex):phrase,scoreOnlyText);match.active=nextIndex}
