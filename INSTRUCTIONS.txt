@@ -1,0 +1,2 @@
+Remplacer uniquement index.html à la racine du dépôt GitHub.
+Le mode soirée reste alimenté par tous les joueurs enregistrés dans data.players.
