@@ -686,25 +686,50 @@ function addPartyScore(){
  if(!getPartyParticipants().includes(name))return toast('Ce joueur ne participe pas à cette série de défis.');
  if(partyChallengeCompleted.includes(name))return toast(name+' a déjà joué ce défi.');
  partySubmissionLock=true;
- const total=darts.reduce((a,x)=>a+x.value,0),result=evaluatePartyChallenge(darts,total);
- data.partyChallengePoints=data.partyChallengePoints||{};data.partyChallengePoints[name]=Number(data.partyChallengePoints[name])||0;
- if(result.success)data.partyChallengePoints[name]+=1;
- partyChallengeCompleted.push(name);
- const target=Number(data.partyTarget)||10,points=data.partyChallengePoints[name];
- let comment=result.success?pickFresh(['Bien joué !','Belle précision !','Propre, celle-là !','Ça, c’est fait !','Joli coup !']):pickFresh(['Dommage, on fera mieux !','Pas cette fois, on remet ça.','La cible a résisté !','Raté, mais on ne lâche rien !']);if(result.success&&activePartyChallenge.id==='three20'&&darts.every(d=>d.kind==='single'&&d.value===20)&&Math.random()<0.22)comment+=' Twenty Boy !';
- const status=result.success?'Défi réussi, un point.':'Défi raté, zéro point.';
- const participants=getPartyParticipants(),remaining=participants.filter(n=>!partyChallengeCompleted.includes(n));
- const winnerName=!remaining.length?participants.find(n=>(Number(data.partyChallengePoints[n])||0)>=target):null;
- const winner=winnerName?' '+winnerName+' remporte la partie !':'';
- // En mode soirée, ne jamais annoncer le total des fléchettes ni le cumul des points à voix haute.
- const full=status+' '+comment+winner;
- clearTimeout(autoPartyTimer);['pd1','pd2','pd3'].forEach(id=>$(id).value='');choosePartyMultiplier('S');$('partyCurrentScore').textContent='0 / 3 fléchettes saisies';
- const select=$('partyPlayer');
- if(!winner&&remaining.length){const next=remaining[0];select.value=next;}
- const nextName=remaining.length?remaining[0]:null;const nextCall=nextName?' Au tour de '+nextName+' !':'';persist();$('partyScoreNotice').textContent=name+' : '+full+(winner?'':nextCall);$('partyScoreNotice').classList.remove('hidden');const spoken=full+nextCall;speak(spoken,spoken);
- partySubmissionLock=false;
- if(winner){activePartyChallenge=null;partyChallengeCompleted=[];partyChallengeDeck=[];renderPartyScores();return;}
- if(!remaining.length){activePartyChallenge=null;partyChallengeCompleted=[];window.setTimeout(()=>spinChallenge(),1800);}
+ try{
+  const total=darts.reduce((a,x)=>a+x.value,0),challengeId=activePartyChallenge.id,result=evaluatePartyChallenge(darts,total);
+  data.partyChallengePoints=data.partyChallengePoints||{};
+  data.partyChallengePoints[name]=Number(data.partyChallengePoints[name])||0;
+  if(result.success)data.partyChallengePoints[name]+=1;
+  partyChallengeCompleted.push(name);
+  const target=Number(data.partyTarget)||10,participants=getPartyParticipants();
+  const remaining=participants.filter(n=>!partyChallengeCompleted.includes(n));
+  const winnerName=!remaining.length?participants.find(n=>(Number(data.partyChallengePoints[n])||0)>=target):null;
+  const winner=winnerName?' '+winnerName+' remporte la partie !':'';
+  let comment=result.success?pickFresh(['Bien joué !','Belle précision !','Propre, celle-là !','Ça, c’est fait !','Joli coup !']):pickFresh(['Dommage, on fera mieux !','Pas cette fois, on remet ça.','La cible a résisté !','Raté, mais on ne lâche rien !']);
+  if(result.success&&challengeId==='three20'&&darts.every(d=>d.kind==='single'&&d.value===20)&&Math.random()<0.22)comment+=' Twenty Boy !';
+  const status=result.success?'Défi réussi, un point.':'Défi raté, zéro point.';
+  const full=status+' '+comment+winner;
+  clearTimeout(autoPartyTimer);
+  ['pd1','pd2','pd3'].forEach(id=>$(id).value='');
+  choosePartyMultiplier('S');
+  $('partyCurrentScore').textContent='0 / 3 fléchettes saisies';
+  const nextName=remaining.length?remaining[0]:null;
+  if(nextName)$('partyPlayer').value=nextName;
+  const nextCall=nextName?' Au tour de '+nextName+' !':'';
+  persist();
+  $('partyScoreNotice').textContent=name+' : '+full+(winner?'':nextCall);
+  $('partyScoreNotice').classList.remove('hidden');
+  try{const spoken=full+nextCall;speak(spoken,spoken)}catch(voiceError){console.warn('Annonce vocale soirée indisponible',voiceError)}
+  if(winner){
+   activePartyChallenge=null;
+   partyChallengeCompleted=[];
+   partyChallengeDeck=[];
+   renderPartyScores();
+   return;
+  }
+  if(!remaining.length){
+   // Tous les participants ont joué : clôturer ce défi puis lancer le suivant automatiquement.
+   activePartyChallenge=null;
+   partyChallengeCompleted=[];
+   renderPartyScores();
+   window.setTimeout(()=>{
+    if(!activePartyChallenge)spinChallenge();
+   },900);
+  }
+ }finally{
+  partySubmissionLock=false;
+ }
 }
 function resetPartyScores(){if(!confirm('Remettre à zéro tous les scores du mode entre copains ?'))return;data.partyScores={};data.partyChallengePoints={};activePartyChallenge=null;partyChallengeCompleted=[];partyChallengeDeck=[];persist();renderPartyScores();toast('Compteurs remis à zéro.');}
 function renderAll(){renderPlayers();renderStats();showTrophies();renderResumePanel();renderPartyScores();$('scoreVoiceRow').style.display=data.settings.scoreVoice==='on'?'flex':'none';$('partyVoiceRow').style.display=data.settings.scoreVoice==='on'?'flex':'none';$('scoreVoiceSetting').value=data.settings.scoreVoice||'off';$('voiceSetting').value=data.settings.voice;$('speakerSetting').value=data.settings.speaker;$('voiceRate').value=data.settings.rate;renderVoiceChoices()}
