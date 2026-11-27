@@ -115,6 +115,7 @@ html,body{overscroll-behavior-y:contain;}
 <section id="settings" class="view">
  <div class="sectionhead"><h2>⚙️ Paramètres</h2></div>
  <div class="panel"><label>Saisie du score par reconnaissance vocale</label><select class="field" id="scoreVoiceSetting"><option value="off">Désactivée (par défaut)</option><option value="on">Activée</option></select><p class="footnote">Quand elle est activée, un bouton micro apparaît pendant la partie. Appuie dessus puis dicte tes trois fléchettes, par exemple : « triple vingt, double seize, vingt ». La saisie classique reste disponible et inchangée. La reconnaissance dépend du navigateur ; autorise le micro si demandé.</p><label>Commentaires vocaux</label><select class="field" id="voiceSetting"><option value="on">Activés (scores et commentaires)</option><option value="scores">Mode sérieux : score, récapitulatif et joueur suivant</option><option value="off">Désactivés</option></select><label>Personnalité du speaker</label><select class="field" id="speakerSetting"><option value="sarcastic">Arbitre sarcastique</option><option value="stadium">Speaker de stade</option><option value="coach">Coach motivant</option><option value="marseille">Marseillais</option><option value="funny">Humoristique</option><option value="neutral">Neutre</option></select><label>Voix de ton téléphone</label><select class="field" id="voiceChoice"><option value="">Voix française automatique</option></select><p class="footnote">Cette liste est propre à chaque appareil : chacun choisit une voix disponible sur son téléphone.</p><label>Vitesse de la voix</label><select class="field" id="voiceRate"><option value="0.9">Lent</option><option value="1.04">Normal</option><option value="1.2">Rapide</option></select><div class="row section"><button class="btn secondary" onclick="testVoice()">🔊 Tester la voix</button><button class="btn secondary" onclick="exportData()">Sauvegarder</button></div><label>Restaurer une sauvegarde JSON</label><input class="field" type="file" id="importFile" accept="application/json" onchange="importData(event)"><p class="footnote section">Les données restent sur cet appareil. Exporte régulièrement une sauvegarde pour ne pas perdre tes statistiques. La voix française dépend des voix installées sur ton téléphone.</p></div>
+ <div class="section panel"><h3>🧹 Gestion des données</h3><p class="muted">Supprime les statistiques, l’historique ou la partie en cours sauvegardée sur cet appareil. Ces actions sont définitives.</p><div class="row section"><button class="btn danger" onclick="clearStatistics()">Effacer les statistiques et l’historique</button></div><p class="footnote">Efface les matchs terminés, les statistiques des joueurs et les séances d’entraînement. Tes joueurs et tes réglages sont conservés.</p><div class="row section"><button class="btn danger" onclick="clearSavedMatchData()">Supprimer la partie sauvegardée</button></div><p class="footnote">Efface uniquement la partie en cours que tu peux reprendre depuis l’accueil.</p></div>
  <div class="section panel"><h3>À propos</h3><p class="muted">DARTS MANIA — Ça va piquer !<br>Version 2.0 • Jeu local hors connexion après installation.</p><p class="footnote">La reconnaissance automatique par caméra n'est pas incluse dans cette version : elle nécessite un module de vision calibré à la position réelle de la cible.</p></div>
 </section>
 </main>
@@ -135,6 +136,21 @@ const DEFAULTS={players:['Joueur 1','Joueur 2',...FRIEND_ROSTER],matches:[],trai
 let data=loadData(),match=loadActiveMatch(),setupType='501',setupOrder=[],cricketViewPlayer=0;
 function loadActiveMatch(){try{const raw=localStorage.getItem('dartsManiaActiveMatch');return raw?JSON.parse(raw):null}catch(e){return null}}
 function saveActiveMatch(){try{if(match&&!match.finished)localStorage.setItem('dartsManiaActiveMatch',JSON.stringify(match));else localStorage.removeItem('dartsManiaActiveMatch')}catch(e){toast('Impossible de sauvegarder la partie sur cet appareil.');}}
+function clearStatistics(){
+ if(!confirm("Effacer définitivement toutes les statistiques, les matchs terminés et les séances d’entraînement ? Les joueurs et les réglages seront conservés."))return;
+ data.matches=[];
+ data.training=[];
+ persist();
+ toast("Statistiques, historique et entraînements effacés.");
+}
+function clearSavedMatchData(){
+ if(!match&&!localStorage.getItem("dartsManiaActiveMatch"))return toast("Aucune partie sauvegardée.");
+ if(!confirm("Supprimer définitivement la partie en cours sauvegardée ?"))return;
+ match=null;
+ localStorage.removeItem("dartsManiaActiveMatch");
+ renderAll();
+ toast("Partie sauvegardée supprimée.");
+}
 function resumeMatch(){if(!match)return toast('Aucune partie sauvegardée.');show('match');renderMatch();toast('Partie reprise !')}
 function deleteSavedMatch(){if(!match)return;if(!confirm('Effacer définitivement la partie sauvegardée ?'))return;match=null;saveActiveMatch();renderAll();toast('Sauvegarde de partie effacée.')}
 function loadData(){try{const x=JSON.parse(localStorage.getItem('dartsManiaV2')||'null');if(!x)return structuredClone(DEFAULTS);const players=Array.isArray(x.players)?x.players.slice():DEFAULTS.players.slice();FRIEND_ROSTER.forEach(n=>{if(!players.some(p=>String(p).toLocaleLowerCase('fr')===n.toLocaleLowerCase('fr')))players.push(n)});return {...DEFAULTS,...x,players,settings:{...DEFAULTS.settings,...(x.settings||{})}}}catch(e){return structuredClone(DEFAULTS)}}
