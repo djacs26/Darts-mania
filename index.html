@@ -114,6 +114,7 @@ html,body{overscroll-behavior-y:contain;}
 
 <section id="settings" class="view">
  <div class="sectionhead"><h2>⚙️ Paramètres</h2></div>
+ <div class="section panel"><h3>🔄 Mise à jour</h3><p class="muted">Vérifie et charge la dernière version de DARTS MANIA sans passer par GitHub.</p><button class="btn" id="updateAppButton" onclick="checkForUpdates()">🔄 METTRE À JOUR</button><p class="footnote">Tes joueurs, réglages et statistiques restent enregistrés sur ce téléphone.</p></div>
  <div class="panel"><label>Saisie du score par reconnaissance vocale</label><select class="field" id="scoreVoiceSetting"><option value="off">Désactivée (par défaut)</option><option value="on">Activée</option></select><p class="footnote">Quand elle est activée, un bouton micro apparaît pendant la partie. Appuie dessus puis dicte tes trois fléchettes, par exemple : « triple vingt, double seize, vingt ». La saisie classique reste disponible et inchangée. La reconnaissance dépend du navigateur ; autorise le micro si demandé.</p><label>Commentaires vocaux</label><select class="field" id="voiceSetting"><option value="on">Activés (scores et commentaires)</option><option value="scores">Mode sérieux : score, récapitulatif et joueur suivant</option><option value="off">Désactivés</option></select><label>Personnalité du speaker</label><select class="field" id="speakerSetting"><option value="sarcastic">Arbitre sarcastique</option><option value="stadium">Speaker de stade</option><option value="coach">Coach motivant</option><option value="marseille">Marseillais</option><option value="funny">Humoristique</option><option value="neutral">Neutre</option></select><label>Voix de ton téléphone</label><select class="field" id="voiceChoice"><option value="">Voix française automatique</option></select><p class="footnote">Cette liste est propre à chaque appareil : chacun choisit une voix disponible sur son téléphone.</p><label>Vitesse de la voix</label><select class="field" id="voiceRate"><option value="0.9">Lent</option><option value="1.04">Normal</option><option value="1.2">Rapide</option></select><div class="row section"><button class="btn secondary" onclick="testVoice()">🔊 Tester la voix</button><button class="btn secondary" onclick="exportData()">Sauvegarder</button></div><label>Restaurer une sauvegarde JSON</label><input class="field" type="file" id="importFile" accept="application/json" onchange="importData(event)"><p class="footnote section">Les données restent sur cet appareil. Exporte régulièrement une sauvegarde pour ne pas perdre tes statistiques. La voix française dépend des voix installées sur ton téléphone.</p></div>
  <div class="section panel"><h3>🧹 Gestion des données</h3><p class="muted">Supprime les statistiques, l’historique ou la partie en cours sauvegardée sur cet appareil. Ces actions sont définitives.</p><div class="row section"><button class="btn danger" onclick="clearStatistics()">Effacer les statistiques et l’historique</button></div><p class="footnote">Efface les matchs terminés, les statistiques des joueurs et les séances d’entraînement. Tes joueurs et tes réglages sont conservés.</p><div class="row section"><button class="btn danger" onclick="clearSavedMatchData()">Supprimer la partie sauvegardée</button></div><p class="footnote">Efface uniquement la partie en cours que tu peux reprendre depuis l’accueil.</p></div>
  <div class="section panel"><h3>À propos</h3><p class="muted">DARTS MANIA — Ça va piquer !<br>Version 2.0 • Jeu local hors connexion après installation.</p><p class="footnote">La reconnaissance automatique par caméra n'est pas incluse dans cette version : elle nécessite un module de vision calibré à la position réelle de la cible.</p></div>
@@ -700,5 +701,20 @@ renderAll();
 if(match&&!match.finished){show('match');renderMatch();}
 window.addEventListener('pagehide',()=>{try{saveActiveMatch();}catch(e){}});
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden'){try{saveActiveMatch();}catch(e){}}});
+async function checkForUpdates(){
+ const button=$('updateAppButton');
+ if(button){button.disabled=true;button.textContent='VÉRIFICATION…'}
+ try{
+  if('serviceWorker'in navigator){
+   const registration=await navigator.serviceWorker.getRegistration('./');
+   if(registration)await registration.update();
+  }
+  toast('Vérification terminée. Rechargement de DARTS MANIA…');
+  setTimeout(()=>location.reload(),700);
+ }catch(error){
+  toast('Vérification impossible. Vérifie ta connexion puis réessaie.');
+  if(button){button.disabled=false;button.textContent='🔄 METTRE À JOUR'}
+ }
+}
 if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
 </script></body></html>
