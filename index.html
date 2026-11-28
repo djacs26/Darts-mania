@@ -737,8 +737,7 @@ function exportData(){let blob=new Blob([JSON.stringify(data,null,2)],{type:'app
 function importData(e){let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let x=JSON.parse(r.result);if(!Array.isArray(x.players)||!Array.isArray(x.matches))throw Error();data={...DEFAULTS,...x,settings:{...DEFAULTS.settings,...(x.settings||{})}};persist();toast('Sauvegarde restaurée.')}catch(err){toast('Fichier de sauvegarde invalide.')}};r.readAsText(f)}
 $('scoreVoiceSetting').addEventListener('change',e=>{data.settings.scoreVoice=e.target.value;persist();toast(e.target.value==='on'?'Saisie vocale activée.':'Saisie vocale désactivée.')});$('voiceSetting').addEventListener('change',e=>{data.settings.voice=e.target.value;persist()});$('speakerSetting').addEventListener('change',e=>{data.settings.speaker=e.target.value;persist()});$('voiceRate').addEventListener('change',e=>{data.settings.rate=e.target.value;persist()});$('voiceChoice').addEventListener('change',e=>{data.settings.voiceURI=e.target.value;persist();toast(e.target.value?'Voix sélectionnée.':'Voix française automatique.')});if('speechSynthesis'in window){renderVoiceChoices();window.speechSynthesis.onvoiceschanged=renderVoiceChoices;setTimeout(renderVoiceChoices,500)}
 renderAll();
-// Revenir directement à la partie sauvegardée après actualisation ou fermeture accidentelle.
-if(match&&!match.finished){show('match');renderMatch();}
+// Toujours ouvrir l'accueil au démarrage. La partie sauvegardée reste disponible via « Reprendre ma partie ».
 window.addEventListener('pagehide',()=>{try{saveActiveMatch();}catch(e){}});
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden'){try{saveActiveMatch();}catch(e){}}});
 async function checkForUpdates(){
