@@ -841,19 +841,32 @@ function schedulePartyAutoValidation(){
  updatePartyCurrent();
  schedulePartyAutoValidation();
 }));
-function speakPartyAnnouncement(text){
- if(!('speechSynthesis' in window))return;
+function speakPartyAnnouncement(text,onFinished){
+ if(!('speechSynthesis' in window)){if(typeof onFinished==='function')onFinished();return}
  const synth=window.speechSynthesis;
  synth.cancel();
- const voices=availableFrenchVoices();
- const selected=voices.find(v=>v.voiceURI===data.settings.voiceURI);
- const voice=selected||voices.find(v=>v.lang.toLowerCase()==='fr-fr')||voices[0];
- const style=data.settings.speaker||'sarcastic';
- const utterance=new SpeechSynthesisUtterance(text);
- utterance.lang='fr-FR';utterance.rate=Number(data.settings.rate||1.04);
- utterance.pitch=style==='stadium'?0.94:style==='funny'?1.2:style==='sarcastic'?1.12:1.05;
- if(voice)utterance.voice=voice;
- synth.speak(utterance);
+ const speakNow=()=>{
+  const voices=availableFrenchVoices();
+  const selected=voices.find(v=>v.voiceURI===data.settings.voiceURI);
+  const voice=selected||voices.find(v=>v.lang.toLowerCase()==='fr-fr')||voices[0];
+  const style=data.settings.speaker||'sarcastic';
+  const utterance=new SpeechSynthesisUtterance(String(text));
+  utterance.lang='fr-FR';utterance.rate=Number(data.settings.rate||1.04);
+  utterance.pitch=style==='stadium'?0.94:style==='funny'?1.2:style==='sarcastic'?1.12:1.05;
+  if(voice)utterance.voice=voice;
+  let finished=false;
+  const finish=()=>{if(finished)return;finished=true;if(typeof onFinished==='function')onFinished()};
+  utterance.onend=finish;utterance.onerror=finish;
+  synth.speak(utterance);
+  window.setTimeout(finish,Math.max(6500,String(text).length*95));
+ };
+ if(synth.getVoices().length)speakNow();
+ else{
+  let started=false;
+  const ready=()=>{if(started)return;started=true;synth.removeEventListener('voiceschanged',ready);speakNow()};
+  synth.addEventListener('voiceschanged',ready);
+  window.setTimeout(ready,700);
+ }
 }
 function addPartyScore(){
  if(partySubmissionLock)return;
@@ -889,7 +902,18 @@ function addPartyScore(){
   persist();
   $('partyScoreNotice').textContent=name+' : '+full+(winner?'':nextCall);
   $('partyScoreNotice').classList.remove('hidden');
-  try{const nextAnnouncement=winner?' Partie remportée !':(nextName?' Au tour de '+nextName+' !':(!remaining.length?' Au tour de '+participants[0]+' !':''));const spoken=total+' points. '+(result.success?'Défi réussi, un point ! ':'Défi raté, zéro point ! ')+comment+nextAnnouncement;speakPartyAnnouncement(spoken)}catch(voiceError){console.warn('Annonce vocale soirée indisponible',voiceError)}
+  const roundFinished=!remaining.length&&!winner;
+  const nextAnnouncement=winner?' '+winnerName+' remporte la partie !':(roundFinished?' Tout le monde a joué. Nouveau défi. Au tour de '+participants[0]+' !':(nextName?' Au tour de '+nextName+' !':''));
+  const spoken=total+' points. '+result.message+' '+comment+'.'+nextAnnouncement;
+  const finishAnnouncement=()=>{
+   if(roundFinished){
+    activePartyChallenge=null;
+    partyChallengeCompleted=[];
+    renderPartyScores();
+    if(!activePartyChallenge)spinChallenge(true);
+   }
+  };
+  try{speakPartyAnnouncement(spoken,finishAnnouncement)}catch(voiceError){console.warn('Annonce vocale soirée indisponible',voiceError);finishAnnouncement()}
   if(winner){
    activePartyChallenge=null;
    partyChallengeCompleted=[];
@@ -897,14 +921,9 @@ function addPartyScore(){
    renderPartyScores();
    return;
   }
-  if(!remaining.length){
-   // Tous les participants ont joué : clôturer ce défi puis lancer le suivant automatiquement.
-   activePartyChallenge=null;
-   partyChallengeCompleted=[];
+  if(roundFinished){
+   // La roue repart automatiquement après l'annonce complète du dernier joueur.
    renderPartyScores();
-   window.setTimeout(()=>{
-    if(!activePartyChallenge)spinChallenge(true);
-   },900);
   }
  }finally{
   partySubmissionLock=false;
