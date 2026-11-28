@@ -841,44 +841,54 @@ function schedulePartyAutoValidation(){
  updatePartyCurrent();
  schedulePartyAutoValidation();
 }));
+let partySpeechQueue=[],partySpeechPlaying=false;
 function speakPartyAnnouncement(text){
  if(!('speechSynthesis' in window))return;
- const synth=window.speechSynthesis;
- synth.cancel();
- const startSpeaking=()=>{
+ partySpeechQueue.push(String(text));
+ if(partySpeechPlaying)return;
+ const playNext=()=>{
+  if(!partySpeechQueue.length){partySpeechPlaying=false;return;}
+  partySpeechPlaying=true;
+  const synth=window.speechSynthesis;
+  const message=partySpeechQueue.shift();
   const voices=availableFrenchVoices();
   const selected=voices.find(v=>v.voiceURI===data.settings.voiceURI);
   const voice=selected||voices.find(v=>String(v.lang||'').toLowerCase()==='fr-fr')||voices.find(v=>String(v.lang||'').toLowerCase().startsWith('fr'))||voices[0];
   const style=data.settings.speaker||'sarcastic';
-  const utterance=new SpeechSynthesisUtterance(String(text));
+  const utterance=new SpeechSynthesisUtterance(message);
   utterance.lang='fr-FR';
   utterance.rate=Number(data.settings.rate||1.04);
   utterance.pitch=style==='stadium'?0.94:style==='funny'?1.2:style==='sarcastic'?1.12:1.05;
   utterance.volume=1;
   if(voice)utterance.voice=voice;
-  synth.speak(utterance);
+  const finish=()=>{
+   if(!partySpeechPlaying)return;
+   partySpeechPlaying=false;
+   window.setTimeout(playNext,80);
+  };
+  utterance.onend=finish;
+  utterance.onerror=finish;
+  try{synth.speak(utterance)}catch(e){finish()}
  };
- if(synth.getVoices().length)startSpeaking();
- else{
-  let started=false;
-  const ready=()=>{if(started)return;started=true;synth.removeEventListener('voiceschanged',ready);startSpeaking()};
-  synth.addEventListener('voiceschanged',ready);
-  window.setTimeout(ready,900);
- }
+ playNext();
 }
 function addPartyScore(){
  if(partySubmissionLock)return;
  if(!activePartyChallenge)return toast('Fais d’abord tourner la roue pour obtenir un défi.');
  const participants=getPartyParticipants();
  const name=$('partyPlayer').value;
- const raw=['pd1','pd2','pd3'].map(id=>$(id).value.trim());
- const darts=raw.map(parseDart);
- if(darts.some(x=>x===null)||darts.length!==3||darts.some(x=>!x.thrown))return toast('Saisis les trois fléchettes avant de valider le défi.');
- if(!participants.includes(name))return toast('Ce joueur ne participe pas à cette série de défis.');
- if(partyChallengeCompleted.includes(name))return toast(name+' a déjà joué ce défi.');
+ const expectedPlayer=participants.find(n=>!partyChallengeCompleted.includes(n));
+ if(!expectedPlayer)return toast('Tous les joueurs ont déjà joué ce défi.');
+ if(name!==expectedPlayer){
+  $('partyPlayer').value=expectedPlayer;
+  updatePartyTurnLabels();
+  return toast('C’est au tour de '+expectedPlayer+'.');
+ }
+ const darts=['pd1','pd2','pd3'].map(id=>parseDart($(id).value.trim()));
+ if(darts.some(d=>!d||!d.thrown))return toast('Saisis les trois fléchettes avant de valider le défi.');
  partySubmissionLock=true;
  try{
-  const total=darts.reduce((a,x)=>a+x.value,0);
+  const total=darts.reduce((sum,d)=>sum+d.value,0);
   const result=evaluatePartyChallenge(darts,total);
   data.partyChallengePoints=data.partyChallengePoints||{};
   data.partyChallengePoints[name]=(Number(data.partyChallengePoints[name])||0)+(result.success?1:0);
@@ -890,8 +900,7 @@ function addPartyScore(){
    ?pickFresh(['Bien joué !','Belle précision !','Propre, celle-là !','Ça, c’est fait !','Joli coup !'])
    :pickFresh(['Dommage, on fera mieux !','Pas cette fois, on remet ça.','La cible a résisté !','Raté, mais on ne lâche rien !']);
   const scoreText=name+' : '+total+' points. '+(result.success?'Défi réussi, un point.':'Défi raté, zéro point.');
-  const challengeComment=result.message|| (result.success?'Défi réussi.':'Défi raté.');
-  const nextName=roundFinished?null:participants.find(n=>!partyChallengeCompleted.includes(n));
+  const challengeComment=result.message||(result.success?'Défi réussi.':'Défi raté.');
   clearTimeout(autoPartyTimer);
   ['pd1','pd2','pd3'].forEach(id=>$(id).value='');
   choosePartyMultiplier('S');
@@ -910,74 +919,27 @@ function addPartyScore(){
   if(roundFinished){
    activePartyChallenge=null;
    partyChallengeCompleted=[];
-   $('partyPlayer').value=participants[0];
+   const firstPlayer=participants[0];
+   $('partyPlayer').value=firstPlayer;
    updatePartyTurnLabels();
    spinChallenge(true);
-   const nextChallenge=activePartyChallenge?activePartyChallenge.label:'Nouveau défi.';
-   const first=participants[0];
-   $('partyScoreNotice').textContent=scoreText+' '+comment+' Nouveau défi : '+nextChallenge+' '+first+' commence.';
-   $('partyScoreNotice').classList.remove('hidden');
-   speakPartyAnnouncement(scoreText+' '+challengeComment+' '+comment+' Tout le monde a joué. Nouveau défi : '+nextChallenge+' '+first+', tu commences !');
+   if(activePartyChallenge){
+    const nextChallenge=activePartyChallenge.label;
+    $('partyScoreNotice').textContent=scoreText+' '+comment+' Nouveau défi : '+nextChallenge+' '+firstPlayer+' commence.';
+    $('partyScoreNotice').classList.remove('hidden');
+    speakPartyAnnouncement(scoreText+' '+challengeComment+' '+comment+' Tout le monde a joué. Nouveau défi : '+nextChallenge+' '+firstPlayer+', tu commences !');
+   }else{
+    $('partyScoreNotice').textContent=scoreText+' '+comment+' '+(firstPlayer||'')+' : la partie est terminée.';
+    $('partyScoreNotice').classList.remove('hidden');
+    speakPartyAnnouncement(scoreText+' '+challengeComment+' '+comment+' La partie est terminée.');
+   }
   }else{
-   $('partyPlayer').value=nextName;
+   const nextPlayer=participants.find(n=>!partyChallengeCompleted.includes(n));
+   $('partyPlayer').value=nextPlayer;
    updatePartyTurnLabels();
-   $('partyScoreNotice').textContent=scoreText+' '+comment+' À toi '+nextName+' !';
+   $('partyScoreNotice').textContent=scoreText+' '+comment+' À toi, '+nextPlayer+' !';
    $('partyScoreNotice').classList.remove('hidden');
-   speakPartyAnnouncement(scoreText+' '+challengeComment+' '+comment+' À toi '+nextName+', tu commences !');
-  }
- }finally{
-  partySubmissionLock=false;
- }
-}
-function addPartyScore(){
- if(partySubmissionLock)return;
- const name=$('partyPlayer').value,raw=['pd1','pd2','pd3'].map(id=>$(id).value.trim()),darts=raw.map(parseDart);
- if(darts.some(x=>x===null))return toast('Saisie invalide. Vérifie les trois fléchettes.');
- if(darts.length!==3||darts.some(x=>!x.thrown))return toast('Saisis les trois fléchettes avant de valider le défi.');
- if(!activePartyChallenge)return toast('Fais d’abord tourner la roue pour obtenir un défi.');
- const participants=getPartyParticipants();
- if(!participants.includes(name))return toast('Ce joueur ne participe pas à cette série de défis.');
- if(partyChallengeCompleted.includes(name))return toast(name+' a déjà joué ce défi.');
- partySubmissionLock=true;
- try{
-  const total=darts.reduce((a,x)=>a+x.value,0),result=evaluatePartyChallenge(darts,total);
-  data.partyChallengePoints=data.partyChallengePoints||{};
-  data.partyChallengePoints[name]=(Number(data.partyChallengePoints[name])||0)+(result.success?1:0);
-  partyChallengeCompleted.push(name);
-  const target=Number(data.partyTarget)||10;
-  const roundFinished=participants.every(n=>partyChallengeCompleted.includes(n));
-  const winnerName=roundFinished?participants.find(n=>(Number(data.partyChallengePoints[n])||0)>=target):null;
-  let comment=result.success?pickFresh(['Bien joué !','Belle précision !','Propre, celle-là !','Ça, c’est fait !','Joli coup !']):pickFresh(['Dommage, on fera mieux !','Pas cette fois, on remet ça.','La cible a résisté !','Raté, mais on ne lâche rien !']);
-  const scoreText=name+' : '+total+' points. '+(result.success?'Défi réussi, un point.':'Défi raté, zéro point.');
-  const nextName=roundFinished?null:participants.find(n=>!partyChallengeCompleted.includes(n));
-  const spoken=scoreText+' '+(result.message||'')+' '+comment+(winnerName?' '+winnerName+' remporte la partie !':nextName?' À toi, '+nextName+' !':' Tout le monde a joué. Le défi est terminé.');
-  clearTimeout(autoPartyTimer);
-  ['pd1','pd2','pd3'].forEach(id=>$(id).value='');
-  choosePartyMultiplier('S');
-  $('partyCurrentScore').textContent='0 / 3 fléchettes saisies';
-  if(nextName)$('partyPlayer').value=nextName;
-  updatePartyTurnLabels();
-  persist();
-  $('partyScoreNotice').textContent=scoreText+' '+comment+(winnerName?' '+winnerName+' remporte la partie !':nextName?' À toi, '+nextName+' !':' Nouveau défi automatique après ce tour.');
-  $('partyScoreNotice').classList.remove('hidden');
-  renderPartyScores();
-  if(winnerName){
-   activePartyChallenge=null;partyChallengeCompleted=[];partyChallengeDeck=[];
-   speakPartyAnnouncement(spoken);
-   return;
-  }
-  if(roundFinished){
-   activePartyChallenge=null;
-   partyChallengeCompleted=[];
-   const first=participants[0];
-   $('partyPlayer').value=first;updatePartyTurnLabels();
-   speakPartyAnnouncement(spoken,()=>{
-    window.setTimeout(()=>{
-     if(!activePartyChallenge)spinChallenge(true);
-    },900);
-   });
-  }else{
-   speakPartyAnnouncement(spoken);
+   speakPartyAnnouncement(scoreText+' '+challengeComment+' '+comment+' À toi, '+nextPlayer+', tu commences !');
   }
  }finally{
   partySubmissionLock=false;
