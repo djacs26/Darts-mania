@@ -832,10 +832,10 @@ let autoPartyTimer=null,partySubmissionLock=false;
 function schedulePartyAutoValidation(){
  clearTimeout(autoPartyTimer);
  autoPartyTimer=setTimeout(()=>{
-  if(partySubmissionLock)return;
+  if(partySubmissionLock||!activePartyChallenge)return;
   const entered=['pd1','pd2','pd3'].map(id=>parseDart($(id).value));
   if(entered.length===3&&entered.every(d=>d&&d.thrown))addPartyScore();
- },300);
+ },450);
 }
 ['pd1','pd2','pd3'].forEach(id=>$(id).addEventListener('input',()=>{
  updatePartyCurrent();
@@ -905,15 +905,7 @@ function addPartyScore(){
   const roundFinished=!remaining.length&&!winner;
   const nextAnnouncement=winner?' '+winnerName+' remporte la partie !':(roundFinished?' Tout le monde a joué. Nouveau défi. Au tour de '+participants[0]+' !':(nextName?' Au tour de '+nextName+' !':''));
   const spoken=total+' points. '+result.message+' '+comment+'.'+nextAnnouncement;
-  const finishAnnouncement=()=>{
-   if(roundFinished){
-    activePartyChallenge=null;
-    partyChallengeCompleted=[];
-    renderPartyScores();
-    if(!activePartyChallenge)spinChallenge(true);
-   }
-  };
-  try{speakPartyAnnouncement(spoken,finishAnnouncement)}catch(voiceError){console.warn('Annonce vocale soirée indisponible',voiceError);finishAnnouncement()}
+  try{speakPartyAnnouncement(spoken)}catch(voiceError){console.warn('Annonce vocale soirée indisponible',voiceError)}
   if(winner){
    activePartyChallenge=null;
    partyChallengeCompleted=[];
@@ -922,8 +914,14 @@ function addPartyScore(){
    return;
   }
   if(roundFinished){
-   // La roue repart automatiquement après l'annonce complète du dernier joueur.
+   // Libérer immédiatement le défi terminé : les saisies sont déjà effacées.
+   // La roue repart indépendamment de la fin de la synthèse vocale de Chrome.
+   activePartyChallenge=null;
+   partyChallengeCompleted=[];
    renderPartyScores();
+   window.setTimeout(()=>{
+    if(!activePartyChallenge)spinChallenge(true);
+   },1800);
   }
  }finally{
   partySubmissionLock=false;
