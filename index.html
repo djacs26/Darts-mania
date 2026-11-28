@@ -178,29 +178,32 @@ function updateCricketVariantHelp(){const v=$('cricketVariant')?.value||'standar
 $('cricketVariant')?.addEventListener('change',updateCricketVariantHelp);
 function historicalVisitsFor(name){return data.matches.flatMap(m=>{const idx=(m.names||[]).indexOf(name);return idx<0?[]:(m.visits||[]).filter(v=>v.player===idx&&!v.bust&&!v.cricket)});}
 function personalizedWelcome(names){
- const lines=[];
- for(const name of names){
+ const intros=[];
+ const openings=['Mesdames et messieurs, attachez vos ceintures !','La salle est chaude, la cible est prête…','Place aux artistes… enfin, on va voir ça !','Que le meilleur gagne, et que les autres trouvent une excuse !'];
+ intros.push(pickFresh(openings));
+ names.forEach((name,index)=>{
   const h=historicalVisitsFor(name);
   const played=data.matches.filter(m=>(m.names||[]).includes(name)).length;
+  let profile;
   if(h.length<5){
-   lines.push(played===0
-    ? name+', bienvenue sur la ligne de tir ! Première présentation, fais parler les fléchettes !'
-    : name+', on te connaît encore peu. À toi de montrer ton niveau !');
-   continue;
+   profile=played===0
+    ?pickFresh(['nouveau visage dans l’arène : aucune statistique, donc aucune excuse !','première apparition au grand cirque des fléchettes. La légende commence… ou pas !','mystère total sur son niveau. Même la cible retient son souffle !','il vient pour se faire un nom. Espérons que les fléchettes connaissent le chemin !'])
+    :pickFresh(['on n’a pas encore assez de chiffres pour le juger… mais on a déjà quelques soupçons !','les statistiques sont discrètes, alors ce soir c’est le moment de faire du bruit !','il revient avec une mission : faire mentir les mauvaises langues !']);
+  }else{
+   const avg=h.reduce((a,v)=>a+(Number(v.total)||0),0)/h.length;
+   const recent=h.slice(-9),recentAvg=recent.reduce((a,v)=>a+(Number(v.total)||0),0)/recent.length;
+   const avgText=Math.round(avg);
+   if(avg>=100)profile=pickFresh(['tourne à '+avgText+' points de moyenne. Un vrai client… quand il est réveillé !','affiche '+avgText+' de moyenne. La cible a demandé un arrêt maladie !','est à '+avgText+' points de moyenne. Les autres sont priés de ne pas regarder le tableau !']);
+   else if(avg>=75)profile=pickFresh(['tourne à '+avgText+' de moyenne. Assez dangereux pour gâcher la soirée des copains !','affiche '+avgText+' points de moyenne. Il a le bras, reste à savoir s’il a les nerfs !','est à '+avgText+' points de moyenne. Un adversaire sérieux… enfin, sur le papier !']);
+   else if(avg>=50)profile=pickFresh(['est à '+avgText+' points de moyenne. Capable du meilleur comme d’un joli détour dans le triple 5 !','tourne à '+avgText+' de moyenne. Il peut surprendre, surtout lui-même !','affiche '+avgText+' points. Le potentiel est là, la précision est encore en négociation !']);
+   else profile=pickFresh(['est à '+avgText+' points de moyenne. Il ne vise pas toujours la cible, mais il visite le quartier !','tourne à '+avgText+' points de moyenne. Ce soir, chaque triple sera célébré comme un titre mondial !','affiche '+avgText+' points. La régularité est en chantier, mais le chantier avance !']);
+   if(recentAvg>=avg+12)profile+=' Attention, sa forme récente monte : il commence à devenir gênant !';
+   else if(recentAvg<=avg-12)profile+=' Petite baisse récente : il est temps de réveiller le bras !';
   }
-  const avg=h.reduce((a,v)=>a+(Number(v.total)||0),0)/h.length;
-  const recent=h.slice(-9);
-  const recentAvg=recent.reduce((a,v)=>a+(Number(v.total)||0),0)/recent.length;
-  let intro;
-  if(avg>=100)intro=pickFresh(['tu fais partie des gros scoreurs. Les autres, attention à lui !','tu arrives avec un sacré niveau. Tu es attendu au tournant !','tu es parmi les joueurs les plus solides. Montre-nous ça !']);
-  else if(avg>=75)intro=pickFresh(['tu as un bon niveau et de belles moyennes. Il va falloir compter avec toi !','tu es un joueur confirmé. À toi de mettre la pression !','tu sais envoyer de belles volées. Les adversaires sont prévenus !']);
-  else if(avg>=50)intro=pickFresh(['tu as un niveau intermédiaire et tu peux créer la surprise !','tu progresses avec de bonnes bases. Place au jeu !','tu as de quoi rivaliser. Reste régulier !']);
-  else intro=pickFresh(['tu es encore en apprentissage, mais chaque volée compte. Fais-toi plaisir !','tu construis ton jeu et tu viens chercher des points. À toi de jouer !','tu as une belle marge de progression. La partie commence maintenant !']);
-  if(recentAvg>=avg+12)intro+=' En plus, ta forme récente est en hausse !';
-  else if(recentAvg<=avg-12)intro+=' On sait que tu peux retrouver ton meilleur niveau !';
-  lines.push(name+', '+intro);
- }
- return lines.join(' ');
+  intros.push('Voici '+name+' ! '+profile);
+ });
+ intros.push(pickFresh(['Les présentations sont faites. Maintenant, on range les excuses et on sort les triples !','Que les fléchettes parlent : la mauvaise foi sera acceptée après le match !','La cible n’a pas de préférence. Elle va distribuer les humiliations équitablement !','Joueurs en place : que le spectacle commence, et que les mauvais perdants restent polis !']));
+ return intros.join(' ');
 }
 function personalizedScoreComment(name,score){const h=historicalVisitsFor(name);if(h.length<5)return '';const avg=h.reduce((a,v)=>a+(Number(v.total)||0),0)/h.length;const recent=h.slice(-6);const recentAvg=recent.reduce((a,v)=>a+(Number(v.total)||0),0)/recent.length;if(score>=100&&avg<45)return pickFresh([name+' nous sort enfin le grand jeu ! Les autres, ouvrez les yeux !',name+' vient de faire mentir les statistiques. Ça, c’est une réponse !']);if(score<=35&&avg>=85)return pickFresh(name+' d’habitude tu fais trembler la cible… les autres peuvent respirer pour cette fois !');if(score>=120&&recentAvg>=85)return pickFresh([name+' confirme sa grande forme. Les autres, accrochez-vous !',name+' enchaîne : la concurrence va devoir s’employer !']);if(score<=25&&avg<=35)return pickFresh([name+', les statistiques sont formelles : il va falloir s’entraîner !',name+', même tes anciennes parties demandent un peu plus de points !']);return '';}
 function beginMatch(){if(match&&!match.finished&&!confirm('Une partie est déjà en cours. La remplacer par une nouvelle partie ?'))return;const n=setupOrder.length,names=setupOrder.slice();if(n<1)return toast('Sélectionne au moins un joueur.');if(n>8)return toast('Maximum 8 joueurs par partie.');const game=$('gameType').value,teamMode=!!$('teamMode').checked;if(teamMode&&n<4)return toast('Il faut au moins quatre joueurs pour former deux équipes.');if(teamMode&&n%2!==0)return toast('Pour jouer en équipes de deux, choisis un nombre pair de joueurs.');const startScore=game==='Cricket'?0:Number($('startScore').value);const cricketVariant=game==='Cricket'?($('cricketVariant')?.value||'standard'):'standard';const cricketKeys=cricketVariant==='drop10'?[10,9,8,7,6,5,25]:cricketVariant==='nobull'?[20,19,18,17,16,15]:[20,19,18,17,16,15,25];const newCricketState=()=>({marks:Object.fromEntries(cricketKeys.map(k=>[k,0])),points:0});let teams=[];if(teamMode){const count=n/2,groups=Array.from({length:count},(_,i)=>names.map((name,index)=>setupTeamAssignments[index]===i?index:-1).filter(index=>index>=0));if(groups.some(g=>g.length!==2))return toast('Chaque équipe doit contenir exactement deux joueurs. Répartis les joueurs avant de lancer.');teams=groups.map((members,i)=>({name:(setupTeamNames[i]||'').trim()||'Équipe '+(i+1),members,remaining:startScore,legsWon:0}));}match={id:'match-'+Date.now()+'-'+Math.random().toString(36).slice(2,8),game,names,teamMode,teams,remaining:names.map(()=>startScore),active:0,visits:[],finished:false,leg:1,legsToWin:Math.ceil(Number($('legs').value)/2),legsWon:names.map(()=>0),startScore:startScore,outRule:$('outRule').value,cricketVariant,cricketKeys,cricket:names.map(()=>newCricketState()),teamCricket:teamMode?teams.map(()=>newCricketState()):[],pendingCricket:[],pendingCricketBefore:null,pendingCricketTarget:null,cricketMultiplier:1};saveActiveMatch();show('match');renderMatch();const welcome=personalizedWelcome(names);speak(pickFresh(['Allez, c’est parti ! Faites chauffer les poignets.','La partie commence. On garde son calme et on vise juste.','À vous de jouer ! Que la meilleure main gagne.','En place ! La cible n’attend plus que vous.','Bon match à tous. Et que les fléchettes soient avec vous.'])+(welcome?' '+welcome:''));}
