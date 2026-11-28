@@ -153,11 +153,13 @@ html,body{overscroll-behavior-y:contain;}
   <div class="panel party-players">
    <div class="party-title">👥 JOUEURS (<span id="partyPlayerCount">0</span>)</div>
    <details class="party-menu"><summary>⚙️ Gérer les participants <span>＋</span></summary>
-    <label>Score à atteindre</label><select class="field" id="partyTarget"><option value="10" selected>10 points</option><option value="20">20 points</option></select>
+    <label>Ajouter un joueur pour cette partie</label>
+    <div class="row"><input class="field" id="partyNewPlayer" maxlength="22" placeholder="Prénom du joueur"><button class="btn" type="button" onclick="addPartyParticipant()">＋</button></div>
     <div id="partyParticipantList" class="players section"></div>
+    <label>Score à atteindre</label><select class="field" id="partyTarget"><option value="10" selected>10 points</option><option value="20">20 points</option></select>
     <button class="btn secondary" type="button" onclick="resetPartyScores()">↻ Remettre les scores à zéro</button>
    </details>
-   <div class="party-player-hint">Participants sélectionnés dans les réglages</div>
+   <div class="party-player-hint">Inscris ici les joueurs de cette partie. Cela ne modifie pas tes profils habituels.</div>
   </div>
   <div class="panel party-wheel">
    <div class="party-title">🎡 LA ROUE DES DÉFIS</div>
@@ -683,7 +685,7 @@ const PARTY_CHALLENGES=[
  {id:'noBull',label:'Défi : ne touche aucun bull (25 ou 50).',success:'Aucun bull : défi réussi !',near:'Le bull s’est invité : défi raté.',fail:'Bull touché : défi raté.'}
 ];
 let partyChallengeDeck=[];
-function spinChallenge(){if(activePartyChallenge)return toast('Tout le monde doit terminer le défi en cours.');if(getPartyParticipants().length<2)return toast('Choisis au moins deux joueurs pour ce défi.');const target=Number(data.partyTarget)||10;if(getPartyParticipants().some(n=>Number((data.partyChallengePoints||{})[n])>=target))return toast('La partie est gagnée. Remets les compteurs à zéro pour recommencer.');if(!partyChallengeDeck.length){partyChallengeDeck=PARTY_CHALLENGES.slice();for(let i=partyChallengeDeck.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[partyChallengeDeck[i],partyChallengeDeck[j]]=[partyChallengeDeck[j],partyChallengeDeck[i]]}}activePartyChallenge=partyChallengeDeck.pop();partyChallengeCompleted=[];const firstParticipant=getPartyParticipants()[0];$('challenge').textContent=activePartyChallenge.label+' — même défi pour tous les joueurs';$('challenge').classList.remove('hidden');renderPartyScores();if(firstParticipant)$('partyPlayer').value=firstParticipant;speak(activePartyChallenge.label+(firstParticipant?' . Au tour de '+firstParticipant+' !':''))}
+function spinChallenge(){if(activePartyChallenge)return toast('Tout le monde doit terminer le défi en cours.');if(getPartyParticipants().length<2)return toast('Inscris au moins deux joueurs dans le menu des participants.');const target=Number(data.partyTarget)||10;if(getPartyParticipants().some(n=>Number((data.partyChallengePoints||{})[n])>=target))return toast('La partie est gagnée. Remets les compteurs à zéro pour recommencer.');if(!partyChallengeDeck.length){partyChallengeDeck=PARTY_CHALLENGES.slice();for(let i=partyChallengeDeck.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[partyChallengeDeck[i],partyChallengeDeck[j]]=[partyChallengeDeck[j],partyChallengeDeck[i]]}}activePartyChallenge=partyChallengeDeck.pop();partyChallengeCompleted=[];const firstParticipant=getPartyParticipants()[0];$('challenge').textContent=activePartyChallenge.label+' — même défi pour tous les joueurs';$('challenge').classList.remove('hidden');renderPartyScores();if(firstParticipant)$('partyPlayer').value=firstParticipant;speak(activePartyChallenge.label+(firstParticipant?' . Au tour de '+firstParticipant+' !':''))}
 function partyBaseNumber(d){
  if(d.kind==='singleBull'||d.kind==='doubleBull')return 25;
  if(d.kind==='miss'||d.kind==='empty')return 0;
@@ -742,19 +744,30 @@ function testVoice(){speak('Bienvenue dans Darts Mania. Prépare ton bras, champ
 function showTrophies(){let visits=data.matches.flatMap(m=>m.visits||[]),good=visits.filter(v=>!v.bust),best=good.length?Math.max(...good.map(v=>v.total)):0,low=good.filter(v=>v.total<=25).length,one80=good.filter(v=>v.total===180).length;let arr=[['🏆','Roi du 180',one80+' fois'],['🥴','Roi du 26',good.filter(v=>v.total===26).length+' fois'],['🧱','Roi du presque',low+' volées sous 26'],['🎯','Gros bras',best+' points record']];$('trophies').innerHTML=arr.map(a=>`<div class="tile"><div class="emoji">${a[0]}</div><b>${a[1]}</b><small>${a[2]}</small></div>`).join('')}
 function renderStats(){let all=data.matches.flatMap(m=>m.visits||[]),valid=all.filter(v=>!v.cricket),scoring=valid.filter(v=>!v.bust),totalDarts=valid.reduce((a,v)=>a+(v.dartsThrown||3),0),avg=totalDarts?scoring.reduce((a,v)=>a+v.total,0)/totalDarts*3:0,checkout=all.filter(v=>v.after===0&&!v.bust).length,low=valid.filter(v=>v.total<=25).length,best=valid.length?Math.max(...valid.map(v=>v.total)):0,one80=valid.filter(v=>v.total===180).length;$('homeMatches').textContent=data.matches.length;$('home180').textContent=one80;$('homeAvg').textContent=avg?avg.toFixed(1):'—';$('statMatches').textContent=data.matches.length;$('stat180').textContent=one80;$('statLow').textContent=low;$('statAvg').textContent=avg?avg.toFixed(1):'—';$('statBest').textContent=best||'—';$('statCheckout').textContent=checkout;$('trainCount').textContent=data.training.length;$('trainAvg').textContent=data.training.length?(data.training.reduce((a,x)=>a+x.score,0)/data.training.length).toFixed(1):'—';$('trainBest').textContent=data.training.length?Math.max(...data.training.map(x=>x.score)):'—';$('trainingHistory').innerHTML=data.training.slice(-8).reverse().map(x=>`<div class="historyitem"><span>${esc(x.exercise)}</span><b>${x.score}</b></div>`).join('')||'<span class="muted">Aucune séance enregistrée.</span>';$('matchHistory').innerHTML=data.matches.slice().reverse().map(m=>`<div class="historyitem"><span>🏆 ${esc(m.winner)} · ${esc(m.game)}</span><small>${new Date(m.date).toLocaleDateString('fr-FR')}</small></div>`).join('')||'Aucun match terminé.';$('homeRecent').innerHTML=data.matches.length?data.matches.slice(-3).reverse().map(m=>`<div class="historyitem"><span>${esc(m.winner)} · ${esc(m.game)}</span><small>${new Date(m.date).toLocaleDateString('fr-FR')}</small></div>`).join(''):'Pas encore de match. La cible attend son heure.';$('playerStats').innerHTML=data.players.map(name=>{let pv=data.matches.flatMap(m=>(m.visits||[]).filter(v=>m.names[v.player]===name));let scored=pv.filter(v=>!v.cricket);let darts=scored.reduce((a,v)=>a+(v.dartsThrown||3),0);let av=darts?scored.filter(v=>!v.bust).reduce((a,v)=>a+v.total,0)/darts*3:0;let wins=data.matches.filter(m=>m.winner===name).length;return `<div class="historyitem"><span>${esc(name)} · ${wins} victoire(s)</span><b>${av?av.toFixed(1)+' / 3 flèches':'—'}</b></div>`}).join('')}
 function renderResumePanel(){const panel=$('resumePanel');if(!panel)return;panel.classList.toggle('hidden',!match||match.finished);if(match&&!match.finished)$('resumeSummary').textContent=match.game+' · '+match.names.join(' / ')+' · '+match.visits.length+' volée(s) enregistrée(s)';}
-function getPartyParticipants(){let list=Array.isArray(data.partyParticipants)?data.partyParticipants.filter(n=>data.players.includes(n)):[];if(!list.length)list=data.players.slice(0,2);return list}
+function getPartyParticipants(){return Array.isArray(data.partyParticipants)?data.partyParticipants.filter(n=>typeof n==='string'&&n.trim()):[]}
 function updatePartyTurnLabels(){const current=$('partyPlayer')?.value||'—';if($('partyActiveName'))$('partyActiveName').textContent=current;if($('partyNextName'))$('partyNextName').textContent=current;}
+function addPartyParticipant(){
+ if(activePartyChallenge)return toast('Termine le défi en cours avant de modifier les joueurs.');
+ const field=$('partyNewPlayer'),name=field.value.trim();
+ if(!name)return toast('Saisis un prénom.');
+ const participants=getPartyParticipants();
+ if(participants.some(n=>n.toLocaleLowerCase('fr')===name.toLocaleLowerCase('fr')))return toast('Ce joueur est déjà inscrit.');
+ data.partyParticipants=[...participants,name];data.partyChallengePoints=data.partyChallengePoints||{};data.partyChallengePoints[name]=0;field.value='';partyChallengeCompleted=[];persist();
+}
+function removePartyParticipant(name){
+ if(activePartyChallenge)return toast('Termine le défi en cours avant de modifier les joueurs.');
+ data.partyParticipants=getPartyParticipants().filter(n=>n!==name);partyChallengeCompleted=[];persist();
+}
 function renderPartyScores(){
  const participants=getPartyParticipants(),list=$('partyParticipantList');
- if($('partyPlayerCount'))$('partyPlayerCount').textContent=participants.length;if(list){list.innerHTML=data.players.map(n=>`<label class="player" style="display:flex;align-items:center;gap:8px"><input type="checkbox" value="${esc(n)}" ${participants.includes(n)?'checked':''} ${activePartyChallenge?'disabled':''} onchange="togglePartyParticipant(this)" style="width:18px;height:18px"><span>${esc(n)}</span></label>`).join('')}
+ if($('partyPlayerCount'))$('partyPlayerCount').textContent=participants.length;
+ if(list){list.innerHTML=participants.map(n=>'<div class="player" style="display:flex;align-items:center;gap:8px"><span class="name">'+esc(n)+'</span><button class="btn secondary" type="button" style="padding:6px 9px" onclick="removePartyParticipant(\''+esc(n).replace(/'/g,"&#39;")+'\')" '+(activePartyChallenge?'disabled':'')+'>Retirer</button></div>').join('')||'<p class="muted">Aucun joueur inscrit pour cette partie.</p>'}
  const select=$('partyPlayer');if(!select)return;const current=select.value;select.innerHTML=participants.map(n=>'<option value="'+esc(n)+'">'+esc(n)+'</option>').join('');if(participants.includes(current))select.value=current;
  updatePartyTurnLabels();
  const target=Number(data.partyTarget)||10;if($('partyTarget'))$('partyTarget').value=String(target);
  const scores=data.partyChallengePoints||{};const rows=participants.map(n=>({name:n,total:Number(scores[n])||0})).sort((a,b)=>b.total-a.total);
- $('partyScoreBoard').innerHTML=rows.length?rows.map((x,i)=>'<div class="historyitem"><span>'+(i+1)+'. '+esc(x.name)+(x.total>=target?' · OBJECTIF ATTEINT':'')+'</span><b>'+x.total+' / '+target+' pts</b></div>').join(''):'Choisis les joueurs qui participent.';
+ $('partyScoreBoard').innerHTML=rows.length?rows.map((x,i)=>'<div class="historyitem"><span>'+(i+1)+'. '+esc(x.name)+(x.total>=target?' · OBJECTIF ATTEINT':'')+'</span><b>'+x.total+' / '+target+' pts</b></div>').join(''):'Ajoute les joueurs de cette partie.';
 }
-function togglePartyParticipant(input){if(activePartyChallenge)return toast('Terminez le défi en cours avant de changer les joueurs.');const selected=[...document.querySelectorAll('#partyParticipantList input:checked')].map(x=>x.value);if(selected.length<2){input.checked=true;return toast('Il faut au moins deux joueurs.')}data.partyParticipants=selected;partyChallengeCompleted=[];persist();}
-
 function updatePartyTarget(){data.partyTarget=Number($('partyTarget').value)||10;persist();}
 if($('partyTarget'))$('partyTarget').addEventListener('change',updatePartyTarget);
 let partyMultiplier='S';
