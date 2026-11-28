@@ -766,5 +766,7 @@ async function checkForUpdates(){
   if(button){button.disabled=false;button.textContent='🔄 METTRE À JOUR'}
  }
 }
+// À chaque ouverture ou restauration de la page, afficher l'accueil. La partie reste sauvegardée et se reprend volontairement.
+window.addEventListener('pageshow',()=>{show('home')});
 if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
 </script></body></html>
