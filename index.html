@@ -889,7 +889,7 @@ function addPartyScore(){
   persist();
   $('partyScoreNotice').textContent=name+' : '+full+(winner?'':nextCall);
   $('partyScoreNotice').classList.remove('hidden');
-  try{const spoken=name+'. '+(result.success?'Défi réussi, un point ! ':'Défi raté, zéro point ! ')+comment+winner+nextCall;speakPartyAnnouncement(spoken)}catch(voiceError){console.warn('Annonce vocale soirée indisponible',voiceError)}
+  try{const spoken=(result.success?'Défi réussi, un point ! ':'Défi raté, zéro point ! ')+comment+winner+nextCall;speakPartyAnnouncement(spoken)}catch(voiceError){console.warn('Annonce vocale soirée indisponible',voiceError)}
   if(winner){
    activePartyChallenge=null;
    partyChallengeCompleted=[];
