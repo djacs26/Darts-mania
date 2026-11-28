@@ -53,6 +53,42 @@ html,body{overscroll-behavior-y:contain;}
 .party-neon .party-summary{cursor:pointer;font-weight:900;color:#d8b7ff}
 @media(max-width:700px){.party-neon .party-neon-grid{grid-template-columns:1fr 1fr}.party-neon .party-players{grid-column:1;grid-row:1}.party-neon .party-current{grid-column:2;grid-row:1}.party-neon .party-wheel{grid-column:1/-1;grid-row:2}.party-neon .party-play{grid-column:1/-1;grid-row:3}.party-neon .party-wheel-art{width:min(58vw,220px);height:min(58vw,220px)}}
 @media(max-width:390px){.party-neon .party-neon-grid{grid-template-columns:1fr}.party-neon .party-players,.party-neon .party-current,.party-neon .party-wheel,.party-neon .party-play{grid-column:1;grid-row:auto}.party-neon .party-neon-grid>.panel{padding:12px}}
+
+/* Refonte Mode Soirée : écran de jeu inspiré de la maquette de référence */
+.party-screen{--neon-cyan:#00eaff;--neon-pink:#ff39dc;--neon-yellow:#ffe329;--neon-green:#31ff55}
+.party-banner{text-align:center;margin:0 0 12px;padding:10px 8px 12px;border-radius:18px;background:radial-gradient(ellipse at 50% 0%,#8a1cc5 0,transparent 65%),linear-gradient(90deg,#071a46,#250b43 55%,#071a46);border:1px solid #6e3cff;box-shadow:0 0 18px #7c28ff77}
+.party-brand{font-weight:1000;font-style:italic;font-size:clamp(19px,4vw,27px);letter-spacing:2px;text-shadow:0 0 10px var(--neon-cyan)}
+.party-heading{font-size:clamp(23px,6vw,38px);font-weight:1000;font-style:italic;color:#ff8bf0;text-shadow:0 0 7px #ff39dc,0 0 18px #ff39dc;margin:2px 0}
+.party-subtitle{font-size:12px;color:#fff;font-style:italic}
+.party-screen .party-neon-grid{grid-template-columns:minmax(145px,.82fr) minmax(220px,1.15fr) minmax(165px,.9fr);gap:9px}
+.party-screen .party-neon-grid>.panel{padding:12px;background:linear-gradient(145deg,#160d35,#080f29);border:2px solid #773bff;box-shadow:0 0 12px #8c25ff88,inset 0 0 13px #4d1b7b66;border-radius:17px}
+.party-screen .party-title{text-align:center;font-size:13px;margin-bottom:9px;color:#fff;text-shadow:0 0 8px #00dfff}
+.party-screen .party-wheel{border-color:#ff39dc!important;text-align:center}
+.party-screen .party-wheel-real{width:min(38vw,250px);height:min(38vw,250px);max-width:250px;max-height:250px;min-width:205px;min-height:205px;margin:8px auto 14px;border:6px solid #ffe329;background:conic-gradient(#e62c43 0 60deg,#f5a21c 60deg 120deg,#f7dc32 120deg 180deg,#08bce8 180deg 240deg,#8238e9 240deg 300deg,#25c85b 300deg);box-shadow:0 0 12px #ffe329,0 0 28px #ff39dc;overflow:hidden}
+.party-sector{position:absolute;width:46%;height:46%;display:grid;place-items:center;text-align:center;font-weight:1000;font-size:clamp(9px,1.4vw,12px);line-height:1.1;color:white;text-shadow:0 2px 4px #000;clip-path:polygon(50% 50%,0 0,100% 0);padding-top:12px}
+.party-sector.s1{top:0;left:27%}.party-sector.s2{top:27%;right:0;transform:rotate(60deg)}.party-sector.s3{bottom:0;right:27%;transform:rotate(120deg)}.party-sector.s4{bottom:0;left:27%;transform:rotate(180deg)}.party-sector.s5{top:27%;left:0;transform:rotate(240deg)}.party-sector.s6{top:0;left:0;transform:rotate(300deg)}
+.party-screen .party-wheel-center{width:48px;height:48px;font-size:23px}
+.party-screen .party-spin{border-radius:28px;background:linear-gradient(90deg,#ffe329,#ffad00);font-size:15px;box-shadow:0 0 18px #ffcb24;color:#241400}
+.party-screen .party-challenge{min-height:108px;padding:12px;border-radius:14px;background:linear-gradient(135deg,#29115b,#061b38);border:2px solid var(--neon-cyan);box-shadow:0 0 14px #00dfff88;font-size:16px}
+.party-screen .party-score-title{margin-top:13px}
+.party-screen #partyScoreBoard .historyitem{padding:7px 9px;background:#211638;border:1px solid #6940a0;font-size:12px}
+.party-menu{margin-top:9px;padding:9px;border:1px solid #59418a;border-radius:12px;background:#17112d}
+.party-menu summary{cursor:pointer;list-style:none;font-size:12px;font-weight:900;color:#d9c4ff;display:flex;justify-content:space-between}
+.party-menu summary::-webkit-details-marker{display:none}
+.party-player-hint{font-size:11px;text-align:center;color:#b9b1ca;margin-top:10px}
+.party-screen .party-play{grid-column:1/-1}
+.party-active-player{text-align:center;font-size:16px;padding:5px;color:#aeefff}
+.party-active-player strong{font-size:21px;color:#fff;text-shadow:0 0 9px #00dfff}
+.party-darts-menu{max-width:650px;margin:8px auto}
+.party-result-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.party-result-actions .btn{min-height:52px;border-radius:28px;font-size:14px}
+.party-success{background:linear-gradient(90deg,#16c84b,#63ff65);color:#05230c;box-shadow:0 0 16px #27ff58}
+.party-fail{background:linear-gradient(90deg,#e51c4c,#ff5b7a);color:#fff;box-shadow:0 0 16px #ff275f}
+.party-next{text-align:center;margin-top:11px;padding:10px;border:2px solid #e53bff;border-radius:16px;color:#42eaff;font-weight:950;letter-spacing:.5px;text-shadow:0 0 8px #00dfff}
+.party-next strong{display:block;font-size:clamp(21px,5vw,30px);color:#fff}
+@media(max-width:700px){.party-screen .party-neon-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:7px}.party-screen .party-players{grid-column:1;grid-row:1}.party-screen .party-current{grid-column:2;grid-row:1}.party-screen .party-wheel{grid-column:1/-1;grid-row:2}.party-screen .party-play{grid-column:1/-1;grid-row:3}.party-screen .party-wheel-real{width:220px;height:220px}.party-screen .party-neon-grid>.panel{padding:9px}}
+@media(max-width:390px){.party-screen .party-neon-grid{grid-template-columns:1fr 1fr}.party-screen .party-wheel-real{width:200px;height:200px;min-width:200px;min-height:200px}.party-screen .party-title{font-size:11px}.party-screen .party-challenge{font-size:14px;min-height:95px}}
+
 </style></head>
 <body><main class="app">
 <header class="top"><div><div class="brand">DARTS <span>MANIA</span></div><div class="tag">ÇA VA PIQUER !</div></div><div class="avatar" aria-label="Mascotte">🤡</div></header>
@@ -113,40 +149,48 @@ html,body{overscroll-behavior-y:contain;}
  <div class="section panel"><h3>📈 Tes statistiques d'entraînement</h3><div class="statsgrid"><div class="stat"><strong id="trainCount">0</strong><small>VOLÉES</small></div><div class="stat"><strong id="trainAvg">—</strong><small>MOYENNE</small></div><div class="stat"><strong id="trainBest">—</strong><small>RECORD</small></div></div><div id="trainingHistory" class="history section"></div></div>
 </section>
 
-<section id="party" class="view party-neon">
- <div class="sectionhead"><h2>🎉 Mode soirée</h2><span class="pill">DÉFIS, FUN ET BONNE HUMEUR</span></div>
+<section id="party" class="view party-neon party-screen">
+ <div class="party-banner"><div class="party-brand">🎯 DARTS MANIA</div><div class="party-heading">MODE SOIRÉE 🍻</div><div class="party-subtitle">Défis, fun et bonne humeur entre copains !</div></div>
  <div class="party-neon-grid">
   <div class="panel party-players">
-   <div class="party-title">👥 JOUEURS</div>
-   <label>Score à atteindre</label><select class="field" id="partyTarget"><option value="10" selected>10 points</option><option value="20">20 points</option></select>
-   <details class="section" open><summary class="party-summary">Choisir les participants</summary><div id="partyParticipantList" class="players section"></div></details>
+   <div class="party-title">👥 JOUEURS (<span id="partyPlayerCount">0</span>)</div>
+   <details class="party-menu"><summary>⚙️ Gérer les participants <span>＋</span></summary>
+    <label>Score à atteindre</label><select class="field" id="partyTarget"><option value="10" selected>10 points</option><option value="20">20 points</option></select>
+    <div id="partyParticipantList" class="players section"></div>
+    <button class="btn secondary" type="button" onclick="resetPartyScores()">↻ Remettre les scores à zéro</button>
+   </details>
+   <div class="party-player-hint">Participants sélectionnés dans les réglages</div>
   </div>
   <div class="panel party-wheel">
-   <div class="party-title">🎡 DÉFIS ENTRE COPAINS</div>
-   <div class="party-wheel-art"><div class="party-wheel-center">🎯</div><div class="party-wheel-label">LA ROUE<br>DES DÉFIS</div></div>
+   <div class="party-title">🎡 LA ROUE DES DÉFIS</div>
+   <div class="party-wheel-art party-wheel-real">
+    <div class="party-sector s1">TRIPLE<br>20</div><div class="party-sector s2">DOUBLE<br>10</div><div class="party-sector s3">BULL<br>DIRECT</div><div class="party-sector s4">3 SIMPLES<br>≤ 20</div><div class="party-sector s5">FINIR<br>SUR DOUBLE</div><div class="party-sector s6">TOUCHER UN<br>SECTEUR IMPOSÉ</div>
+    <div class="party-wheel-center">🎯</div>
+   </div>
    <button class="btn gold party-spin" onclick="spinChallenge()">🎡 LANCER LA ROUE</button>
   </div>
   <div class="panel party-current">
    <div class="party-title">🏆 DÉFI EN COURS</div>
-   <div id="challenge" class="party-challenge notice hidden">Fais tourner la roue pour découvrir le défi !</div>
+   <div id="challenge" class="party-challenge notice">Lance la roue pour découvrir ton défi !</div>
    <div class="party-title party-score-title">📊 SCORE SOIRÉE</div>
    <div id="partyScoreBoard" class="history section">Aucun score enregistré pour le moment.</div>
   </div>
   <div class="panel party-play">
    <div class="party-title">🎯 À TOI DE JOUER</div>
-   <label>Joueur qui joue maintenant</label><select class="field" id="partyPlayer"></select>
-   <label>Saisis les 3 fléchettes</label>
-   <div class="multiplier-row" id="partyMultipliers"><button type="button" class="active" data-mult="S" onclick="choosePartyMultiplier('S')">DIRECT</button><button type="button" data-mult="D" onclick="choosePartyMultiplier('D')">DOUBLE</button><button type="button" data-mult="T" onclick="choosePartyMultiplier('T')">TRIPLE</button></div>
-   <div class="dartgrid" id="partyKeypad"><button type="button" onclick="partyFillNumber(0)">0</button><button type="button" onclick="partyFillNumber(1)">1</button><button type="button" onclick="partyFillNumber(2)">2</button><button type="button" onclick="partyFillNumber(3)">3</button><button type="button" onclick="partyFillNumber(4)">4</button><button type="button" onclick="partyFillNumber(5)">5</button><button type="button" onclick="partyFillNumber(6)">6</button><button type="button" onclick="partyFillNumber(7)">7</button><button type="button" onclick="partyFillNumber(8)">8</button><button type="button" onclick="partyFillNumber(9)">9</button><button type="button" onclick="partyFillNumber(10)">10</button><button type="button" onclick="partyFillNumber(11)">11</button><button type="button" onclick="partyFillNumber(12)">12</button><button type="button" onclick="partyFillNumber(13)">13</button><button type="button" onclick="partyFillNumber(14)">14</button><button type="button" onclick="partyFillNumber(15)">15</button><button type="button" onclick="partyFillNumber(16)">16</button><button type="button" onclick="partyFillNumber(17)">17</button><button type="button" onclick="partyFillNumber(18)">18</button><button type="button" onclick="partyFillNumber(19)">19</button><button type="button" onclick="partyFillNumber(20)">20</button><button type="button" onclick="partyFillNumber(25)">25</button><button type="button" onclick="partyFillNumber(50)">50</button></div>
-   <div class="entry"><input class="field" id="pd1" type="text" inputmode="text" maxlength="4" placeholder="Ex. T20"><input class="field" id="pd2" type="text" inputmode="text" maxlength="4" placeholder="Ex. D16"><input class="field" id="pd3" type="text" inputmode="text" maxlength="4" placeholder="Ex. 20"></div>
+   <div class="party-active-player">Joueur : <strong id="partyActiveName">—</strong></div>
+   <details class="party-menu party-darts-menu"><summary>⌨️ Saisir les 3 fléchettes <span>＋</span></summary>
+    <label>Joueur qui joue maintenant</label><select class="field" id="partyPlayer"></select>
+    <div class="multiplier-row" id="partyMultipliers"><button type="button" class="active" data-mult="S" onclick="choosePartyMultiplier('S')">DIRECT</button><button type="button" data-mult="D" onclick="choosePartyMultiplier('D')">DOUBLE</button><button type="button" data-mult="T" onclick="choosePartyMultiplier('T')">TRIPLE</button></div>
+    <div class="dartgrid" id="partyKeypad"><button type="button" onclick="partyFillNumber(0)">0</button><button type="button" onclick="partyFillNumber(1)">1</button><button type="button" onclick="partyFillNumber(2)">2</button><button type="button" onclick="partyFillNumber(3)">3</button><button type="button" onclick="partyFillNumber(4)">4</button><button type="button" onclick="partyFillNumber(5)">5</button><button type="button" onclick="partyFillNumber(6)">6</button><button type="button" onclick="partyFillNumber(7)">7</button><button type="button" onclick="partyFillNumber(8)">8</button><button type="button" onclick="partyFillNumber(9)">9</button><button type="button" onclick="partyFillNumber(10)">10</button><button type="button" onclick="partyFillNumber(11)">11</button><button type="button" onclick="partyFillNumber(12)">12</button><button type="button" onclick="partyFillNumber(13)">13</button><button type="button" onclick="partyFillNumber(14)">14</button><button type="button" onclick="partyFillNumber(15)">15</button><button type="button" onclick="partyFillNumber(16)">16</button><button type="button" onclick="partyFillNumber(17)">17</button><button type="button" onclick="partyFillNumber(18)">18</button><button type="button" onclick="partyFillNumber(19)">19</button><button type="button" onclick="partyFillNumber(20)">20</button><button type="button" onclick="partyFillNumber(25)">25</button><button type="button" onclick="partyFillNumber(50)">50</button></div>
+    <div class="entry"><input class="field" id="pd1" type="text" inputmode="text" maxlength="4" placeholder="Fléchette 1"><input class="field" id="pd2" type="text" inputmode="text" maxlength="4" placeholder="Fléchette 2"><input class="field" id="pd3" type="text" inputmode="text" maxlength="4" placeholder="Fléchette 3"></div>
+    <div class="row between"><strong id="partyCurrentScore">0 / 3 fléchettes saisies</strong><button class="btn secondary" onclick="clearPartyDarts()">Effacer</button></div>
+   </details>
+   <div class="party-result-actions"><button class="btn party-success" type="button" onclick="addPartyScore()">✓ DÉFI RÉUSSI</button><button class="btn party-fail" type="button" onclick="addPartyScore()">✕ VALIDER LE RÉSULTAT</button></div>
    <div class="row" id="partyVoiceRow" style="display:none;margin-top:10px"><button class="btn gold" type="button" id="partyVoiceButton" onclick="startScoreVoice('party')">🎙️ Dicter les 3 fléchettes</button><span class="footnote" id="partyVoiceStatus">Option vocale activée</span></div>
-   <div class="row between"><strong id="partyCurrentScore">0 / 3 fléchettes saisies</strong><button class="btn secondary" onclick="clearPartyDarts()">Effacer</button></div>
    <div id="partyScoreNotice" class="notice hidden"></div>
-   <button class="btn secondary" style="margin-top:10px" onclick="resetPartyScores()">↻ Remettre les compteurs à zéro</button>
+   <div class="party-next">»» JOUEUR SUIVANT : <strong id="partyNextName">—</strong> ««</div>
   </div>
  </div>
- <div class="section panel"><h3>🏅 Les trophées de la honte et de la gloire</h3><div id="trophies" class="tiles"></div></div>
- <div class="section panel"><h3>⚔️ Petit tournoi</h3><p class="muted">Lance un match multi-joueurs depuis Préparer la partie, jusqu'à 8 participants.</p><button class="btn secondary" onclick="setupMatch('501')">Organiser un tournoi / match</button></div>
 </section>
 
 <section id="players" class="view">
