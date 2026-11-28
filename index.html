@@ -87,6 +87,59 @@ html,body{overscroll-behavior-y:contain;}
 @media(max-width:700px){.party-screen .party-neon-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:7px}.party-screen .party-players{grid-column:1;grid-row:1}.party-screen .party-current{grid-column:2;grid-row:1}.party-screen .party-wheel{grid-column:1/-1;grid-row:2}.party-screen .party-play{grid-column:1/-1;grid-row:3}.party-screen .party-wheel-real{width:220px;height:220px}.party-screen .party-neon-grid>.panel{padding:9px}}
 @media(max-width:390px){.party-screen .party-neon-grid{grid-template-columns:1fr 1fr}.party-screen .party-wheel-real{width:200px;height:200px;min-width:200px;min-height:200px}.party-screen .party-title{font-size:11px}.party-screen .party-challenge{font-size:14px;min-height:95px}}
 
+
+/* Mode soirée mobile : commandes visibles, menus secondaires discrets, aucune largeur débordante */
+.party-screen .party-menu{margin-top:5px;padding:5px 8px;background:#100d22;border-color:#49336d}
+.party-screen .party-menu summary{font-size:10px}
+.party-screen .party-player-hint{display:none}
+.party-screen .party-play{min-width:0}
+.party-screen .party-active-player{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;font-size:12px;padding:2px}
+.party-screen .party-active-player strong{font-size:18px}
+.party-screen .party-player-select{width:auto;max-width:115px;min-height:28px;padding:3px 6px;font-size:11px}
+.party-screen .party-entry-live{display:block}
+.party-screen .party-darts-menu{display:none}
+.party-screen .party-play .dartgrid{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:4px;margin:6px 0}
+.party-screen .party-play .dartgrid button{min-width:0;min-height:34px;padding:3px 0;font-size:12px;border-radius:8px}
+.party-screen .party-play .multiplier-row{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin:5px 0}
+.party-screen .party-play .multiplier-row button{min-height:30px;padding:4px;font-size:11px}
+.party-screen .party-play .entry{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;margin:6px 0}
+.party-screen .party-play .entry input{min-width:0;width:100%;min-height:34px;padding:5px;text-align:center;font-size:12px}
+.party-screen .party-play .row.between{align-items:center;margin-top:4px;font-size:11px}
+.party-screen .party-auto-note{margin:5px auto;padding:5px;font-size:10px}
+.party-screen .party-next{margin-top:6px;padding:5px;border-width:1px}
+.party-screen .party-next strong{font-size:18px}
+@media(max-width:700px){
+ .party-screen .party-neon-grid{grid-template-columns:minmax(0,.9fr) minmax(0,1.15fr) minmax(0,.9fr);gap:5px;align-items:start}
+ .party-screen .party-players{grid-column:1;grid-row:1}
+ .party-screen .party-current{grid-column:3;grid-row:1}
+ .party-screen .party-wheel{grid-column:2;grid-row:1}
+ .party-screen .party-play{grid-column:1/-1;grid-row:2}
+ .party-screen .party-neon-grid>.panel{padding:7px;border-radius:12px}
+ .party-screen .party-title{font-size:10px;letter-spacing:0;margin-bottom:5px}
+ .party-screen .party-wheel-real{width:min(100%,145px);height:auto;aspect-ratio:1;margin:5px auto;border-width:4px}
+ .party-screen .party-sector{font-size:8px}
+ .party-screen .party-wheel-center{width:34px;height:34px;font-size:17px}
+ .party-screen .party-spin{font-size:11px;min-height:34px;padding:5px 3px}
+ .party-screen .party-challenge{min-height:65px;padding:5px;font-size:11px;border-width:1px}
+ .party-screen .party-score-title{margin-top:7px}
+ .party-screen #partyScoreBoard .historyitem{padding:3px 4px;font-size:9px;gap:2px}
+ .party-screen .party-players .player{font-size:10px;padding:4px;margin:3px 0}
+ .party-screen .party-menu{padding:4px;margin-top:4px}
+ .party-screen .party-play .dartgrid{grid-template-columns:repeat(8,minmax(0,1fr));gap:3px}
+ .party-screen .party-play .dartgrid button{min-height:31px;font-size:11px}
+}
+@media(max-width:390px){
+ .party-screen .party-banner{margin-bottom:6px;padding:6px}
+ .party-screen .party-brand{font-size:17px}
+ .party-screen .party-heading{font-size:22px;margin:0}
+ .party-screen .party-subtitle{font-size:9px}
+ .party-screen .party-neon-grid{grid-template-columns:minmax(0,.85fr) minmax(0,1.2fr) minmax(0,.85fr);gap:4px}
+ .party-screen .party-neon-grid>.panel{padding:5px}
+ .party-screen .party-wheel-real{width:100%;min-width:0;min-height:0}
+ .party-screen .party-score-title{font-size:9px}
+ .party-screen .party-play .dartgrid button{min-height:29px;font-size:10px}
+}
+
 </style></head>
 <body><main class="app">
 <header class="top"><div><div class="brand">DARTS <span>MANIA</span></div><div class="tag">ÇA VA PIQUER !</div></div><div class="avatar" aria-label="Mascotte">🤡</div></header>
@@ -177,15 +230,15 @@ html,body{overscroll-behavior-y:contain;}
   </div>
   <div class="panel party-play">
    <div class="party-title">🎯 À TOI DE JOUER</div>
-   <div class="party-active-player">Joueur : <strong id="partyActiveName">—</strong></div>
-   <details class="party-menu party-darts-menu"><summary>⌨️ Saisir les 3 fléchettes <span>＋</span></summary>
-    <label>Joueur qui joue maintenant</label><select class="field" id="partyPlayer" onchange="updatePartyTurnLabels()"></select>
+   <div class="party-active-player">Joueur : <strong id="partyActiveName">—</strong> <select class="field party-player-select" id="partyPlayer" onchange="updatePartyTurnLabels()" aria-label="Joueur qui joue"></select></div>
+   <div class="party-entry-live">
     <div class="multiplier-row" id="partyMultipliers"><button type="button" class="active" data-mult="S" onclick="choosePartyMultiplier('S')">DIRECT</button><button type="button" data-mult="D" onclick="choosePartyMultiplier('D')">DOUBLE</button><button type="button" data-mult="T" onclick="choosePartyMultiplier('T')">TRIPLE</button></div>
     <div class="dartgrid" id="partyKeypad"><button type="button" onclick="partyFillNumber(0)">0</button><button type="button" onclick="partyFillNumber(1)">1</button><button type="button" onclick="partyFillNumber(2)">2</button><button type="button" onclick="partyFillNumber(3)">3</button><button type="button" onclick="partyFillNumber(4)">4</button><button type="button" onclick="partyFillNumber(5)">5</button><button type="button" onclick="partyFillNumber(6)">6</button><button type="button" onclick="partyFillNumber(7)">7</button><button type="button" onclick="partyFillNumber(8)">8</button><button type="button" onclick="partyFillNumber(9)">9</button><button type="button" onclick="partyFillNumber(10)">10</button><button type="button" onclick="partyFillNumber(11)">11</button><button type="button" onclick="partyFillNumber(12)">12</button><button type="button" onclick="partyFillNumber(13)">13</button><button type="button" onclick="partyFillNumber(14)">14</button><button type="button" onclick="partyFillNumber(15)">15</button><button type="button" onclick="partyFillNumber(16)">16</button><button type="button" onclick="partyFillNumber(17)">17</button><button type="button" onclick="partyFillNumber(18)">18</button><button type="button" onclick="partyFillNumber(19)">19</button><button type="button" onclick="partyFillNumber(20)">20</button><button type="button" onclick="partyFillNumber(25)">25</button><button type="button" onclick="partyFillNumber(50)">50</button></div>
     <div class="entry"><input class="field" id="pd1" type="text" inputmode="text" maxlength="4" placeholder="Fléchette 1"><input class="field" id="pd2" type="text" inputmode="text" maxlength="4" placeholder="Fléchette 2"><input class="field" id="pd3" type="text" inputmode="text" maxlength="4" placeholder="Fléchette 3"></div>
-    <div class="row between"><strong id="partyCurrentScore">0 / 3 fléchettes saisies</strong><button class="btn secondary" onclick="clearPartyDarts()">Effacer</button></div>
-   </details>
-   <div class="party-auto-note">✓ Le résultat est validé automatiquement dès que les 3 fléchettes sont saisies.</div>
+    <div class="entry"><input class="field" id="pd1" type="text" inputmode="text" maxlength="4" placeholder="Flèche 1"><input class="field" id="pd2" type="text" inputmode="text" maxlength="4" placeholder="Flèche 2"><input class="field" id="pd3" type="text" inputmode="text" maxlength="4" placeholder="Flèche 3"></div>
+    <div class="row between"><strong id="partyCurrentScore">0 / 3</strong><button class="btn secondary" onclick="clearPartyDarts()">Effacer</button></div>
+   </div>
+   <div class="party-auto-note">✓ Validation automatique après la 3e fléchette</div>
    <div class="row" id="partyVoiceRow" style="display:none;margin-top:10px"><button class="btn gold" type="button" id="partyVoiceButton" onclick="startScoreVoice('party')">🎙️ Dicter les 3 fléchettes</button><span class="footnote" id="partyVoiceStatus">Option vocale activée</span></div>
    <div id="partyScoreNotice" class="notice hidden"></div>
    <div class="party-next">»» JOUEUR SUIVANT : <strong id="partyNextName">—</strong> ««</div>
