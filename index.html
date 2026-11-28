@@ -841,6 +841,20 @@ function schedulePartyAutoValidation(){
  updatePartyCurrent();
  schedulePartyAutoValidation();
 }));
+function speakPartyAnnouncement(text){
+ if(!('speechSynthesis' in window))return;
+ const synth=window.speechSynthesis;
+ synth.cancel();
+ const voices=availableFrenchVoices();
+ const selected=voices.find(v=>v.voiceURI===data.settings.voiceURI);
+ const voice=selected||voices.find(v=>v.lang.toLowerCase()==='fr-fr')||voices[0];
+ const style=data.settings.speaker||'sarcastic';
+ const utterance=new SpeechSynthesisUtterance(text);
+ utterance.lang='fr-FR';utterance.rate=Number(data.settings.rate||1.04);
+ utterance.pitch=style==='stadium'?0.94:style==='funny'?1.2:style==='sarcastic'?1.12:1.05;
+ if(voice)utterance.voice=voice;
+ synth.speak(utterance);
+}
 function addPartyScore(){
  if(partySubmissionLock)return;
  const name=$('partyPlayer').value,raw=['pd1','pd2','pd3'].map(id=>$(id).value.trim()),darts=raw.map(parseDart);
@@ -875,7 +889,7 @@ function addPartyScore(){
   persist();
   $('partyScoreNotice').textContent=name+' : '+full+(winner?'':nextCall);
   $('partyScoreNotice').classList.remove('hidden');
-  try{const spoken=full+nextCall;speak(spoken,spoken)}catch(voiceError){console.warn('Annonce vocale soirée indisponible',voiceError)}
+  try{const spoken=name+'. '+(result.success?'Défi réussi, un point ! ':'Défi raté, zéro point ! ')+comment+winner+nextCall;speakPartyAnnouncement(spoken)}catch(voiceError){console.warn('Annonce vocale soirée indisponible',voiceError)}
   if(winner){
    activePartyChallenge=null;
    partyChallengeCompleted=[];
